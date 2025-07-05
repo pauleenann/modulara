@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+@import "tailwindcss";
+
+@theme{
+    --color-gray: #2B2B2B;
+    --font-dm-sans: "DM Sans", sans-serif;
+}
+
+html,
+body {
+    width: 100%;
+    background-color: white;
+    color: #2B2B2B;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+@utility flex-center {
+    @apply flex justify-center items-center;
+}
+
+@utility col-center {
+    @apply flex flex-col justify-center items-center;
+}
+
+@utility col-center-left {
+    @apply flex flex-col justify-center items-start;
+}
+
+@layer components{
+    #login{
+        @apply h-screen w-screen grid grid-cols-[1fr_700px] font-dm-sans 
+    }
+}
