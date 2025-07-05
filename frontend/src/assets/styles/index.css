@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Kulim+Park:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap');
 
 @import "tailwindcss";
 
 @theme{
     --color-gray: #2B2B2B;
     --font-dm-sans: "DM Sans", sans-serif;
+    --font-kulim-park: "Kulim Park", sans-serif;
 }
 
 html,
@@ -30,6 +32,6 @@ body {
 
 @layer components{
     #login{
-        @apply h-screen w-screen grid grid-cols-[1fr_700px] font-dm-sans 
+        @apply h-screen w-screen grid md:grid-cols-[1fr_700px] font-dm-sans;
     }
 }
