@@ -31,7 +31,16 @@ body {
 }
 
 @layer components{
+    main{
+        @apply h-screen w-screen
+    }
+
     #login{
-        @apply h-screen w-screen grid md:grid-cols-[1fr_700px] font-dm-sans;
+        @apply h-screen w-full h-full grid  md:grid-cols-[1fr_700px] font-dm-sans;
+    }
+
+    #dashboard,
+    #inventory{
+        @apply bg-[var(--color-gray)] w-full h-full p-5 grid grid-cols-[1fr_85%] gap-5
     }
 }

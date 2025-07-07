@@ -1,10 +1,9 @@
 <script setup>
-    import bg from '../assets/images/login-bg.png'
     import logo from '../assets/images/white-logo.png'
-    import logo2 from '../assets/images/black-logo.png'
     import google from '../assets/images/google.png'
     import email from '../assets/images/email.png'
     import password from '../assets/images/password.png'
+    import signInWithGoogle from '@/services/auth'
 </script>
 
 <template>
@@ -22,7 +21,7 @@
             class="flex-center p-5 md:p-30 relative bg-[url('login-bg.png')] md:bg-none bg-cover bg-center"
         >
             <!-- form -->
-            <div class="z-50 bg-white/70 backdrop-blur-3xl p-8 md:p-0 rounded-3xl ">
+            <div class="z-50 bg-white/60 backdrop-blur-3xl p-8 md:p-0 rounded-3xl ">
                 <!-- logo -->
                 <h1 class="block md:hidden font-kulim-park text-3xl font-bold mb-5">Modulara</h1>
 
@@ -30,7 +29,10 @@
                 <p class="text-sm md:text-lg font-light col-center-left text-[var(--color-gray)]">Sign in to access your orders, saved sofas, and personalized recommendations.</p>
 
                 <!-- sign in with google -->
-                <button class="flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[57px] hover:bg-[#D9D9D9] transition delay-100 duration-300 ease-in-out cursor-pointer">
+                <button 
+                    class="flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[57px] hover:bg-[#D9D9D9] transition delay-100 duration-300 ease-in-out cursor-pointer"
+                    @click="signInWithGoogle"
+                >
                     <img :src="google" alt="" class="w-[20px] md:w-auto">
                     <span class="text-sm md:text-lg font-semibold text-[var(--color-gray)] cursor-pointer">Sign in with Google</span>
                 </button>
