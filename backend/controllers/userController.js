@@ -1,4 +1,5 @@
 import admin from "../config/firebase-admin.js";
+import User from "../models/User.js";
 
 const signInWithGoogle = async (req,res)=>{
     // this is for accessing the token sent from frontend thru headers
@@ -8,7 +9,28 @@ const signInWithGoogle = async (req,res)=>{
     try {
         const decodedToken = await admin.auth().verifyIdToken(token)
 
-        console.log(token)
+        const { firstName, lastName, email} = req.body;
+
+        // check first if user is existing
+        const user = await User.find({email: email})
+        
+        // if no user found, create user
+        if(user.length==0){
+            try {
+                const userAccount = await User.create({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                }) 
+
+                console.log('User account successfully created')
+            } catch (error) {
+                console.log('Cannot create user account. An error occurred: ', error.message)
+            }
+        }
+
+        // nevertheless, user is signed in
+        console.log('User signed in')
     } catch (error) {
         console.log('Cannot decode token or your token is expired. An error occurred: ', error.message)
     }

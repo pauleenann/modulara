@@ -9,7 +9,7 @@ const signInWithGoogle = ()=>{
     .then(async (result) => {
         // The signed-in user info.
         const user = result.user;
-        const token = user.getIdToken();
+        const token = await user.getIdToken();
 
         const response = await axios.post('http://localhost:5000/api/user/signin-google',{
             firstName: user.displayName.split(' ')[0],
