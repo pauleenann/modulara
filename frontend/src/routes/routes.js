@@ -6,6 +6,7 @@ import InventoryView from '@/pages/InventoryView.vue'
 import { authStore } from '@/store/authStore'
 import { userStore } from '@/store/userStore'
 
+
 const routes = [
   { 
     path: '/', 
@@ -45,23 +46,20 @@ router.beforeEach(async (to, from) => {
     await auth.initAuth();
   }
 
-  // redirect authenticated users away from Login
+  // if user is logged in and it tries to access the login page, they will be redirected to a page depending on their roles
   if (auth.isAuthenticated && to.name === 'Login') {
-    if (user.user?.role === 'admin') {
+    if (user.user?.role == 'admin') {
       return { name: 'Dashboard' };
     } else {
       return { name: 'Home' };
     }
   }
 
-  // redirect unauthenticated users away from protected routes
-  if (!auth.isAuthenticated && to.name !== 'Login') {
-    return { name: 'Login' };
-  }
-
-  // block customers from admin-only routes
-  if (to.meta.requiresAdmin && user.user?.role !== 'admin') {
-    return { name: 'Login' };
+  // Prevent unauthenticated access to admin routes
+  if (to.meta.requiresAdmin) {
+    if (!auth.isAuthenticated || user.user?.role !== 'admin') {
+      return { name: 'Login' };
+    }
   }
 });
 

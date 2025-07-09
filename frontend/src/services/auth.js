@@ -25,12 +25,15 @@ const signInWithGoogle = (router) => {
         }
       );
 
-      const userData = response.data[0]; 
+      // user data from backend
+      const userData = response.data;
+      
+      // store data in pinia and localstorage
       const store = userStore();
       store.setUser(userData);
 
       // Redirect based on role
-      if (userData.role === 'admin') {
+      if (userData.role == 'admin') {
         router.push('/dashboard');
       } else {
         router.push('/');

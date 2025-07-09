@@ -7,35 +7,43 @@ const signInWithGoogle = async (req,res)=>{
     const token = authHeader && authHeader.split(' ')[1]
 
     try {
+        if (!token) {
+            return res.status(401).json({ error: 'Missing token' });
+        }
+          
         const decodedToken = await admin.auth().verifyIdToken(token)
 
         const { firstName, lastName, email} = req.body;
 
         // check first if user is existing
-        let user = await User.find({email: email})
+        let user = await User.findOne({email: email})
         
         // if no user found, create user
-        if(user.length==0){
+        if(!user){
             try {
                 user = await User.create({
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
                 }) 
-
-                console.log('User account successfully created')
             } catch (error) {
-                console.log('Cannot create user account. An error occurred: ', error.message)
                 return res.status(500).json({error: 'Failed to create user account'})
             }
         }
 
-        // nevertheless, user is signed in
-        console.log('User signed in')
-        return res.status(200).json(user)
+        // data to return
+        const userData = {
+            id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            role: user.role
+        }
+
+        return res.status(200).json(userData)
     } catch (error) {
         console.log('Cannot decode token or your token is expired. An error occurred: ', error.message)
-        return res.status(500).json({error: 'Invalid or expired token'})
+        return res.status(401).json({error: 'Invalid or expired token'})
     }
 }
 
