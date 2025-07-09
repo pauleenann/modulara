@@ -1,9 +1,9 @@
 import { createWebHistory, createRouter } from 'vue-router'
-
 import LoginView from '../pages/LoginView.vue'
 import HomeView from '../pages/HomeView.vue'
 import DashboardView from '../pages/DashboardView.vue'
 import InventoryView from '@/pages/InventoryView.vue'
+import { authStore } from '@/store/authStore'
 
 const routes = [
   { 
@@ -31,6 +31,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+router.beforeEach(async (to, from) => {
+  const store = authStore()
+  if (
+    !store.isAuthenticated &&
+    // ❗️ Avoid an infinite redirect
+    to.name !== 'Login'
+  ) {
+    // redirect the user to the login page
+    return { name: 'Login' }
+  }
 })
 
 export default router;

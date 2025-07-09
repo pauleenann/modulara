@@ -22,7 +22,7 @@
                 <RouterLink 
                     :to="menu.path"
                     :class="[
-                            'text-lg grid grid-cols-[40px_1fr] items-center rounded-lg py-2 px-6',
+                            'text-md grid grid-cols-[40px_1fr] items-center rounded-lg py-2 px-6',
                             currentUrl == menu.name 
                             ? 'bg-[#d9d9d9]/17 text-white' 
                             : 'text-[#d9d9d9]'

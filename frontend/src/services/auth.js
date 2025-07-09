@@ -1,6 +1,7 @@
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import axios from "axios";
+import router from "@/routes/routes";
 
 const provider = new GoogleAuthProvider()
 
@@ -20,6 +21,8 @@ const signInWithGoogle = ()=>{
                 Authorization: `Bearer ${token}`
             }
         })
+        
+        console.log(response)
 
     }).catch((error) => {
         console.log('Cannot sign in use with google. An error occurred', error.message)

@@ -17,7 +17,7 @@ const signInWithGoogle = async (req,res)=>{
         // if no user found, create user
         if(user.length==0){
             try {
-                const userAccount = await User.create({
+                user = await User.create({
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
@@ -26,13 +26,16 @@ const signInWithGoogle = async (req,res)=>{
                 console.log('User account successfully created')
             } catch (error) {
                 console.log('Cannot create user account. An error occurred: ', error.message)
+                return res.status(500).json({error: 'Failed to create user account'})
             }
         }
 
         // nevertheless, user is signed in
         console.log('User signed in')
+        return res.status(200).json(user)
     } catch (error) {
         console.log('Cannot decode token or your token is expired. An error occurred: ', error.message)
+        return res.status(500).json({error: 'Invalid or expired token'})
     }
 }
 

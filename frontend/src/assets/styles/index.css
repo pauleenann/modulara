@@ -41,6 +41,6 @@ body {
 
     #dashboard,
     #inventory{
-        @apply bg-[var(--color-gray)] w-full h-full p-5 grid grid-cols-[1fr_85%] gap-5
+        @apply bg-[var(--color-gray)] w-full h-full p-3 grid grid-cols-[1fr_85%] gap-5
     }
 }
