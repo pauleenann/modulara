@@ -4,6 +4,9 @@
     import email from '../assets/images/email.png'
     import password from '../assets/images/password.png'
     import signInWithGoogle from '@/services/auth'
+    import { useRouter } from 'vue-router'
+
+    const router = useRouter();
 </script>
 
 <template>
@@ -31,7 +34,7 @@
                 <!-- sign in with google -->
                 <button 
                     class="flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[57px] hover:bg-[#D9D9D9] transition delay-100 duration-300 ease-in-out cursor-pointer"
-                    @click="signInWithGoogle"
+                    @click="signInWithGoogle(router)"
                 >
                     <img :src="google" alt="" class="w-[20px] md:w-auto">
                     <span class="text-sm md:text-lg font-semibold text-[var(--color-gray)] cursor-pointer">Sign in with Google</span>

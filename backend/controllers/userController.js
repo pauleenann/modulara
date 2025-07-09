@@ -12,7 +12,7 @@ const signInWithGoogle = async (req,res)=>{
         const { firstName, lastName, email} = req.body;
 
         // check first if user is existing
-        const user = await User.find({email: email})
+        let user = await User.find({email: email})
         
         // if no user found, create user
         if(user.length==0){
