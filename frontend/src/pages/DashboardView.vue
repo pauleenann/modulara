@@ -1,12 +1,12 @@
 <script setup>
-import Navbar from '@/components/Navbar.vue';
+import AdminSidebar from '@/components/AdminSidebar.vue';
 
 </script>
 
 <template>
     <div id="dashboard">
         <!-- navbar -->
-        <Navbar/>
+        <AdminNavbar/>
 
         <!-- view -->
         <div class="bg-white w-full h-full rounded-xl">

@@ -1,39 +1,32 @@
-<script setup>
-    import { adminMenu } from '@/constants/adminMenu';
-    import { useRoute } from 'vue-router';
-    import { RouterLink } from 'vue-router';
-
-    const route = useRoute();
-    const currentUrl = route.name;
-    console.log(currentUrl)
+<script setup> 
+    import { navbarMenu } from '@/constants/constants'
+    import { iconMenu } from '@/constants/constants';
 </script>
 
 <template>
-    <div class="w-full h-full pt-8">
+    <nav class="w-5/6 m-auto h-25 grid grid-cols-3 items-center absolute left-0 right-0 top-8">
         <!-- logo -->
-        <h1 class="font-kulim-park text-white text-3xl font-bold ms-6">Modulara</h1>
+        <span class="text-white font-semibold text-3xl font-kulim-park">Modulara</span>
 
-        <!-- menu -->
-        <ul class="mt-10">
+        <!-- navbar -->
+        <ul class="flex items-center gap-8 text-white m-auto font-dm-sans pt-3">
             <li 
-                v-for="(menu, index) in adminMenu" 
-                :key ="index" 
+                v-for="(menu, index) in navbarMenu"
+                :key="index"
+                class="text-lg"
             >
-                <RouterLink 
-                    :to="menu.path"
-                    :class="[
-                            'text-md grid grid-cols-[40px_1fr] items-center rounded-lg py-2 px-6',
-                            currentUrl == menu.name 
-                            ? 'bg-[#d9d9d9]/17 text-white' 
-                            : 'text-[#d9d9d9]'
-                        ]"
-                >
-                    <i :class="menu.icon"></i>
-                    <span>{{ menu.name }}</span>
-                </RouterLink>
-                    
+                {{ menu.name }}
             </li>
         </ul>
 
-    </div>
+        <!-- icon menu -->
+        <ul class="flex items-center gap-3 text-white justify-end">
+            <li 
+                v-for="(menu, index) in iconMenu"
+                :key="index"
+            >
+                <i :class="['text-xl',menu.icon]"></i>
+            </li>
+        </ul>
+    </nav>
 </template>
