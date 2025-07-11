@@ -1,6 +1,8 @@
 <script setup> 
     import { navbarMenu } from '@/constants/constants'
     import { iconMenu } from '@/constants/constants';
+    import { RouterLink } from 'vue-router';
+    
 </script>
 
 <template>
@@ -25,7 +27,10 @@
                 v-for="(menu, index) in iconMenu"
                 :key="index"
             >
-                <i :class="['text-xl',menu.icon]"></i>
+                <RouterLink :to="menu.path">
+                    <i :class="['text-xl',menu.icon]"></i>
+                </RouterLink>
+                
             </li>
         </ul>
     </nav>

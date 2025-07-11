@@ -4,6 +4,7 @@
 
 @theme{
     --color-gray: rgba(43, 43, 43, 0.88);
+    --color-light-gray: #A29F9F;
     --font-dm-sans: "DM Sans", sans-serif;
     --font-kulim-park: "Kulim Park", sans-serif;
     --font-didact: "Didact Gothic", sans-serif;
@@ -30,6 +31,18 @@ body {
     @apply flex flex-col justify-center items-start;
 }
 
+@utility footer-gap{
+    @apply flex flex-col gap-3
+}
+
+@utility footer-header{
+    @apply font-semibold text-[var(--color-gray)] text-xl
+}
+
+@utility footer-list{
+    @apply flex flex-col gap-2 mt-5 font-semibold text-[var(--color-light-gray)]
+}
+
 @layer components{
     main{
         @apply h-auto w-screen
@@ -43,4 +56,6 @@ body {
     #inventory{
         @apply bg-[var(--color-gray)] w-full h-full p-3 grid grid-cols-[1fr_85%] gap-5
     }
+
+    
 }

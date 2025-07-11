@@ -59,7 +59,7 @@ export const iconMenu = [
     {
         icon: "fa-solid fa-circle-user", 
         name: 'Profile',
-        path: '/profile'
+        path: '/login'
     },
 ]
 
@@ -94,4 +94,49 @@ export const featuredCategories = [
         description: '2-seater, perfect for smaller spaces',
         img: 'images/loveseat.png'
     }
+]
+
+export const footerProducts = [
+    {
+        name: 'All Sofas',
+        path: '/'
+    },
+    {
+        name: 'Sectionals',
+        path: '/'
+    },
+    {
+        name: 'Loveseats',
+        path: '/'
+    },
+    {
+        name: 'Modular Chaise',
+        path: '/'
+    },
+]
+
+export const footerCompany = [
+    {
+        name: 'About us',
+        path: '/about'
+    },
+    {
+        name: 'Careers',
+        path: '/careers'
+    },
+]
+
+export const footerSupport = [
+    {
+        name: 'FAQ',
+        path: '/about'
+    },
+    {
+        name: 'Shipping & Returns',
+        path: '/shipping-returns'
+    },
+    {
+        name: 'Contact',
+        path: '/contact'
+    },
 ]

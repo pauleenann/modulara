@@ -13,7 +13,7 @@
     <div id="login">
         <!-- bg -->
         <div  
-            class="hidden md:block bg-[url('login-bg.png')] w-full h-full relative bg-center"
+            class="hidden md:block bg-[url('images/login-bg.png')] w-full h-full relative bg-center"
         >
             <!-- logo -->
             <img :src="logo" alt="" class="absolute top-15 left-15">

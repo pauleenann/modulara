@@ -13,7 +13,7 @@ import CategoryPill from './CategoryPill.vue';
         </div>
 
         <!-- about image -->
-        <div class="w-full h-[800px] bg-red-100 bg-[url('images/about.png')] bg-cover bg-bottom">
+        <div class="w-full h-[700px] bg-red-100 bg-[url('images/about.png')] bg-cover bg-bottom">
 
         </div>
     </section>

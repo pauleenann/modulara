@@ -3,7 +3,8 @@
     import Featured from '@/components/Home/Featured.vue';
     import Bestsellers from '@/components/Home/Bestsellers.vue';
     import About from '@/components/Home/About.vue';
-    
+    import Testimonials from '@/components/Home/Testimonials.vue';
+    import Footer from '@/components/Footer.vue';
 </script>
 
 <template>
@@ -12,5 +13,7 @@
         <Featured/>
         <Bestsellers/>
         <About/>
+        <Testimonials/>
+        <Footer/>
     </main>
 </template>
