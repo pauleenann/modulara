@@ -2,19 +2,70 @@
     import CategoryPill from './CategoryPill.vue';
     import FeaturedCategory from './FeaturedCategory.vue'
     import { featuredCategories } from '@/constants/constants';
+    import gsap from 'gsap';
+    import { SplitText } from 'gsap/all';
+    import { onMounted } from 'vue';
+
+    onMounted(()=>{
+        const subSplit = new SplitText('#subtitle',{
+            type: 'lines'
+        })
+
+        gsap.from('#pill',{
+            y:100,
+            opacity:0,
+            ease: "expo.out",
+            delay: 0.05,
+            duration: 1.8,
+            scrollTrigger:{
+                trigger: '#pill',
+                start: 'top bottom',
+                end: 'bottom bottom',
+            }
+        })
+
+        gsap.from(subSplit.lines,{
+            opacity: 0,
+            yPercent: 100,
+            duration: 1.8,
+            ease: "expo.out",
+            stagger: 0.06,
+            delay: 1.2,
+            scrollTrigger: {
+                trigger: '#subtitle',
+                start: 'top bottom',
+                end: 'bottom bottom',
+            }
+        })
+
+        gsap.from('#categories',{
+            y:100,
+            opacity:0,
+            ease: "expo.out",
+            delay: 1.4,
+            duration: 1.8,
+            scrollTrigger:{
+                trigger: '#featured',
+                start: 'top 60%',
+                end: 'bottom bottom',
+            }
+        })
+
+
+    })
 
 </script>
 
 <template>
-    <section class="w-5/6 h-auto py-45 flex flex-col justify-center items-start gap-4 m-auto">
+    <section id="featured" class="w-5/6 h-auto py-30 lg:py-45 flex flex-col justify-center items-start gap-4 m-auto">
         <!-- category title-->
-        <CategoryPill category="Featured Categories" />
+        <CategoryPill id="pill" category="Featured Categories" />
 
         <!-- header -->
-        <h2 class="text-4xl lg:text-5xl text-[var(--color-gray)] font-extralight font-dm-sans">Tailored for your lifestyle — shop our <br/>modern, <span class="font-bold">modular sofa collection.</span></h2>
+        <h2 id="subtitle" class="text-4xl lg:text-5xl text-[var(--color-gray)] font-extralight font-dm-sans">Tailored for your lifestyle — shop our <br/>modern, <span class="font-bold">modular sofa collection.</span></h2>
 
         <!-- categories -->
-        <div class="grid lg:grid-cols-2 w-full h-auto lg:h-screen mt-4 gap-4">
+        <div id="categories" class="grid lg:grid-cols-2 w-full h-auto lg:h-screen mt-4 gap-4">
             <!-- first category (first column) -->
             <FeaturedCategory :category="featuredCategories[0]"/>
 
