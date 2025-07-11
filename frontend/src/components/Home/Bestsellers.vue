@@ -4,7 +4,7 @@
 </script>
 
 <template>
-    <section class="w-5/6 h-auto py-45 flex flex-col justify-center items-end gap-4 m-auto">
+    <section class="w-5/6 h-auto pb-45 flex flex-col justify-center items-end gap-4 m-auto">
         <!-- category title-->
         <CategoryPill category="Our Bestsellers" />
 
