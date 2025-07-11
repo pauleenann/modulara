@@ -11,10 +11,10 @@
         <CategoryPill category="Featured Categories" />
 
         <!-- header -->
-        <h2 class="text-5xl text-[var(--color-gray)] font-extralight font-dm-sans">Tailored for your lifestyle — shop our <br/>modern, <span class="font-bold">modular sofa collection.</span></h2>
+        <h2 class="text-4xl lg:text-5xl text-[var(--color-gray)] font-extralight font-dm-sans">Tailored for your lifestyle — shop our <br/>modern, <span class="font-bold">modular sofa collection.</span></h2>
 
         <!-- categories -->
-        <div class="grid grid-cols-2 w-full h-screen mt-4 gap-4">
+        <div class="grid lg:grid-cols-2 w-full h-auto lg:h-screen mt-4 gap-4">
             <!-- first category (first column) -->
             <FeaturedCategory :category="featuredCategories[0]"/>
 

@@ -9,10 +9,10 @@
         <CategoryPill category="Our Bestsellers" />
 
         <!-- header -->
-        <h2 class="text-5xl text-end text-[var(--color-gray)] font-extralight font-dm-sans">Discover the sofas our customers can’t stop<br/>talking about — <span class="font-bold">comfort, style, and modular<br/>design at their best.</span></h2>
+        <h2 class="text-4xl lg:text-5xl text-end text-[var(--color-gray)] font-extralight font-dm-sans">Discover the sofas our customers can’t stop<br/>talking about — <span class="font-bold">comfort, style, and modular<br/>design at their best.</span></h2>
 
         <!-- bestsellers -->
-        <div class="w-full h-auto grid grid-cols-3 gap-x-7 gap-y-10  mt-10">
+        <div class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10  mt-10">
             <Product v-for="index in 6" :key="index"/>
         </div>
         
