@@ -2,6 +2,7 @@
     const prop = defineProps({
         category: String
     })
+    
 </script>
 
 <template>

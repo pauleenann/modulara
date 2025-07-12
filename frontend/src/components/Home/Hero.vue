@@ -31,6 +31,7 @@
             delay: 0.2,
             ease: "expo.out",
             duration: 1.8,
+            stagger: 0.03,
             scrollTrigger: {
                 trigger: '#feature',
                 start: 'top bottom',

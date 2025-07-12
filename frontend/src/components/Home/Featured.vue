@@ -29,8 +29,8 @@
             yPercent: 100,
             duration: 1.8,
             ease: "expo.out",
-            stagger: 0.06,
-            delay: 1.2,
+            stagger: 0.3,
+            delay: 0.3,
             scrollTrigger: {
                 trigger: '#subtitle',
                 start: 'top bottom',
@@ -42,11 +42,11 @@
             y:100,
             opacity:0,
             ease: "expo.out",
-            delay: 1.4,
+            delay: 1.2,
             duration: 1.8,
             scrollTrigger:{
                 trigger: '#featured',
-                start: 'top 60%',
+                start: 'top bottom',
                 end: 'bottom bottom',
             }
         })
