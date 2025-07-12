@@ -28,18 +28,22 @@ export const adminSideMenu = [
 
 export const navbarMenu = [
     {
+        icon: 'fa-solid fa-house',
         name: 'Home',
         path: '/'
     },
     {
+        icon: 'fa-solid fa-couch',
         name: 'Products',
         path: '/products'
     },
     {
+        icon: 'fa-solid fa-circle-info',
         name: 'About us',
         path: '/about'
     },
     {
+        icon: 'fa-solid fa-address-book',
         name: 'Contact',
         path: '/contact'
     },

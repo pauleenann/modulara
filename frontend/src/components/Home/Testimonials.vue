@@ -17,10 +17,7 @@
             },
             768: {
                 itemsToShow: 2,
-            },
-            1280: {
-                itemsToShow: 3,
-            },
+            }
         },
     };
 
@@ -30,7 +27,7 @@
             opacity: 0,
             ease: "expo.out",
             delay: 0.05,
-            duration: 1.8,
+            duration: 1,
             scrollTrigger: {
             trigger: '#t-pill', 
             start: 'top bottom',
@@ -43,7 +40,7 @@
             opacity: 0,
             ease: "expo.out",
             delay: 0.3,
-            duration: 1.8,
+            duration: 1,
             scrollTrigger: {
             trigger: '#t-head',
             start: 'top bottom',
@@ -56,7 +53,7 @@
             opacity: 0,
             ease: "expo.out",
             delay: 1,
-            duration: 1.8,
+            duration: 1,
             scrollTrigger: {
             trigger: '#carousel',
             start: 'top bottom',

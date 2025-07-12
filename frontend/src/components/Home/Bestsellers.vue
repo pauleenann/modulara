@@ -15,7 +15,7 @@
             opacity:0,
             ease: "expo.out",
             delay: 0.05,
-            duration: 1.8,
+            duration: 1,
             scrollTrigger:{
                 trigger: '#bs-pill',
                 start: 'top bottom',
@@ -26,7 +26,7 @@
         gsap.from(subSplit.lines,{
             opacity: 0,
             yPercent: 100,
-            duration: 1.8,
+            duration: 1,
             ease: "expo.out",
             stagger: 0.06,
             delay: 1,
@@ -40,7 +40,7 @@
         gsap.from('.product', {
             opacity: 0,
             y: 100,
-            duration: 1.8,
+            duration: 1,
             stagger: 0.06,
             ease: 'expo.out',
             delay:  1,

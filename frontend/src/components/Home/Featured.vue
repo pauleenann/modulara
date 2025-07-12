@@ -16,7 +16,7 @@
             opacity:0,
             ease: "expo.out",
             delay: 0.05,
-            duration: 1.8,
+            duration: 1,
             scrollTrigger:{
                 trigger: '#pill',
                 start: 'top bottom',
@@ -27,7 +27,7 @@
         gsap.from(subSplit.lines,{
             opacity: 0,
             yPercent: 100,
-            duration: 1.8,
+            duration: 1,
             ease: "expo.out",
             stagger: 0.3,
             delay: 0.3,
@@ -43,7 +43,7 @@
             opacity:0,
             ease: "expo.out",
             delay: 1.2,
-            duration: 1.8,
+            duration: 1,
             scrollTrigger:{
                 trigger: '#featured',
                 start: 'top bottom',
