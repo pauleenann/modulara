@@ -1,10 +1,10 @@
 <script setup>
-    import Hero from '@/components/Home/Hero.vue';
-    import Featured from '@/components/Home/Featured.vue';
-    import Bestsellers from '@/components/Home/Bestsellers.vue';
-    import About from '@/components/Home/About.vue';
-    import Testimonials from '@/components/Home/Testimonials.vue';
-    import Footer from '@/components/Footer.vue';
+    import Hero from '@/components/Customer/Home/Hero.vue';
+    import Featured from '@/components/Customer/Home/Featured.vue';
+    import Bestsellers from '@/components/Customer/Home/Bestsellers.vue';
+    import About from '@/components/Customer/Home/About.vue';
+    import Testimonials from '@/components/Customer/Home/Testimonials.vue';
+    import Footer from '@/components/Customer/Home/Footer.vue';
 </script>
 
 <template>

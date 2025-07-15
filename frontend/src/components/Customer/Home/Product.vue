@@ -1,5 +1,5 @@
 <script setup>
-    import sample from '../../assets/images/sample-sofa.png'
+    import sample from '../../../assets/images/sample-sofa.png'
 </script>
 
 <template>

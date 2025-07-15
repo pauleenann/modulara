@@ -1,5 +1,5 @@
 <script setup>
-    import Navbar from '../Navbar.vue';
+    import Navbar from './Navbar.vue';
     import { features } from '@/constants/constants';
     import { gsap } from "gsap";
     import { onMounted } from 'vue';
@@ -60,7 +60,7 @@
 </script>
 
 <template>
-    <section class="h-screen lg:h-[1200px] w-screen bg-[url('/images/home-bg.jpg')] bg-cover bg-[40%] lg:bg-center relative">
+    <section class="h-screen lg:h-[1200px] w-screen bg-[url('/images/home-bg.png')] bg-cover bg-[40%] lg:bg-center relative">
         <!-- overlay -->
         <div class="absolute h-100 left-0 right-0 bottom-0 bg-gradient-to-t from-white/70 to-transparent"></div>
 
@@ -69,7 +69,7 @@
         
 
         <!-- quote and cta -->
-        <div class="absolute top-65 lg:top-75 inset-0 text-center">
+        <div class="absolute top-65 lg:top-60 inset-0 text-center">
             <!-- header -->
             <h1 id="hero-title" class=" text-white text-5xl lg:text-[105px] text-center font-thin mb-5 lg:text-sm/26 font-didact">Redefine Comfort,<br/>One Module at a Time.</h1>
 

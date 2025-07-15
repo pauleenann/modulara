@@ -19,6 +19,7 @@ body {
     overflow-x: hidden;
 }
 
+
 @utility flex-center {
     @apply flex justify-center items-center;
 }
@@ -43,6 +44,8 @@ body {
     @apply flex flex-col gap-2 mt-5 font-semibold text-[var(--color-light-gray)]
 }
 
+
+
 @layer components{
     main{
         @apply h-auto w-screen
@@ -54,8 +57,9 @@ body {
 
     #dashboard,
     #inventory{
-        @apply bg-[var(--color-gray)] w-full h-full p-3 grid grid-cols-[1fr_85%] gap-5
+        @apply bg-[var(--color-gray)] w-full h-screen p-3 grid grid-cols-[1fr_85%] gap-5
     }
 
+    
     
 }
