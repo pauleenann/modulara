@@ -36,7 +36,7 @@ const ProductSchema = new Schema({
             quantity: Number
         },
         features: [String],
-        measurement:{
+        measurements:{
             overallWidth: String,
             depth: String,
             height: String,

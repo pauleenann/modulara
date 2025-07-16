@@ -146,13 +146,13 @@ export const footerSupport = [
 ]
 
 export const measurementLabels = [
-    'Overall Width',
-    'Depth',
-    'Height',
-    'Seat Height',
-    'Seat Depth',
-    'Arm Height',
-    'Leg Height',
+    {label:'Overall Width', value:'overallWidth'},
+    {label:'Depth', value:'depth'},
+    {label:'Height', value:'height'},
+    {label:'Seat Height', value:'seatHeight'},
+    {label:'Seat Depth', value:'seatDepth'},
+    {label:'Arm Height', value:'armHeight'},
+    {label:'leg Height', value:'legHeight'},
 ]
 
 export const sofaCategories = [
