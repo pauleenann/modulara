@@ -114,7 +114,7 @@ export const footerProducts = [
         path: '/'
     },
     {
-        name: 'Modular Chaise',
+        name: 'Single Seater',
         path: '/'
     },
 ]
@@ -143,4 +143,21 @@ export const footerSupport = [
         name: 'Contact',
         path: '/contact'
     },
+]
+
+export const measurementLabels = [
+    'Overall Width',
+    'Depth',
+    'Height',
+    'Seat Height',
+    'Seat Depth',
+    'Arm Height',
+    'Leg Height',
+]
+
+export const sofaCategories = [
+    '3-Seater Sofa',
+    'Sectional Sofa',
+    'Loveseat',
+    'Single Seater'
 ]
