@@ -106,6 +106,10 @@ export const footerProducts = [
         path: '/'
     },
     {
+        name: '3-Seater Sofa',
+        path: '/'
+    },
+    {
         name: 'Sectionals',
         path: '/'
     },
