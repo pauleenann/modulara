@@ -12,6 +12,7 @@ const storage = new CloudinaryStorage({
   }
 });
 
+// this means that all images will be stored in storage (cloudinary)
 const upload = multer({ storage });
 
 export default upload;

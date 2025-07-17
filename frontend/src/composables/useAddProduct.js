@@ -32,6 +32,7 @@ export const useAddProduct = ()=>{
     });
 
     let featureInput = ref('');
+    let loading = ref(false)
     let errors = reactive({});
 
     // remove variant
@@ -53,6 +54,9 @@ export const useAddProduct = ()=>{
 
     // add product
     const addProduct = async () => {
+        // set loading to true
+        loading.value = true;
+
         const formValidation = addProductFormValidation(product);
         // delete keys in object first
         Object.keys(errors).forEach(key => delete errors[key]);
@@ -66,7 +70,7 @@ export const useAddProduct = ()=>{
         const auth = authStore();
         const token = await auth.getFreshToken(); // ✅ fresh token
 
-        // formdata
+        // formdata can only store strings, files or blobs thats why arrays need to be stringified
         const formData = new FormData();
         formData.append('name', product.name);
         formData.append('description', product.description);
@@ -92,11 +96,13 @@ export const useAddProduct = ()=>{
                 }
             )
 
-            alert('product added successfully')
+            // alert('product added successfully')
+            loading.value = false;
             console.log(response)
-            // resetForm()
+            resetForm()
         } catch (error) {
             console.log('Cannot add product. An error occurred: ', error.message);
+            loading.value = false;
         }
     };
 
@@ -158,6 +164,7 @@ export const useAddProduct = ()=>{
         removePhoto,
         addProduct,
         handleImageUpload,
-        resetForm
+        resetForm,
+        loading
     }
 }
