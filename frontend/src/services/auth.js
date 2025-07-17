@@ -12,7 +12,7 @@ const signInWithGoogle = (router) => {
       const token = await user.getIdToken();
 
       const response = await axios.post(
-        'http://localhost:5000/api/user/signin-google',
+        'http://localhost:5000/api/users/signin-google',
         {
           firstName: user.displayName.split(' ')[0],
           lastName: user.displayName.split(' ')[1],
@@ -31,6 +31,7 @@ const signInWithGoogle = (router) => {
       // store data in pinia and localstorage
       const store = userStore();
       store.setUser(userData);
+      store.setToken(token)
 
       // Redirect based on role
       if (userData.role == 'admin') {

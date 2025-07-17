@@ -31,10 +31,12 @@ const ProductSchema = new Schema({
         default: 0
     },
     attributes:{
-        variants: {
-            color: String,
-            quantity: Number
-        },
+        variants: [
+            {
+                color: String,
+                quantity: Number
+            }
+        ],
         features: [String],
         measurements:{
             overallWidth: String,

@@ -19,10 +19,19 @@ export const authStore = defineStore('authId', () => {
     });
   };
 
+  // ✅ Get fresh token on demand
+  const getFreshToken = async () => {
+    if (user.value) {
+      return await user.value.getIdToken(true); // force refresh
+    }
+    return null;
+  };
+
   return {
     user,
     isAuthenticated,
     isAuthResolved,
-    initAuth
+    initAuth,
+    getFreshToken
   };
 });

@@ -1,4 +1,7 @@
+import { authStore } from "@/store/authStore";
+import { userStore } from "@/store/userStore";
 import { addProductFormValidation } from "@/utils/formValidation";
+import axios from "axios";
 import { reactive, ref, watch } from "vue";
 
 export const useAddProduct = ()=>{
@@ -49,17 +52,51 @@ export const useAddProduct = ()=>{
     }
 
     // add product
-    const addProduct = () => {
+    const addProduct = async () => {
         const formValidation = addProductFormValidation(product);
-      
-        console.log(formValidation);
-      
         // delete keys in object first
         Object.keys(errors).forEach(key => delete errors[key]);
       
-        // Assign new errors reactively
+        // return isf not validated
         if (formValidation.isNotValid) {
           Object.assign(errors, formValidation.errors);
+          return;
+        }
+
+        const auth = authStore();
+        const token = await auth.getFreshToken(); // ✅ fresh token
+
+        // formdata
+        const formData = new FormData();
+        formData.append('name', product.name);
+        formData.append('description', product.description);
+        formData.append('category', product.category);
+        formData.append('price', product.price.toString());
+        formData.append('totalQuantity', product.totalQuantity.toString());
+        formData.append('variants', JSON.stringify(product.variants));
+        formData.append('features', JSON.stringify(product.features));
+        formData.append('measurements', JSON.stringify(product.measurements));
+        product.images.forEach((image, index) => {
+            formData.append('images', image); // Make sure backend supports multi-image upload
+        });
+        console.log(formData)
+
+        try {
+            const response = await axios.post('http://localhost:5000/api/products/',
+                formData,
+                {
+                    headers:{
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": 'multipart/form-data'
+                    }
+                }
+            )
+
+            alert('product added successfully')
+            console.log(response)
+            // resetForm()
+        } catch (error) {
+            console.log('Cannot add product. An error occurred: ', error.message);
         }
     };
 
