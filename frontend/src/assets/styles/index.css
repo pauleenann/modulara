@@ -44,7 +44,9 @@ body {
     @apply flex flex-col gap-2 mt-5 font-semibold text-[var(--color-light-gray)]
 }
 
-
+@utility error-message{
+    @apply text-red-500 text-sm mt-1
+}
 
 @layer components{
     main{
@@ -60,6 +62,4 @@ body {
         @apply bg-[var(--color-gray)] w-full h-screen p-3 grid grid-cols-[1fr_85%] gap-5
     }
 
-    
-    
 }

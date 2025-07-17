@@ -97,6 +97,9 @@
         </div>
 
         <!-- modal -->
-        <AddProduct :open="isAddBtnClicked" :close="()=>isAddBtnClicked=false" />
+        <AddProduct 
+            :open="isAddBtnClicked" 
+            :close="()=>isAddBtnClicked=false" 
+        />
     </div>
 </template>
