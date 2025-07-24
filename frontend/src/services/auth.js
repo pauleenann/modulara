@@ -1,48 +1,47 @@
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import axios from "axios";
-import { userStore } from "@/store/userStore";
+import api from "@/utils/api";
+// import { userStore } from "@/store/userStore";
 
 const provider = new GoogleAuthProvider();
+  
+// sign in with google
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth,provider);
+    const user = result.user;
+    const token = await user.getIdToken();
 
-const signInWithGoogle = (router) => {
-  signInWithPopup(auth, provider)
-    .then(async (result) => {
-      const user = result.user;
-      const token = await user.getIdToken();
-
-      const response = await axios.post(
-        'http://localhost:5000/api/users/signin-google',
-        {
-          firstName: user.displayName.split(' ')[0],
-          lastName: user.displayName.split(' ')[1],
-          email: user.email
+    const response = await axios.post(
+      'http://localhost:5000/api/auth/signin-google',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-
-      // user data from backend
-      const userData = response.data;
-      
-      // store data in pinia and localstorage
-      const store = userStore();
-      store.setUser(userData);
-      store.setToken(token)
-
-      // Redirect based on role
-      if (userData.role == 'admin') {
-        router.push('/dashboard');
-      } else {
-        router.push('/');
+        withCredentials: true
       }
-    })
-    .catch((error) => {
-      console.log('Cannot sign in user with Google. An error occurred:', error.message);
-    });
+    );
+
+    console.log(response)
+    return response
+  } catch (error) {
+    console.log('Cannot sign in user with Google. An error occurred:', error);
+  }
 };
 
-export default signInWithGoogle;
+export const refreshAccessToken = async ()=>{
+  try {
+    const response = await api.post('/refresh')
+  } catch (error) {
+    console.log('Cannot refresh token', error);
+  }
+}
+
+export const test = async ()=>{
+  try {
+    const response = await api.post('/auth/test')
+  } catch (error) {
+  }
+}

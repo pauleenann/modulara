@@ -1,37 +1,39 @@
-import { onAuthStateChanged } from 'firebase/auth';
-import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-import { auth } from '@/firebase/config';
+import { defineStore } from "pinia";
+import { auth } from "@/firebase/config";
+import { ref } from "vue";
+import { signInWithGoogle } from "@/services/auth";
 
-export const authStore = defineStore('authId', () => {
-  const user = ref(null); // full user object
-  const isAuthResolved = ref(false); // flag when auth check finishes
+export const authStore = defineStore('auth',()=>{
+    let user = ref(null);
+    let role = ref(null);
+    let accessToken = ref(localStorage.getItem('accessToken')||'');
 
-  const isAuthenticated = computed(() => !!user.value); // isAuthenticated changes whenever user changes
+    //signin with google
+    const signinGoogle = async ()=>{
+        try {
+            const response = await signInWithGoogle();
+            
+            if(response){
+                console.log(response.data.accessToken);
+                user.value = response.data.user;
+                role.value = response.data.user.role;
+                accessToken.value = response.data.accessToken;
 
-  const initAuth = () => {
-    return new Promise((resolve) => {
-      onAuthStateChanged(auth, (currentUser) => {
-        user.value = currentUser;
-        isAuthResolved.value = true;
-        resolve(currentUser); // ✅ resolve the promise
-      });
-    });
-  };
-
-  // ✅ Get fresh token on demand
-  const getFreshToken = async () => {
-    if (user.value) {
-      return await user.value.getIdToken(true); // force refresh
+                localStorage.setItem('accessToken', accessToken.value)
+            }
+        } catch (error) {
+            console.log('Cannot sign in user with Google. An error occurred:', error);
+        }
     }
-    return null;
-  };
 
-  return {
-    user,
-    isAuthenticated,
-    isAuthResolved,
-    initAuth,
-    getFreshToken
-  };
-});
+    const setAccessToken = (payload)=>{
+        accessToken.value = payload;
+    }
+
+    //logout
+
+    return {
+        signinGoogle,
+        setAccessToken
+    }
+})

@@ -3,10 +3,13 @@
     import google from '../assets/images/google.png'
     import email from '../assets/images/email.png'
     import password from '../assets/images/password.png'
-    import signInWithGoogle from '@/services/auth'
+    import { authStore } from '@/store/authStore'
     import { useRouter } from 'vue-router'
+import { test } from '@/services/auth'
+    
 
     const router = useRouter();
+    const auth = authStore();
 </script>
 
 <template>
@@ -34,7 +37,7 @@
                 <!-- sign in with google -->
                 <button 
                     class="flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[57px] hover:bg-[#D9D9D9] transition delay-100 duration-300 ease-in-out cursor-pointer"
-                    @click="signInWithGoogle(router)"
+                    @click="auth.signinGoogle(router)"
                 >
                     <img :src="google" alt="" class="w-[20px] md:w-auto">
                     <span class="text-sm md:text-lg font-semibold text-[var(--color-gray)] cursor-pointer">Sign in with Google</span>
@@ -69,7 +72,12 @@
                 </div>
 
                 <!-- login -->
-                <button class="w-full text-center md:h-[57px] p-2 bg-[var(--color-gray)] mt-5 md:mt-7 rounded-lg text-white hover:bg-[#202020] transition delay-100 duration-300 ease-in-out cursor-pointer">Login</button>
+                <button 
+                class="w-full text-center md:h-[57px] p-2 bg-[var(--color-gray)] mt-5 md:mt-7 rounded-lg text-white hover:bg-[#202020] transition delay-100 duration-300 ease-in-out cursor-pointer"
+                @click="test"
+                >
+                    Login
+                </button>
 
                 <!-- create an account -->
                 <p class="text-xs md:text-sm text-center mt-3 md:mt-5 text-[#A29F9F] cursor-pointer">Don't have an account? <span class="text-[var(--color-gray)] font-semibold">Create an account</span></p>

@@ -2,7 +2,7 @@
     import AdminNavbar from '@/components/Admin/AdminNavbar.vue';
     import AdminSidebar from '@/components/Admin/AdminSidebar.vue';
     import AdminStatsBox from '@/components/Admin/AdminStatsBox.vue';
-    import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
+    // import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
     import { ref } from 'vue';
 
     const isAddBtnClicked = ref(false)
