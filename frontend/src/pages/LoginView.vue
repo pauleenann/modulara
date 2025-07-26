@@ -5,11 +5,13 @@
     import password from '../assets/images/password.png'
     import { authStore } from '@/store/authStore'
     import { useRouter } from 'vue-router'
-import { test } from '@/services/auth'
+    import { test } from '@/services/auth'
     
 
     const router = useRouter();
     const auth = authStore();
+
+    console.log('access token from login page: ', auth.accessToken)
 </script>
 
 <template>
