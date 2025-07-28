@@ -1,0 +1,98 @@
+<script setup> 
+    import { navbarMenu } from '@/constants/constants'
+    import { iconMenu } from '@/constants/constants';
+    import { ref } from 'vue';
+    import { RouterLink } from 'vue-router';
+    import { useRoute } from 'vue-router';
+
+    const isClicked = ref(false)
+    const route = useRoute();
+    const currentUrl = route.name;
+
+    console.log(currentUrl)
+    
+</script>
+
+<template>
+    <div>
+        <nav class="w-5/6 m-auto h-15 flex justify-between items-center absolute left-0 right-0 top-8 lg:top-15">
+            <!-- logo and search bar -->
+            <div class="text-[var(--color-gray)] font-semibold text-3xl font-kulim-park flex items-center gap-8">
+                <!-- logo -->
+                <RouterLink to="/">
+                    Modulara
+                </RouterLink>
+
+                <!-- search bar -->
+                <div class="bg-[#F3F3F3] h-12 w-100 rounded-4xl flex items-center px-6 gap-4">
+                    <i class="fa-solid fa-magnifying-glass text-lg text-[var(--color-gray)]"></i>
+                    <input type="text" class="h-full w-full text-lg font-normal font-dm-sans text-[var(--color-gray)] placeholder-[var(--color-gray)]" placeholder="Looking for a modular fit?">
+                </div>
+                
+            </div>
+
+
+            <!-- icon menu -->
+            <ul class="hidden lg:flex items-center gap-3 text-[var(--color-gray)] justify-end">
+                <li 
+                    v-for="(menu, index) in iconMenu"
+                    :key="index"
+                >
+                    <RouterLink :to="menu.path">
+                        <i :class="['text-xl',menu.icon]"></i>
+                    </RouterLink>
+                </li>
+            </ul>
+
+            <!-- hamburger menu -->
+            <button @click="isClicked=true" class="block lg:hidden text-end text-white">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </nav>
+
+        <!-- mobile menu -->
+        <div :class="[
+                'fixed inset-0 z-75 bg-white w-screen h-screen overflow-hidden py-13 px-8  transition-transform duration-300 ease-in-out',
+                isClicked ? 'translate-x-0' : 'translate-x-full'
+        ]">
+            <!-- exit button -->
+            <div class="flex items-center justify-end gap-3 mb-20">
+                <h2 class="font-bold font-kulim-park" >close</h2>
+                <button @click="isClicked=false"  class="">
+                    <i class="text-2xl fa-solid fa-xmark text-[var(--color-gray)]"></i>
+                </button>
+            </div>
+            
+            <!-- menu -->
+            <ul class="w-full">
+                <li 
+                    v-for="(menu, index) in navbarMenu"
+                    :key="index"
+                    :class="[
+                        'text-center text-2xl font-semibold p-3  hover:text-[var(--color-gray)] cursor-pointer transition duration-100 ease-in',
+                        currentUrl==menu.name?'text-[var(--color-gray)]':'text-[var(--color-light-gray)]'
+                    ]"
+                >
+                    <RouterLink :to="menu.path" >
+                        <span>{{ menu.name }}</span>
+                    </RouterLink>
+                </li>
+            </ul>
+            <!-- icon menu -->
+            <ul class="w-full">
+                <li 
+                    v-for="(menu, index) in iconMenu"
+                    :key="index"
+                    :class="[
+                        'text-center text-2xl font-semibold p-3  hover:text-[var(--color-gray)] cursor-pointer transition duration-100 ease-in',
+                        currentUrl==menu.name?'text-[var(--color-gray)]':'text-[var(--color-light-gray)]'
+                    ]"
+                >
+                    <RouterLink :to="menu.path" >
+                        <span>{{ menu.name }}</span>  
+                    </RouterLink>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>

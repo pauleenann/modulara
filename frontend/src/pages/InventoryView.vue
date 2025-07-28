@@ -7,10 +7,12 @@
 
     const isAddBtnClicked = ref(false)
 
+
+
 </script>
 
 <template>
-    <div id="inventory" class="relative">
+    <div id="inventory">
         <!-- navbar -->
         <AdminSidebar/>
 

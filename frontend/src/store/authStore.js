@@ -1,4 +1,4 @@
-import { signInWithGoogle } from '@/services/auth';
+import { signInWithGoogle, signout } from '@/services/auth';
 import { defineStore } from 'pinia';
 
 export const authStore = defineStore('auth', {
@@ -9,6 +9,7 @@ export const authStore = defineStore('auth', {
     }),
 
     actions: {
+        // sign in with google
         async signinGoogle(router) {
             try {
                 const response = await signInWithGoogle();
@@ -20,18 +21,33 @@ export const authStore = defineStore('auth', {
                 }
 
                 if(this.role==='admin'){
-                    router.push('/dashboard')
+                    router.push('/admin/dashboard')
+                }else{
+                    router.push('/')
                 }
             } catch (error) {
                 console.error('Cannot sign in user with Google. An error occurred:', error);
             }
         },
 
+        async logout(router){
+            try {
+                // remove cookie, refresh token, and sign out in firebase
+                await signout(router);
+
+                router.push('/login')
+            } catch (error) {
+                console.error('Cannot sign out user: ', error);
+            }
+        },
+
+        // used when setting new access token (refresh) in api.js
         setAccessToken(payload) {
             this.accessToken = payload;
         }
     },
 
+    // automatically saves/fetch ur store to localstorage
     persist: {
         storage: localStorage,
         serializer: {

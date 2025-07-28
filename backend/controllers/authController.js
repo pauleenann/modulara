@@ -3,7 +3,7 @@ import User from "../models/User.js";
 import RefreshToken from "../models/RefreshToken.js";
 import { generateAccessToken, generateRefreshToken, verifyAccessToken, verifyRefreshToken } from "../utils/jwt.js";
 import { getDeviceInfo } from "../routes/userAgent.js";
-import { setRefreshTokenCookie } from "../utils/cookies.js";
+import { clearRefreshTokenCookie, setRefreshTokenCookie } from "../utils/cookies.js";
 
 export const signInWithGoogle = async (req,res)=>{
     try {
@@ -82,6 +82,30 @@ export const signInWithGoogle = async (req,res)=>{
     }
 }
 
+export const signOut = async (req, res)=>{
+    try {
+        // delete refresh token in db first
+        const token = req.cookies.refreshToken;
+        console.log("refresh token: ", token);
+    
+        if (!token) {
+            return res.status(401).json({ message: "No refresh token provided" });
+        }
+
+        await RefreshToken.deleteOne({token:token})
+
+        // delete in cookie
+        clearRefreshTokenCookie(res)
+
+
+        return res.status(200).json({ message: 'Refresh token deleted successfully' });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: 'Cannot sign out'
+        })
+    }
+}
 
 export const refreshAccessToken = async (req, res) => {
     try {
@@ -95,7 +119,10 @@ export const refreshAccessToken = async (req, res) => {
       // Verify refresh token
       const isValid = verifyRefreshToken(token);
       if (!isValid) {
-        return res.status(401).json({ message: "Refresh token is invalid" });
+        return res.status(401).json({ 
+            message: "Refresh token is invalid",
+            code: 'REFRESH_TOKEN_EXPIRED'
+        });
       }
   
       // Find token in database

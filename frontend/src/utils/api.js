@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { authStore } from '@/store/authStore';
+import { refreshAccessToken, signout } from '@/services/auth';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
@@ -12,7 +13,8 @@ const api = axios.create({
 // request interceptor to add access token each request
 api.interceptors.request.use(
     (config)=>{
-        let token = localStorage.getItem('accessToken');
+        const auth = authStore();
+        let token = auth.accessToken;
 
         console.log(token)
 
@@ -42,9 +44,8 @@ api.interceptors.response.use(
   
         try {
           // 🔄 Refresh access token using httpOnly refresh token
-          const response = await axios.get(`${API_BASE_URL}/auth/refresh`, {
-            withCredentials: true,
-          });
+          const response = await refreshAccessToken();
+          console.log(response)
   
           const accessToken = response.data.accessToken;
           console.log("New Access Token:", accessToken);
@@ -62,6 +63,11 @@ api.interceptors.response.use(
           console.error("Token refresh failed:", refreshError);
           return Promise.reject(refreshError);
         }
+      }else if(
+        error.response?.data?.code === "REFRESH_TOKEN_EXPIRED"
+      ){
+        // if refresh token is expired, sign out
+        await signout()
       }
   
       // ❌ All other errors

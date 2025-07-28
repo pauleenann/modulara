@@ -2,28 +2,43 @@ export const adminSideMenu = [
     {
         icon: "fa-solid fa-chart-simple", 
         name: 'Dashboard',
-        path: '/dashboard'
+        path: '/admin/dashboard'
     },
     {
         icon: "fa-solid fa-couch", 
         name: 'Inventory',
-        path: '/inventory'
+        path: '/admin/inventory'
     },
     {
         icon: "fa-solid fa-receipt", 
         name: 'Orders',
-        path: '/orders'
+        path: '/admin/orders'
     },
     {
         icon: "fa-solid fa-money-bill-wave", 
         name: 'Payments',
-        path: '/payments'
+        path: '/admin/payments'
     },
     {
         icon: "fa-solid fa-users", 
         name: 'Customers',
-        path: '/customers'
+        path: '/admin/customers'
     }
+]
+
+export const adminNavMenu = [
+    {
+        icon: "fa-solid fa-user", 
+        name: 'Profile'
+    },
+    {
+        icon: "fa-solid fa-gear", 
+        name: 'Settings'
+    },
+    {
+        icon: "fa-solid fa-arrow-right-from-bracket", 
+        name: 'Logout',
+    },
 ]
 
 export const navbarMenu = [
@@ -47,6 +62,16 @@ export const navbarMenu = [
         name: 'Contact',
         path: '/contact'
     },
+]
+
+export const filter = [
+    'New Arrivals',
+    'Bestsellers',
+    'All Sofas',
+    '3-Seater Sofa',
+    'Sectional',
+    'Loveseat',
+    'Modular Chaise',
 ]
 
 export const iconMenu = [

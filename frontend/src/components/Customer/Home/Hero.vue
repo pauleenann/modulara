@@ -4,6 +4,7 @@
     import { gsap } from "gsap";
     import { onMounted } from 'vue';
     import { SplitText } from 'gsap/all';
+import { test } from '@/services/auth';
     
     onMounted(()=>{
         const subSplits = gsap.utils.toArray(".subtitle").map(el =>
@@ -74,7 +75,11 @@
             <h1 id="hero-title" class=" text-white text-5xl lg:text-[105px] text-center font-thin mb-5 lg:text-sm/26 font-didact">Redefine Comfort,<br/>One Module at a Time.</h1>
 
             <!-- button -->
-            <button id="hero-btn" class="border border-white text-white p-4 rounded-xl mb-8 hover:-translate-y-1 cursor-pointer font-dm-sans">
+            <button 
+            id="hero-btn" 
+            class="border border-white text-white p-4 rounded-xl mb-8 hover:-translate-y-1 cursor-pointer font-dm-sans"
+            @click="test"
+            >
                 Shop the Collection
             </button>
         </div>

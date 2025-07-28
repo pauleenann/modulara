@@ -4,6 +4,7 @@ import HomeView from '../pages/HomeView.vue'
 import DashboardView from '../pages/DashboardView.vue'
 import InventoryView from '@/pages/InventoryView.vue'
 import { authStore } from '@/store/authStore'
+import ProductView from '@/pages/ProductView.vue'
 
 const routes = [
   { 
@@ -12,18 +13,23 @@ const routes = [
     name: 'Home'
   },
   { 
+    path: '/products', 
+    component: ProductView,
+    name: 'Product'
+  },
+  { 
     path: '/login', 
     component: LoginView,
     name: 'Login'
   },
   { 
-    path: '/dashboard', 
+    path: '/admin/dashboard', 
     component: DashboardView,
     name: 'Dashboard',
     meta: { requiresAdmin: true } 
   },
   { 
-    path: '/inventory', 
+    path: '/admin/inventory', 
     component: InventoryView,
     name: 'Inventory',
     meta: { requiresAdmin: true } 
@@ -42,11 +48,11 @@ router.beforeEach((to, from) => {
 
   console.log(accessToken)
 
-  if (!accessToken) {
-    return { name: 'Login' };
-  }
+  // if (!accessToken) {
+  //   return { name: 'Login' };
+  // }
 
-  if (to.meta.requiresAdmin && role !== 'admin') {
+  if (to.meta.requiresAdmin && role !== 'admin' && accessToken) {
     return { name: 'Home' };
   }
 

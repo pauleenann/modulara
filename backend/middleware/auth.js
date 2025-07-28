@@ -16,6 +16,7 @@ export const authenticate = async (req, res, next) =>{
 
         // store access token
         const token = authHeader.substring(7)
+        console.log('Authenticate access token: ', token)
 
         // verify token
         const decoded = verifyAccessToken(token)
