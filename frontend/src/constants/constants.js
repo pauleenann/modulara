@@ -199,20 +199,20 @@ export const sampleProduct = {
     "category": "3-Seater Sofa",
     "description": "A bold, retro-inspired 3-seater sofa with plush cushions and a compact modular frame — perfect for bright, modern living spaces.",
     "price": 28900,
-    "ratings": 0,
+    "ratings": 4.8,
     "totalQuantity": 3,
     "totalSold": 0,
     "attributes": {
       "variants": [
         {
-          "color": "Yellow",
+          "color": "#EDC96B",
           "quantity": 2,
           "_id": {
             "$oid": "6878dbe6d05540d93f63e01f"
           }
         },
         {
-          "color": "Gray",
+          "color": "#A29F9F",
           "quantity": 1,
           "_id": {
             "$oid": "6878dbe6d05540d93f63e020"
@@ -239,7 +239,9 @@ export const sampleProduct = {
       }
     },
     "images": [
-        "../assets/images/sample-sofa.png"
+        "images/sample-sofa.png",
+        "images/sample-sofa.png",
+        "images/sample-sofa.png",
     ],
     "createdAt": {
       "$date": "2025-07-17T11:17:58.211Z"

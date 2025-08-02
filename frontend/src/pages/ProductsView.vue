@@ -1,8 +1,10 @@
 <script setup>
-    import ProductNavbar from '@/components/Customer/Home/ProductNavbar.vue';
-    import ProductFilter from '@/components/Customer/Home/ProductFilter.vue';
+    import ProductNavbar from '@/components/Customer/Products/ProductNavbar.vue';
+    import ProductFilter from '@/components/Customer/Products/ProductFilter.vue';
     import Product from '@/components/Customer/Home/Product.vue';
     import Footer from '@/components/Customer/Home/Footer.vue';
+    import { RouterLink } from 'vue-router';
+
 </script>
 
 <template>
@@ -28,8 +30,10 @@
                 </div>
 
                 <!-- products -->
-                <div class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10  mt-10">
-                    <Product v-for="index in 6" :key="index" class="product"/>
+                <div class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10 mt-10">
+                    <RouterLink to="/product" v-for="index in 6" :key="index">
+                        <Product  class="product"/>
+                    </RouterLink>
                 </div>
 
                 <!-- show more -->

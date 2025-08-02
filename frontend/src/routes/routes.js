@@ -5,6 +5,7 @@ import DashboardView from '../pages/DashboardView.vue'
 import InventoryView from '@/pages/InventoryView.vue'
 import { authStore } from '@/store/authStore'
 import ProductsView from '@/pages/ProductsView.vue'
+import ProductView from '@/pages/ProductView.vue'
 
 const routes = [
   { 
@@ -16,6 +17,11 @@ const routes = [
     path: '/products', 
     component: ProductsView,
     name: 'Products'
+  },
+  { 
+    path: '/product', 
+    component: ProductView,
+    name: 'Product'
   },
   { 
     path: '/login', 
