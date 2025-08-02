@@ -1,6 +1,9 @@
 <script setup>
     import { Carousel, Navigation, Slide } from 'vue3-carousel';
-    import { sampleProduct } from '@/constants/constants';
+
+    const props = defineProps({
+        product: Object
+    })
     
 </script>
 
@@ -12,7 +15,7 @@
                 :height="600"
                 :mouse-wheel="true">
                     <Slide 
-                    v-for="(image, index) in sampleProduct.images" 
+                    v-for="(image, index) in product.images" 
                     :key="index"
                     class="bg-[#F5F5F5] rounded-xl">
                         <img 
@@ -47,18 +50,18 @@
 
                 <!-- product info -->
                 <div class="mt-15">
-                    <p class="text-xl text-[#A29F9F]">{{ sampleProduct.category }}</p>
-                    <h3 class="text-3xl text-[var(--color-gray)] font-medium">{{ sampleProduct.name }}</h3>
-                    <p class="text-xl text-[var(--color-gray)]">{{ sampleProduct.description }}</p>
+                    <p class="text-xl text-[#A29F9F]">{{ product.category }}</p>
+                    <h3 class="text-3xl text-[var(--color-gray)] font-medium">{{ product.name }}</h3>
+                    <p class="text-xl text-[var(--color-gray)]">{{ product.description }}</p>
 
                     <!-- ratings -->
                     <div class="flex items-center gap-1 text-[#444444] mt-2">
-                        <span class="text-lg font-semibold">{{ sampleProduct.ratings }}</span>
+                        <span class="text-lg font-semibold">{{ product.ratings }}</span>
                         <i class="fa-solid fa-star"></i>
                     </div>
 
                     <!-- price -->
-                    <p class="font-medium text-[var(--color-gray)] text-3xl mt-6">₱{{ sampleProduct.price.toLocaleString() }}</p>
+                    <p class="font-medium text-[var(--color-gray)] text-3xl mt-6">₱{{ product.price.toLocaleString() }}</p>
 
                     <!-- colors and quantity -->
                     <div class="grid grid-cols-[100px_1fr] items-center mt-10 gap-y-7">
@@ -66,7 +69,7 @@
                         <p>Colors</p>
                         <div class="flex gap-2">
                             <span 
-                            v-for="(variant, index) in sampleProduct.attributes.variants" 
+                            v-for="(variant, index) in product.attributes.variants" 
                             :key="index"
                             class="h-10 w-10 bg-red-400 rounded-full"
                             :style="{ backgroundColor: variant.color }"

@@ -4,7 +4,11 @@
     import Footer from '@/components/Customer/Home/Footer.vue';
     import ProductInfo from '@/components/Customer/Products/ProductInfo.vue';
     import CustomerReviews from '@/components/Customer/Products/CustomerReviews.vue';
-    
+    import { sampleProduct } from '@/constants/constants';
+    import ProductFeatures from '@/components/Customer/Products/ProductFeatures.vue';
+import ProductMeasurement from '@/components/Customer/Products/ProductMeasurement.vue';
+import OtherProducts from '@/components/Customer/Products/OtherProducts.vue';
+
 </script>
 
 <template>
@@ -17,10 +21,19 @@
                 <ProductFilter/>
 
                 <!-- product -->
-                <ProductInfo/>
+                <ProductInfo :product="sampleProduct"/>
 
                 <!-- customer reviews -->
                 <CustomerReviews/>
+
+                <!-- features -->
+                <ProductFeatures :features="sampleProduct.attributes.features"/>
+
+                <!-- measurement -->
+                <ProductMeasurement :measurements="sampleProduct.attributes.measurements"/>
+
+                <!-- other products -->
+                <OtherProducts/>
             </div>  
 
             
