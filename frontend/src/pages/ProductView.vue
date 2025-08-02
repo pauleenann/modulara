@@ -3,6 +3,7 @@
     import ProductFilter from '@/components/Customer/Products/ProductFilter.vue';
     import Footer from '@/components/Customer/Home/Footer.vue';
     import ProductInfo from '@/components/Customer/Products/ProductInfo.vue';
+    import CustomerReviews from '@/components/Customer/Products/CustomerReviews.vue';
     
 </script>
 
@@ -17,7 +18,9 @@
 
                 <!-- product -->
                 <ProductInfo/>
+
                 <!-- customer reviews -->
+                <CustomerReviews/>
             </div>  
 
             

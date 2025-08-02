@@ -89,13 +89,13 @@
                     <!-- add to cart and buy now -->
                     <div class="grid grid-cols-2 mt-12 gap-3">
                         <!-- add to cart -->
-                        <button class="bg-[var(--color-gray)] text-white p-3 rounded-3xl flex-center gap-3 font-semibold">
+                        <button class="bg-[var(--color-gray)] text-white p-3 rounded-3xl flex-center gap-3 font-semibold hover:bg-[#1f1f1f] cursor-pointer transition duration-200 ease-in-out">
                             <i class="fa-solid fa-cart-shopping"></i>
                             Add to cart
                         </button>
 
                         <!-- buy now -->
-                        <button class="border-2 border-[var(--color-gray)] text-[var(--color-gray)] p-3 rounded-3xl flex-center gap-3 font-semibold">
+                        <button class="border-2 border-[var(--color-gray)] text-[var(--color-gray)] p-3 rounded-3xl flex-center gap-3 font-semibold hover:bg-[#1f1f1f] hover:text-white cursor-pointer transition duration-200 ease-in-out">
                             Buy now
                         </button>
                     </div>
