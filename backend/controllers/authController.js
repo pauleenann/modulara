@@ -140,7 +140,16 @@ export const refreshAccessToken = async (req, res) => {
       // Generate new access token
       const newAccessToken = generateAccessToken({ userId: user._id });
   
-      return res.status(200).json({ accessToken: newAccessToken });
+      return res.status(200).json({ 
+        accessToken: newAccessToken,
+        user:{
+            id: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role
+        }
+    });
   
     } catch (error) {
       console.error("Error during token refresh:", error);

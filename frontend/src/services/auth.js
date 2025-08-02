@@ -52,7 +52,7 @@ export const signout = async()=>{
     await signOut(auth)
 
     // delete everything 
-    const auth2 = authStore()
+    const auth2 = authStore() 
     auth2.$reset()
   } catch (error) {
     console.log('Cannot sign out', error);

@@ -1,4 +1,4 @@
-import { signInWithGoogle, signout } from '@/services/auth';
+import { refreshAccessToken, signInWithGoogle, signout } from '@/services/auth';
 import { defineStore } from 'pinia';
 
 export const authStore = defineStore('auth', {
@@ -6,6 +6,7 @@ export const authStore = defineStore('auth', {
         user: null,
         role: null,
         accessToken: null,
+        isAuthenticated: false //flag
     }),
 
     actions: {
@@ -18,6 +19,8 @@ export const authStore = defineStore('auth', {
                     this.user = response.data.user;
                     this.role = response.data.user.role;
                     this.accessToken = response.data.accessToken;
+
+                    this.isAuthenticated = true
                 }
 
                 if(this.role==='admin'){
@@ -41,19 +44,26 @@ export const authStore = defineStore('auth', {
             }
         },
 
+        // refresh access token
+        async refreshAccessToken(){
+            try {
+                // refresh token
+                const response = await refreshAccessToken()
+                console.log(response)
+                this.user = response.data.user;
+                this.role = response.data.user.role;
+                this.accessToken=response.data.accessToken
+
+
+                this.isAuthenticated = true
+            } catch (error) {
+                console.error('Cannot refresh access token: ', error);
+            }
+        },
+
         // used when setting new access token (refresh) in api.js
         setAccessToken(payload) {
             this.accessToken = payload;
         }
     },
-
-    // automatically saves/fetch ur store to localstorage
-    persist: {
-        storage: localStorage,
-        serializer: {
-            deserialize: JSON.parse,
-            serialize: JSON.stringify
-        },
-        pick:['accessToken', 'role']
-    }
 });

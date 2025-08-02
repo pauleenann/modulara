@@ -26,13 +26,13 @@ const routes = [
     path: '/admin/dashboard', 
     component: DashboardView,
     name: 'Dashboard',
-    meta: { requiresAdmin: true } 
+    meta: { requiresAuth: true } 
   },
   { 
     path: '/admin/inventory', 
     component: InventoryView,
     name: 'Inventory',
-    meta: { requiresAdmin: true } 
+    meta: { requiresAuth: true } 
   },
 ]
 
@@ -41,26 +41,32 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   const auth = authStore();
-  const accessToken = auth.accessToken;
+
+  console.log('isAuthenticated: ', auth.isAuthenticated)
+
+  // this runs when page loads because pinia resets
+  if (!auth.isAuthenticated) {
+    console.log('Not authenticated — trying to refresh token...');
+    await auth.refreshAccessToken();
+  }
+
   const role = auth.role;
 
-  console.log(accessToken)
-
-  // if (!accessToken) {
-  //   return { name: 'Login' };
-  // }
-
-  if (to.meta.requiresAdmin && role !== 'admin' && accessToken) {
+  if (to.meta.requiresAuth && role !== 'admin' && auth.isAuthenticated) {
     return { name: 'Home' };
   }
 
-  if (to.name === 'Login' && accessToken) {
+  if (to.name === 'Login' && auth.isAuthenticated) {
     return role === 'customer'
       ? { name: 'Home' }
       : { name: 'Dashboard' };
   }
+
+  return true;
 });
+
+
 
 export default router;
