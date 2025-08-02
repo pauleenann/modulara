@@ -64,7 +64,7 @@ export const navbarMenu = [
     },
 ]
 
-export const filter = [
+export const filters = [
     'New Arrivals',
     'Bestsellers',
     'All Sofas',
@@ -190,3 +190,59 @@ export const sofaCategories = [
     'Loveseat',
     'Single Seater'
 ]
+
+export const sampleProduct = {
+    "_id": {
+      "$oid": "6878dbe6d05540d93f63e01e"
+    },
+    "name": "Solis 3-Seater Modular Sofa",
+    "category": "3-Seater Sofa",
+    "description": "A bold, retro-inspired 3-seater sofa with plush cushions and a compact modular frame — perfect for bright, modern living spaces.",
+    "price": 28900,
+    "ratings": 0,
+    "totalQuantity": 3,
+    "totalSold": 0,
+    "attributes": {
+      "variants": [
+        {
+          "color": "Yellow",
+          "quantity": 2,
+          "_id": {
+            "$oid": "6878dbe6d05540d93f63e01f"
+          }
+        },
+        {
+          "color": "Gray",
+          "quantity": 1,
+          "_id": {
+            "$oid": "6878dbe6d05540d93f63e020"
+          }
+        }
+      ],
+      "features": [
+        "Modular design for flexible layouts",
+        "Button-tufted back cushions",
+        "Kiln-dried hardwood frame",
+        "Solid wood legs with walnut finish",
+        "Tool-free assembly",
+        "High-resilience foam cushions",
+        "Easy-to-clean upholstery"
+      ],
+      "measurements": {
+        "overallWidth": "210 cm (82.6 in)",
+        "depth": "90 cm (35.4 in)",
+        "height": "80 cm (31.5 in)",
+        "seatHeight": "45 cm (17.7 in)",
+        "seatDepth": "55 cm (21.6 in)",
+        "armHeight": "62 cm (24.4 in)",
+        "legHeight": "15 cm (5.9 in)"
+      }
+    },
+    "images": [
+        "../assets/images/sample-sofa.png"
+    ],
+    "createdAt": {
+      "$date": "2025-07-17T11:17:58.211Z"
+    },
+    "__v": 0
+  }

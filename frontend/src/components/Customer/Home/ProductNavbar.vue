@@ -24,9 +24,12 @@
                 </RouterLink>
 
                 <!-- search bar -->
-                <div class="bg-[#F3F3F3] h-12 w-100 rounded-4xl flex items-center px-6 gap-4">
+                <div class="bg-[#F3F3F3] h-12 w-120 rounded-4xl flex items-center px-6 gap-4 ">
                     <i class="fa-solid fa-magnifying-glass text-lg text-[var(--color-gray)]"></i>
-                    <input type="text" class="h-full w-full text-lg font-normal font-dm-sans text-[var(--color-gray)] placeholder-[var(--color-gray)]" placeholder="Looking for a modular fit?">
+                    <input 
+                    type="text" 
+                    class="h-full w-full text-lg font-normal font-dm-sans text-[var(--color-gray)] placeholder-[var(--color-gray)] focus:outline-0" 
+                    placeholder="Looking for a modular fit?">
                 </div>
                 
             </div>

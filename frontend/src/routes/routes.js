@@ -4,7 +4,7 @@ import HomeView from '../pages/HomeView.vue'
 import DashboardView from '../pages/DashboardView.vue'
 import InventoryView from '@/pages/InventoryView.vue'
 import { authStore } from '@/store/authStore'
-import ProductView from '@/pages/ProductView.vue'
+import ProductsView from '@/pages/ProductsView.vue'
 
 const routes = [
   { 
@@ -14,8 +14,8 @@ const routes = [
   },
   { 
     path: '/products', 
-    component: ProductView,
-    name: 'Product'
+    component: ProductsView,
+    name: 'Products'
   },
   { 
     path: '/login', 
