@@ -10,7 +10,7 @@ import CartItem from './CartItem.vue';
 <template>
     <div 
     :class="[
-        'fixed right-0 z-75 bg-white w-130 h-screen overflow-y-scroll p-8 transition-transform duration-300 ease-in-out shadow-2xl',
+        'fixed right-0 z-75 bg-white w-full lg:w-130 h-screen overflow-y-scroll p-8 transition-transform duration-300 ease-in-out shadow-2xl',
         props.open ? 'translate-x-0' : 'translate-x-full'
     ]">
         <!-- exit -->

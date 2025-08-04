@@ -4,7 +4,7 @@
 
 <template>
     <div class="flex flex-col">
-        <div class="w-full h-120 bg-[#f5f5f5] flex items-center justify-center rounded-2xl">
+        <div class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex items-center justify-center rounded-2xl">
             <img :src="sample" alt="" class=" object-contain">
         </div>
 

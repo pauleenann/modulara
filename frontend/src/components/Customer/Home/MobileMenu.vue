@@ -1,12 +1,13 @@
 <script setup>
-    import { RouterLink } from 'vue-router';
-    import { iconMenu, navbarMenu } from '@/constants/constants'
+    import { RouterLink, useRouter } from 'vue-router';
+    import { navbarMenu } from '@/constants/constants'
     
     const props = defineProps({
         open: Boolean,
         close: Function,
         currentUrl: String
     })
+
 
 </script>
 
@@ -39,20 +40,5 @@
                     </RouterLink>
                 </li>
             </ul>
-            <!-- icon menu -->
-            <ul class="w-full">
-                <li 
-                    v-for="(menu, index) in iconMenu"
-                    :key="index"
-                    :class="[
-                        'text-center text-2xl font-semibold p-3  hover:text-[var(--color-gray)] cursor-pointer transition duration-100 ease-in',
-                        props.currentUrl==menu.name?'text-[var(--color-gray)]':'text-[var(--color-light-gray)]'
-                    ]"
-                >
-                    <RouterLink :to="menu.path" >
-                        <span>{{ menu.name }}</span>  
-                    </RouterLink>
-                </li>
-            </ul>
-        </div>
+    </div>
 </template>

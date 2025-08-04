@@ -1,12 +1,12 @@
 <script setup> 
     import { navbarMenu } from '@/constants/constants'
     import { iconMenu } from '@/constants/constants';
-    import Basket from './Basket.vue';
+    import Cart from './Cart.vue';
     import { ref } from 'vue';
     import { RouterLink, useRouter } from 'vue-router';
     import { useRoute } from 'vue-router';
     import MobileMenu from './MobileMenu.vue';
-import { handleIconClick } from '@/utils/iconMenuHandler';
+    import { handleIconClick } from '@/utils/iconMenuHandler';
 
     const route = useRoute();
     const router = useRouter();
@@ -17,7 +17,7 @@ import { handleIconClick } from '@/utils/iconMenuHandler';
 
 <template>
     <div>
-        <nav class="w-5/6 m-auto h-15 grid grid-cols-2 lg:grid-cols-3 items-center absolute left-0 right-0 top-8 lg:top-15">
+        <nav class="w-5/6 m-auto h-15 flex justify-between lg:grid grid-cols-3 items-center absolute left-0 right-0 top-8 lg:top-15">
             <!-- logo -->
             <div class="text-white font-semibold text-3xl font-kulim-park">
                 <RouterLink to="/">
@@ -38,25 +38,29 @@ import { handleIconClick } from '@/utils/iconMenuHandler';
                 </li>
             </ul>
 
-            <!-- icon menu -->
-            <ul class="hidden lg:flex items-center gap-3 text-white justify-end">
-                <li 
-                    v-for="(menu, index) in iconMenu"
-                    :key="index"
-                >
-                    <button 
-                        class="cursor-pointer"
-                        @click="handleIconClick(menu.path, menu.name, () => isBasketModalOpen = true, router)"
-                    >
-                        <i :class="['text-xl',menu.icon]"></i>
-                    </button>
-                </li>
-            </ul>
 
-            <!-- hamburger menu -->
-            <button @click="isClicked=true" class="block lg:hidden text-end text-white">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+            <div class="flex items-center justify-end gap-4">
+                <!-- icon menu -->
+                <ul class="flex items-center gap-3 text-white justify-end">
+                    <li 
+                        v-for="(menu, index) in iconMenu"
+                        :key="index"
+                    >
+                        <button 
+                            class="cursor-pointer"
+                            @click="handleIconClick(menu.path, menu.name, () => isBasketModalOpen = true, router)"
+                        >
+                            <i :class="['text-xl',menu.icon]"></i>
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- hamburger menu -->
+                <button @click="isClicked=true" class="block lg:hidden text-end text-white">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button> 
+            </div>
+            
         </nav>
 
         <!-- mobile menu -->
@@ -66,9 +70,10 @@ import { handleIconClick } from '@/utils/iconMenuHandler';
             :currentUrl="currentUrl"
         />
 
-        <!-- basket -->
-        <Basket 
-            :isBasketModalOpen="isBasketModalOpen"
+        <!-- cart -->
+        <Cart 
+            :open="isBasketModalOpen"
+            :close="()=>isBasketModalOpen=false"
         />
     </div>
 </template>
