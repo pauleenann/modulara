@@ -49,8 +49,8 @@ export const navbarMenu = [
     },
     {
         icon: 'fa-solid fa-couch',
-        name: 'Products',
-        path: '/products'
+        name: 'Shop',
+        path: '/shop'
     },
     {
         icon: 'fa-solid fa-circle-info',
@@ -76,9 +76,9 @@ export const filters = [
 
 export const iconMenu = [
     {
-        icon: "fa-solid fa-basket-shopping", 
-        name: 'Basket',
-        path: '/basket'
+        icon: "fa-solid fa-cart-shopping", 
+        name: 'Cart',
+        path: '/cart'
     },
     {
         icon: "fa-solid fa-heart", 

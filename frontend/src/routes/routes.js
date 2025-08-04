@@ -6,6 +6,7 @@ import InventoryView from '@/pages/InventoryView.vue'
 import { authStore } from '@/store/authStore'
 import ProductsView from '@/pages/ProductsView.vue'
 import ProductView from '@/pages/ProductView.vue'
+import FavoritesView from '@/pages/FavoritesView.vue'
 
 const routes = [
   { 
@@ -14,14 +15,19 @@ const routes = [
     name: 'Home'
   },
   { 
-    path: '/products', 
+    path: '/shop', 
     component: ProductsView,
-    name: 'Products'
+    name: 'shop'
   },
   { 
     path: '/product', 
     component: ProductView,
     name: 'Product'
+  },
+  { 
+    path: '/favorites', 
+    component: FavoritesView,
+    name: 'Favorites'
   },
   { 
     path: '/login', 

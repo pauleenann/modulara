@@ -4,7 +4,7 @@
     import { gsap } from "gsap";
     import { onMounted } from 'vue';
     import { SplitText } from 'gsap/all';
-import { test } from '@/services/auth';
+    import { test } from '@/services/auth';
     
     onMounted(()=>{
         const subSplits = gsap.utils.toArray(".subtitle").map(el =>
