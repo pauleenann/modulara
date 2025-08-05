@@ -62,17 +62,3 @@ export const addProductFormValidation = (product)=>{
         errors:errors
     }
 }
-
-export const signUpFormValidation = (user)=>{
-    console.log(user)
-    const errors = {};
-    const isValid = false;
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    errors.email = 
-        !emailPattern.test(user.email)
-        ? 'Please enter a valid email'
-        : ''
-
-    
-}

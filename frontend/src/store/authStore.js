@@ -1,5 +1,4 @@
 import { refreshAccessToken, signInWithGoogle, signout } from '@/services/auth';
-import { signUpFormValidation } from '@/utils/formValidation';
 import { defineStore } from 'pinia';
 
 export const authStore = defineStore('auth', {
@@ -34,13 +33,9 @@ export const authStore = defineStore('auth', {
             }
         },
 
-        async signUp(router, user){
+        async signUp(router){
             try {
-                console.log(user)
-                // form validation
-                const isValid = signUpFormValidation(user);
                 
-
             } catch (error) {
                 
             }

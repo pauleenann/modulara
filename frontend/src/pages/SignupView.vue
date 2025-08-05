@@ -6,7 +6,8 @@
     import { authStore } from '@/store/authStore'
     import { RouterLink, useRouter } from 'vue-router'
     import { computed, reactive, ref, watch } from 'vue'
-    import zxcvbn from 'zxcvbn'
+    import zxcvbn from 'zxcvbn';
+    import validator from 'validator';
     import { passwordLevels } from '@/constants/constants'
 
 
@@ -21,13 +22,25 @@
         status: '',
         description: ''
     })
-    const isDisabled = computed(() => user.email === '' || passwordMeter.strength < 2);
+    const emailStatus = reactive({
+        status: false,
+        description:''
+    });
+    const isDisabled = computed(() => !emailStatus.status || passwordMeter.strength < 2);
 
+    // runs everytime password changes
     watch(()=>user.password, (password)=>{
         const result = zxcvbn(password);
         passwordMeter.strength = result.score;
         passwordMeter.status = passwordLevels[result.score]?.status || '';
         passwordMeter.description = passwordLevels[result.score]?.description || '';
+    })
+
+    // runs everytime email changes
+    watch(()=>user.email, (email)=>{
+        const isValid = validator.isEmail(email);
+        emailStatus.status = isValid;
+        emailStatus.description = !isValid ? 'Please enter a valid email address.' : '';
     })
 </script>
 
