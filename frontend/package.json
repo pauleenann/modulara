@@ -22,7 +22,8 @@
     "vue-router": "^4.5.1",
     "vue3-carousel": "^0.16.0",
     "yup": "^1.6.1",
-    "zipson": "^0.2.12"
+    "zipson": "^0.2.12",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.0",

@@ -1,4 +1,5 @@
 import { refreshAccessToken, signInWithGoogle, signout } from '@/services/auth';
+import { signUpFormValidation } from '@/utils/formValidation';
 import { defineStore } from 'pinia';
 
 export const authStore = defineStore('auth', {
@@ -30,6 +31,18 @@ export const authStore = defineStore('auth', {
                 }
             } catch (error) {
                 console.error('Cannot sign in user with Google. An error occurred:', error);
+            }
+        },
+
+        async signUp(router, user){
+            try {
+                console.log(user)
+                // form validation
+                const isValid = signUpFormValidation(user);
+                
+
+            } catch (error) {
+                
             }
         },
 

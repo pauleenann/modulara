@@ -1,3 +1,5 @@
+import zxcvbn from "zxcvbn";
+
 export const addProductFormValidation = (product)=>{
     let errors = {};
     let isNotValid = false;
@@ -54,9 +56,23 @@ export const addProductFormValidation = (product)=>{
     console.log(errors)
     console.log(totalVariantQuantity)
 
-    isNotValid = Object.values(errors).some(value => value.trim().length >0)
+    isNotValid = Object.values(errors).some(value => value.trim().length > 0)
     return {
         isNotValid:isNotValid, 
         errors:errors
     }
+}
+
+export const signUpFormValidation = (user)=>{
+    console.log(user)
+    const errors = {};
+    const isValid = false;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    errors.email = 
+        !emailPattern.test(user.email)
+        ? 'Please enter a valid email'
+        : ''
+
+    
 }

@@ -4,7 +4,7 @@
     import email from '../assets/images/email.png'
     import password from '../assets/images/password.png'
     import { authStore } from '@/store/authStore'
-    import { useRouter } from 'vue-router'
+    import { RouterLink, useRouter } from 'vue-router'
     import { test } from '@/services/auth'
     
 
@@ -82,7 +82,14 @@
                 </button>
 
                 <!-- create an account -->
-                <p class="text-xs md:text-sm text-center mt-3 md:mt-5 text-[#A29F9F] cursor-pointer">Don't have an account? <span class="text-[var(--color-gray)] font-semibold">Create an account</span></p>
+                <p class="text-xs md:text-sm text-center mt-3 md:mt-5 text-[#A29F9F] cursor-pointer">
+                    Don't have an account? 
+                    <RouterLink 
+                    class="text-[var(--color-gray)] font-semibold"
+                    to="/signup">
+                        Create an account
+                    </RouterLink>
+                </p>
                 
             </div>
             

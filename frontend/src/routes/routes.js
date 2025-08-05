@@ -7,6 +7,7 @@ import { authStore } from '@/store/authStore'
 import ProductsView from '@/pages/ProductsView.vue'
 import ProductView from '@/pages/ProductView.vue'
 import FavoritesView from '@/pages/FavoritesView.vue'
+import SignupView from '@/pages/SignupView.vue'
 
 const routes = [
   { 
@@ -33,6 +34,11 @@ const routes = [
     path: '/login', 
     component: LoginView,
     name: 'Login'
+  },
+  { 
+    path: '/signup', 
+    component: SignupView,
+    name: 'Sign up'
   },
   { 
     path: '/admin/dashboard', 

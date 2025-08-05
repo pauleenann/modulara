@@ -247,4 +247,12 @@ export const sampleProduct = {
       "$date": "2025-07-17T11:17:58.211Z"
     },
     "__v": 0
-  }
+}
+
+export const passwordLevels = [
+    { status: '', description: '' },
+    { status: 'Weak', description: 'Easy to guess. Add more characters or symbols.' },
+    { status: 'Fair', description: 'Better, but still guessable. Make it more complex.' },
+    { status: 'Strong', description: 'Good password. Try adding a special character.' },
+    { status: 'Very Strong', description: 'Excellent! Hard to crack.' }
+];

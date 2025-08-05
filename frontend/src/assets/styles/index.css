@@ -53,7 +53,8 @@ body {
         @apply h-auto w-screen
     }
 
-    #login{
+    #login,
+    #signup{
         @apply h-screen w-full h-full grid  md:grid-cols-[1fr_700px] font-dm-sans;
     }
 

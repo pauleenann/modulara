@@ -22,6 +22,11 @@ const UserSchema = new Schema({
       isDefault: Boolean
     }
   ],
+  signInMethod: {
+    type: String,
+    enum: ['sign in with google', 'email & password'], //ito lang ung allowed 
+    default: 'sign in with google'
+  },
   createdAt: {
     type: Date,
     default: Date.now
