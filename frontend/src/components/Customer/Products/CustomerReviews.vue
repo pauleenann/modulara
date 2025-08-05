@@ -2,18 +2,31 @@
     import { Carousel, Slide, Navigation } from 'vue3-carousel';
     import Review from './Review.vue';
 
-
+    const config = {
+        mouseWheel: true,
+        breakpointMode: 'carousel',
+        breakpoints: {
+            100: {
+                itemsToShow: 1,
+            },
+            700: {
+                itemsToShow: 3,
+            },
+            900: {
+                itemsToShow: 5,
+            }
+        },
+    };
 </script>
 
 <template>
     <div class="w-full py-20">
-        <h2 class="text-4xl font-dm-sans">Customer Reviews</h2>
+        <h2 class="text-3xl lg:text-4xl font-dm-sans">Customer Reviews</h2>
 
         <!-- reviews -->
         <div class="mt-5">
             <Carousel 
-            :items-to-show="5"
-            :mouse-wheel="true"
+            v-bind="config"
             class="px-10">
                 <Slide
                 v-for="review in 10"

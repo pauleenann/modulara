@@ -6,10 +6,10 @@
 
 <template>
     <div class="w-full pb-20 font-dm-sans">
-        <h2 class="text-4xl font-dm-sans mb-5">Product Measurements</h2>
+        <h2 class="text-3xl lg:text-4xl font-dm-sans mb-5">Product Measurements</h2>
 
         <!-- features -->
-        <table class="table-fixed w-150 mb-5 text-xl">
+        <table class="table-fixed w-full lg:w-150 mb-5 text-md lg:text-xl">
             <thead>
                 <tr class="border-b border-gray-200 font-semibold">
                     <td class="py-2">Part</td>

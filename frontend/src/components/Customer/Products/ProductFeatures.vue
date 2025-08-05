@@ -6,7 +6,7 @@
 
 <template>
     <div class="w-full pb-20">
-        <h2 class="text-4xl font-dm-sans mb-5">Why You’ll Love It</h2>
+        <h2 class="text-3xl lg:text-4xl font-dm-sans mb-5">Why You’ll Love It</h2>
 
         <!-- features -->
         <div 
@@ -14,7 +14,7 @@
         :key="index"
         class="mt-2 flex items-center gap-3">
             <i class="fa-solid fa-check"></i>
-            <p class="text-xl">{{ feature }}</p>
+            <p class="text-lg lg:text-xl">{{ feature }}</p>
         </div>
     </div>
 </template>

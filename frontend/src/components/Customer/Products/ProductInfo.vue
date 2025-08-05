@@ -4,16 +4,28 @@
     const props = defineProps({
         product: Object
     })
+
+    const config = {
+        mouseWheel: true,
+        breakpointMode: 'carousel',
+        breakpoints: {
+            100: {
+                height: 300,
+            },
+            500: {
+                height: 600,
+            },
+            
+        },
+    }
     
 </script>
 
 <template>
-    <div class="grid grid-cols-2 mt-20 pb-20 border-b border-gray-200">
+    <div class="grid grid-cols-1 lg:grid-cols-2 mt-13 pb-20 border-b border-gray-200">
         <!-- carousel -->
             <div>
-                <Carousel
-                :height="600"
-                :mouse-wheel="true">
+                <Carousel v-bind="config">
                     <Slide 
                     v-for="(image, index) in product.images" 
                     :key="index"
@@ -42,17 +54,17 @@
                 </Carousel>
             </div>
 
-            <div class="ps-15">
+            <div class="mt-5 lg:m-0 lg:ps-15">
                 <!-- heart/favorite -->
                 <div class="flex justify-end">
                     <i class="fa-solid fa-heart text-3xl text-gray-300"></i>
                 </div>
 
                 <!-- product info -->
-                <div class="mt-15">
-                    <p class="text-xl text-[#A29F9F]">{{ product.category }}</p>
-                    <h3 class="text-3xl text-[var(--color-gray)] font-medium">{{ product.name }}</h3>
-                    <p class="text-xl text-[var(--color-gray)]">{{ product.description }}</p>
+                <div class="mt-10 lg:mt-15">
+                    <p class="text-lg lg:text-xl text-[#A29F9F]">{{ product.category }}</p>
+                    <h3 class="text-2xl lg:text-3xl text-[var(--color-gray)] font-medium">{{ product.name }}</h3>
+                    <p class="text-lg lg:text-xl text-[var(--color-gray)]">{{ product.description }}</p>
 
                     <!-- ratings -->
                     <div class="flex items-center gap-1 text-[#444444] mt-2">
@@ -61,7 +73,7 @@
                     </div>
 
                     <!-- price -->
-                    <p class="font-medium text-[var(--color-gray)] text-3xl mt-6">₱{{ product.price.toLocaleString() }}</p>
+                    <p class="font-medium text-[var(--color-gray)] text-2xl lg:text-3xl mt-6">₱{{ product.price.toLocaleString() }}</p>
 
                     <!-- colors and quantity -->
                     <div class="grid grid-cols-[100px_1fr] items-center mt-10 gap-y-7">
@@ -90,7 +102,7 @@
                     </div>
 
                     <!-- add to cart and buy now -->
-                    <div class="grid grid-cols-2 mt-12 gap-3">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 mt-12 gap-3">
                         <!-- add to cart -->
                         <button class="bg-[var(--color-gray)] text-white p-3 rounded-3xl flex-center gap-3 font-semibold hover:bg-[#1f1f1f] cursor-pointer transition duration-200 ease-in-out">
                             <i class="fa-solid fa-cart-shopping"></i>

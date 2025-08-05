@@ -239,9 +239,9 @@ export const sampleProduct = {
       }
     },
     "images": [
-        "images/sample-sofa.png",
-        "images/sample-sofa.png",
-        "images/sample-sofa.png",
+        "/images/sample-sofa.png",
+        "/images/sample-sofa.png",
+        "/images/sample-sofa.png",
     ],
     "createdAt": {
       "$date": "2025-07-17T11:17:58.211Z"

@@ -6,16 +6,16 @@
     import CustomerReviews from '@/components/Customer/Products/CustomerReviews.vue';
     import { sampleProduct } from '@/constants/constants';
     import ProductFeatures from '@/components/Customer/Products/ProductFeatures.vue';
-import ProductMeasurement from '@/components/Customer/Products/ProductMeasurement.vue';
-import OtherProducts from '@/components/Customer/Products/OtherProducts.vue';
+    import ProductMeasurement from '@/components/Customer/Products/ProductMeasurement.vue';
+    import OtherProducts from '@/components/Customer/Products/OtherProducts.vue';
 
 </script>
 
 <template>
-    <div class="w-screen h-screen ">
+    <div class="w-screen h-screen">
         <ProductNavbar/>
         
-        <div class="h-full absolute top-35 left-0 right-0 m-auto">
+        <div class="h-full absolute top-30 lg:top-35 left-0 right-0 m-auto">
             <!-- filter -->
             <div class="w-5/6  m-auto flex flex-col items-center mb-20 font-dm-sans">
                 <ProductFilter/>
