@@ -48,12 +48,13 @@
 <template>
     <div id="signup">
         <!-- bg -->
-        <div  
+        <RouterLink
+            to="/"  
             class="hidden md:block bg-[url('images/login-bg.png')] w-full h-full relative bg-center"
         >
             <!-- logo -->
             <img :src="logo" alt="" class="absolute top-15 left-15">
-        </div>
+        </RouterLink>
 
         <!-- login form -->
         <div

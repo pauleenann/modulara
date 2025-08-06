@@ -3,16 +3,7 @@ import Product from "../models/Product.js";
 
 
 export const addProduct = async (req, res) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
-
   try {
-    if (!token) {
-      return res.status(401).json({ error: 'Missing token' });
-    }
-
-    const decodedToken = await admin.auth().verifyIdToken(token);
-
     // destructure product fields
     const {
       name,

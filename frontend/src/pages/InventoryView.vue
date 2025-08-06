@@ -2,7 +2,7 @@
     import AdminNavbar from '@/components/Admin/AdminNavbar.vue';
     import AdminSidebar from '@/components/Admin/AdminSidebar.vue';
     import AdminStatsBox from '@/components/Admin/AdminStatsBox.vue';
-    // import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
+    import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
     import { ref } from 'vue';
 
     const isAddBtnClicked = ref(false)
@@ -12,7 +12,7 @@
 </script>
 
 <template>
-    <div id="inventory">
+    <div id="inventory" class="relative">
         <!-- navbar -->
         <AdminSidebar/>
 
@@ -98,10 +98,9 @@
             </div>
         </div>
 
-        <!-- modal -->
-        <AddProduct 
-            :open="isAddBtnClicked" 
-            :close="()=>isAddBtnClicked=false" 
-        />
+        <AddProduct
+        :open="isAddBtnClicked"
+        :close="()=>isAddBtnClicked=false"/>
+    
     </div>
 </template>
