@@ -161,6 +161,71 @@ export const signup = async (req, res)=>{
     }
 }
 
+export const login = async(req,res)=>{
+    try {
+        if(!req.decoded){
+            return res.status(500).json({
+                message: 'Token is missing'
+            })
+        }
+
+        // destructure
+        const {email} = req.decoded;
+        console.log(email)
+
+        // check user if exist
+        let user = await User.findOne({email: email});
+
+        // if user does not exist or no user found, create user
+        if(!user){
+            return res.status(500).json({
+                message: 'User not found'
+            })
+        }
+
+        // generate access token and refresh token
+        const accessToken = generateAccessToken({userId: user._id});
+        const refreshToken = generateRefreshToken({userId: user._id});
+        const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days
+
+        // get device info
+        const deviceInfo = getDeviceInfo(req);
+        console.log(refreshToken)
+        // store refresh token to database
+        if(refreshToken){
+            try {
+                await RefreshToken.create({
+                    userId: user._id,
+                    token: refreshToken,
+                    expiresAt:new Date(expirationTime),
+                    deviceInfo: deviceInfo
+                })
+            } catch (error) {
+                console.log(error)
+                return res.status(500).json({
+                    message: 'Cannot store refresh token'
+                })
+            }
+        }
+
+        // store refresh token to cookies
+        setRefreshTokenCookie(res, refreshToken);
+
+        res.status(200).json({
+            accessToken,
+            user:{
+                id: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                role: user.role
+            }
+        })
+    } catch (error) {
+        
+    }
+}
+
 export const signOut = async (req, res)=>{
     try {
         // delete refresh token in db first

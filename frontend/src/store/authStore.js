@@ -1,4 +1,4 @@
-import { refreshAccessToken, signInWithGoogle, signout, signUpWithEmailPass } from '@/services/auth';
+import { login, refreshAccessToken, signInWithGoogle, signout, signUpWithEmailPass } from '@/services/auth';
 import { defineStore } from 'pinia';
 
 export const authStore = defineStore('auth', {
@@ -51,7 +51,30 @@ export const authStore = defineStore('auth', {
                     router.push('/')
                 }
             } catch (error) {
-                
+                console.log('Cannot sign up user: ', error)
+            }
+        },
+
+        async login(router, user){
+            try {
+                console.log('login')
+                const response = await login(user);
+
+                if (response) {
+                    this.user = response.data.user;
+                    this.role = response.data.user.role;
+                    this.accessToken = response.data.accessToken;
+
+                    this.isAuthenticated = true
+                }
+
+                if(this.role==='admin'){
+                    router.push('/admin/dashboard')
+                }else{
+                    router.push('/')
+                }
+            } catch (error) {
+                console.log('Cannot log in user: ', error)
             }
         },
 

@@ -6,12 +6,16 @@
     import { authStore } from '@/store/authStore'
     import { RouterLink, useRouter } from 'vue-router'
     import { test } from '@/services/auth'
+    import { computed, reactive } from 'vue'
     
-
     const router = useRouter();
     const auth = authStore();
+    const user = reactive({
+        email: '',
+        password: ''
+    })
+    const isDisabled = computed(()=> !user.email || !user.password)
 
-    console.log('access token from login page: ', auth.accessToken)
 </script>
 
 <template>
@@ -55,17 +59,30 @@
                 <!-- email -->
                 <div class="border border-[#D9D9D9] rounded-lg md:h-[57px] mt-4 grid grid-cols-[50px_1fr] p-2">
                     <div class="w-full h-full flex-center">
-                       <img :src="email" alt="" class="h-[20px]"> 
+                       <img 
+                       :src="email" 
+                       alt="" class="h-[20px]"> 
                     </div>
-                    <input type="text" class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" placeholder="Email">
+                    <input 
+                    type="text" 
+                    class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
+                    placeholder="Email"
+                    v-model="user.email">
                 </div>
 
                 <!-- password -->
                 <div class="border border-[#D9D9D9] rounded-lg md:h-[57px] mt-4 grid grid-cols-[50px_1fr] p-2">
                     <div class="w-full h-full flex-center">
-                       <img :src="password" alt="" class="h-[20px]"> 
+                       <img 
+                       :src="password" 
+                       alt="" 
+                       class="h-[20px]"> 
                     </div>
-                    <input type="password" class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" placeholder="Password">
+                    <input 
+                    type="password" 
+                    class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
+                    placeholder="Password"
+                    v-model="user.password">
                 </div>
 
                 <!-- forgot password -->
@@ -75,8 +92,14 @@
 
                 <!-- login -->
                 <button 
-                class="w-full text-center md:h-[57px] p-2 bg-[var(--color-gray)] mt-5 md:mt-7 rounded-lg text-white hover:bg-[#202020] transition delay-100 duration-300 ease-in-out cursor-pointer"
-                @click="test"
+                :class="[
+                    'w-full text-center md:h-[57px] p-2 bg-[var(--color-gray)] mt-5 md:mt-7 rounded-lg text-white hover:bg-[#202020] transition delay-100 duration-300 ease-in-out cursor-pointer',
+                    isDisabled
+                    ? 'bg-gray-500 cursor-not-allowed'
+                    : 'bg-[var(--color-gray)] hover:bg-[#202020] cursor-pointer'
+                ]"
+                @click="auth.login(router, user)"
+                :disabled="isDisabled"
                 >
                     Login
                 </button>

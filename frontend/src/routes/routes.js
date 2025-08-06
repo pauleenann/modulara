@@ -8,6 +8,7 @@ import ProductsView from '@/pages/ProductsView.vue'
 import ProductView from '@/pages/ProductView.vue'
 import FavoritesView from '@/pages/FavoritesView.vue'
 import SignupView from '@/pages/SignupView.vue'
+import ProfileView from '@/pages/ProfileView.vue'
 
 const routes = [
   { 
@@ -31,6 +32,12 @@ const routes = [
     name: 'Favorites'
   },
   { 
+    path: '/profile', 
+    component: ProfileView,
+    name: 'Profile',
+    meta: { requiresCustomer: true } 
+  },
+  { 
     path: '/login', 
     component: LoginView,
     name: 'Login'
@@ -44,13 +51,13 @@ const routes = [
     path: '/admin/dashboard', 
     component: DashboardView,
     name: 'Dashboard',
-    meta: { requiresAuth: true } 
+    meta: { requiresAdmin: true } 
   },
   { 
     path: '/admin/inventory', 
     component: InventoryView,
     name: 'Inventory',
-    meta: { requiresAuth: true } 
+    meta: { requiresAdmin: true } 
   },
 ]
 
@@ -75,13 +82,17 @@ router.beforeEach(async (to, from) => {
 
   const role = auth.role;
 
-  if (to.meta.requiresAuth && role !== 'admin' && auth.isAuthenticated) {
+  if (to.meta.requiresAdmin && role !== 'admin' && auth.isAuthenticated) {
+    return { name: 'Home' };
+  }
+
+  if (to.meta.requiresCustomer && role !== 'customer' && auth.isAuthenticated) {
     return { name: 'Home' };
   }
 
   if ((to.name === 'Login' || to.name === 'Signup') && auth.isAuthenticated) {
     return role === 'customer'
-      ? { name: 'Home' }
+      ? { name: 'Profile' }
       : { name: 'Dashboard' };
   }
 
