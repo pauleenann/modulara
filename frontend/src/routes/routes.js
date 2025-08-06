@@ -71,6 +71,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   const auth = authStore();
+  auth.error = ''; //reset error
 
   console.log('isAuthenticated: ', auth.isAuthenticated)
 

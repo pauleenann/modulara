@@ -6,6 +6,7 @@ export const authStore = defineStore('auth', {
         user: null,
         role: null,
         accessToken: null,
+        error: '',
         isAuthenticated: false //flag
     }),
 
@@ -13,7 +14,7 @@ export const authStore = defineStore('auth', {
         // sign in with google
         async signinGoogle(router) {
             try {
-                const response = await signInWithGoogle();
+                const response = await signInWithGoogle(this.setError);
 
                 if (response) {
                     this.user = response.data.user;
@@ -21,12 +22,12 @@ export const authStore = defineStore('auth', {
                     this.accessToken = response.data.accessToken;
 
                     this.isAuthenticated = true
-                }
 
-                if(this.role==='admin'){
-                    router.push('/admin/dashboard')
-                }else{
-                    router.push('/')
+                    if(this.role==='admin'){
+                        router.push('/admin/dashboard')
+                    }else{
+                        router.push('/')
+                    }
                 }
             } catch (error) {
                 console.error('Cannot sign in user with Google. An error occurred:', error);
@@ -35,7 +36,7 @@ export const authStore = defineStore('auth', {
 
         async signUp(router, user){
             try {
-                const response = await signUpWithEmailPass(user);
+                const response = await signUpWithEmailPass(user, this.setError);
 
                 if (response) {
                     this.user = response.data.user;
@@ -43,12 +44,12 @@ export const authStore = defineStore('auth', {
                     this.accessToken = response.data.accessToken;
 
                     this.isAuthenticated = true
-                }
 
-                if(this.role==='admin'){
-                    router.push('/admin/dashboard')
-                }else{
-                    router.push('/')
+                    if(this.role==='admin'){
+                        router.push('/admin/dashboard')
+                    }else{
+                        router.push('/')
+                    }
                 }
             } catch (error) {
                 console.log('Cannot sign up user: ', error)
@@ -58,7 +59,7 @@ export const authStore = defineStore('auth', {
         async login(router, user){
             try {
                 console.log('login')
-                const response = await login(user);
+                const response = await login(user, this.setError);
 
                 if (response) {
                     this.user = response.data.user;
@@ -66,12 +67,12 @@ export const authStore = defineStore('auth', {
                     this.accessToken = response.data.accessToken;
 
                     this.isAuthenticated = true
-                }
 
-                if(this.role==='admin'){
-                    router.push('/admin/dashboard')
-                }else{
-                    router.push('/')
+                    if(this.role==='admin'){
+                        router.push('/admin/dashboard')
+                    }else{
+                        router.push('/')
+                    }
                 }
             } catch (error) {
                 console.log('Cannot log in user: ', error)
@@ -109,6 +110,11 @@ export const authStore = defineStore('auth', {
         // used when setting new access token (refresh) in api.js
         setAccessToken(payload) {
             this.accessToken = payload;
+        },
+
+        // set error
+        setError(payload){
+            this.error = payload;
         }
     },
 });

@@ -8,7 +8,7 @@ import { authStore } from "@/store/authStore";
 const provider = new GoogleAuthProvider();
   
 // sign in with google
-export const signInWithGoogle = async () => {
+export const signInWithGoogle = async (setError) => {
   try {
     const result = await signInWithPopup(auth,provider);
     const user = result.user;
@@ -29,11 +29,12 @@ export const signInWithGoogle = async () => {
     return response
   } catch (error) {
     console.log('Cannot sign in user with Google. An error occurred:', error);
+    setError("Unable to log in at the moment. Please try again later.");
   }
 };
 
 // sign up using email and password
-export const signUpWithEmailPass = async (data)=>{
+export const signUpWithEmailPass = async (data, setError)=>{
   try {
     const result = await createUserWithEmailAndPassword(auth, data.email, data.password);
     const user = result.user;
@@ -58,11 +59,12 @@ export const signUpWithEmailPass = async (data)=>{
     return response
   } catch (error) {
     console.log('Cannot sign up with email and password. An error occurred:', error)
+    setError("We couldn’t sign you up. Please check if the email is already in use or try again later.");
   }
 }
 
 // login
-export const login = async (data)=>{
+export const login = async (data, setError)=>{
   try {
     const result = await signInWithEmailAndPassword(auth, data.email, data.password);
     const user = result.user;
@@ -83,7 +85,8 @@ export const login = async (data)=>{
     return response
     
   } catch (error) {
-    console.log('Cannot sign in with email and password: ', error)
+    console.error('Firebase login error:', error.code);
+    setError("We couldn't log you in. Make sure your account exists and your details are correct.");
   }
 }
 

@@ -10,7 +10,6 @@
     import validator from 'validator';
     import { passwordLevels } from '@/constants/constants'
 
-
     const router = useRouter();
     const auth = authStore();
     const user = reactive({
@@ -68,9 +67,16 @@
                 <h2 class="md:text-2xl font-semibold text-[var(--color-gray)]">Create an account</h2>
                 <p class="text-sm md:text-lg font-light col-center-left text-[var(--color-gray)]">Create an account to save sofas, view orders, and discover tailored picks.</p>
 
+                <!-- error -->
+                <div 
+                v-if="auth.error" 
+                class="border border-red-500 bg-red-100 p-3 font-medium text-sm text-center rounded my-5">
+                    {{ auth.error }}
+                </div>
+
                 <!-- sign in with google -->
                 <button 
-                    class="flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[57px] hover:bg-[#D9D9D9] transition delay-100 duration-300 ease-in-out cursor-pointer"
+                    class="flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[52px] hover:bg-[#D9D9D9] transition delay-100 duration-300 ease-in-out cursor-pointer"
                     @click="auth.signinGoogle(router)"
                 >
                     <img :src="google" alt="" class="w-[20px] md:w-auto">
@@ -86,7 +92,7 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <!-- firstname -->
-                    <div class="border border-[#D9D9D9] rounded-lg md:h-[57px] mt-4 grid grid-cols-[50px_1fr] p-2">
+                    <div class="border border-[#D9D9D9] rounded-lg md:h-[52px] mt-4 grid grid-cols-[50px_1fr] p-2">
                         <div class="w-full h-full flex-center">
                             <i class="fa-solid fa-user text-gray-300"></i>
                         </div>
@@ -97,7 +103,7 @@
                         v-model="user.firstName">
                     </div>
                     <!-- lastname -->
-                    <div class="border border-[#D9D9D9] rounded-lg md:h-[57px] mt-4 grid grid-cols-[50px_1fr] p-2">
+                    <div class="border border-[#D9D9D9] rounded-lg md:h-[52px] mt-4 grid grid-cols-[50px_1fr] p-2">
                         <div class="w-full h-full flex-center">
                             <i class="fa-solid fa-user text-gray-300"></i>
                         </div>
@@ -112,7 +118,7 @@
 
 
                 <!-- email -->
-                <div class="border border-[#D9D9D9] rounded-lg md:h-[57px] mt-4 grid grid-cols-[50px_1fr] p-2">
+                <div class="border border-[#D9D9D9] rounded-lg md:h-[52px] mt-4 grid grid-cols-[50px_1fr] p-2">
                     <div class="w-full h-full flex-center">
                        <img 
                        :src="email" 
@@ -126,7 +132,7 @@
                 </div>
 
                 <!-- password -->
-                <div class="border border-[#D9D9D9] rounded-lg md:h-[57px] mt-4 grid grid-cols-[50px_1fr] p-2">
+                <div class="border border-[#D9D9D9] rounded-lg md:h-[52px] mt-4 grid grid-cols-[50px_1fr] p-2">
                     <div class="w-full h-full flex-center">
                        <img 
                        :src="password" 
@@ -171,7 +177,7 @@
                 <!-- sign up -->
                 <button
                 :class="[
-                    'w-full text-center md:h-[57px] p-2 mt-5 md:mt-7 rounded-lg text-white transition delay-100 duration-300 ease-in-out',
+                    'w-full text-center md:h-[52px] p-2 mt-5 rounded-lg text-white transition delay-100 duration-300 ease-in-out',
                     isDisabled
                     ? 'bg-gray-500 cursor-not-allowed'
                     : 'bg-[var(--color-gray)] hover:bg-[#202020] cursor-pointer'
