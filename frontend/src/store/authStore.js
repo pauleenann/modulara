@@ -1,4 +1,4 @@
-import { refreshAccessToken, signInWithGoogle, signout } from '@/services/auth';
+import { refreshAccessToken, signInWithGoogle, signout, signUpWithEmailPass } from '@/services/auth';
 import { defineStore } from 'pinia';
 
 export const authStore = defineStore('auth', {
@@ -33,9 +33,23 @@ export const authStore = defineStore('auth', {
             }
         },
 
-        async signUp(router){
+        async signUp(router, user){
             try {
-                
+                const response = await signUpWithEmailPass(user);
+
+                if (response) {
+                    this.user = response.data.user;
+                    this.role = response.data.user.role;
+                    this.accessToken = response.data.accessToken;
+
+                    this.isAuthenticated = true
+                }
+
+                if(this.role==='admin'){
+                    router.push('/admin/dashboard')
+                }else{
+                    router.push('/')
+                }
             } catch (error) {
                 
             }

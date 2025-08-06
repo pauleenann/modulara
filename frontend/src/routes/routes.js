@@ -38,7 +38,7 @@ const routes = [
   { 
     path: '/signup', 
     component: SignupView,
-    name: 'Sign up'
+    name: 'Signup'
   },
   { 
     path: '/admin/dashboard', 
@@ -79,7 +79,7 @@ router.beforeEach(async (to, from) => {
     return { name: 'Home' };
   }
 
-  if (to.name === 'Login' && auth.isAuthenticated) {
+  if ((to.name === 'Login' || to.name === 'Signup') && auth.isAuthenticated) {
     return role === 'customer'
       ? { name: 'Home' }
       : { name: 'Dashboard' };

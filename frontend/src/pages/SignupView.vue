@@ -15,7 +15,9 @@
     const auth = authStore();
     const user = reactive({
         email: "",
-        password: ""
+        password: "",
+        firstName: "",
+        lastName: ""
     })
     const passwordMeter = reactive({
         strength: 0,
@@ -26,7 +28,7 @@
         status: false,
         description:''
     });
-    const isDisabled = computed(() => !emailStatus.status || passwordMeter.strength < 2);
+    const isDisabled = computed(() => !emailStatus.status || passwordMeter.strength < 2 || !user.firstName || !user.lastName);
 
     // runs everytime password changes
     watch(()=>user.password, (password)=>{
@@ -81,6 +83,33 @@
                     <span class="w-full text-xs md:text-sm text-center text-gray-400">or continue with email</span>
                     <hr class="border border-[#D9D9D9] md:border-gray-100  w-full">
                 </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <!-- firstname -->
+                    <div class="border border-[#D9D9D9] rounded-lg md:h-[57px] mt-4 grid grid-cols-[50px_1fr] p-2">
+                        <div class="w-full h-full flex-center">
+                            <i class="fa-solid fa-user text-gray-300"></i>
+                        </div>
+                        <input 
+                        type="text" 
+                        class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
+                        placeholder="First name"
+                        v-model="user.firstName">
+                    </div>
+                    <!-- lastname -->
+                    <div class="border border-[#D9D9D9] rounded-lg md:h-[57px] mt-4 grid grid-cols-[50px_1fr] p-2">
+                        <div class="w-full h-full flex-center">
+                            <i class="fa-solid fa-user text-gray-300"></i>
+                        </div>
+                        <input 
+                        type="text" 
+                        class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
+                        placeholder="Last name"
+                        v-model="user.lastName">
+                    </div>
+                </div>
+                
+
 
                 <!-- email -->
                 <div class="border border-[#D9D9D9] rounded-lg md:h-[57px] mt-4 grid grid-cols-[50px_1fr] p-2">

@@ -1,4 +1,4 @@
-import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import axios from "axios";
 import api from "@/utils/api";
@@ -31,6 +31,35 @@ export const signInWithGoogle = async () => {
     console.log('Cannot sign in user with Google. An error occurred:', error);
   }
 };
+
+// sign up using email and password
+export const signUpWithEmailPass = async (data)=>{
+  try {
+    const result = await createUserWithEmailAndPassword(auth, data.email, data.password);
+    const user = result.user;
+    const token = await user.getIdToken();
+    console.log(token)
+
+    const response = await axios.post(
+      'http://localhost:5000/api/auth/signup',
+      {
+        firstName: data.firstName,
+        lastName: data.lastName
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        withCredentials: true
+      }
+    );
+
+    console.log(response)
+    return response
+  } catch (error) {
+    console.log('Cannot sign up with email and password. An error occurred:', error)
+  }
+}
 
 // refresh token
 export const refreshAccessToken = async ()=>{
