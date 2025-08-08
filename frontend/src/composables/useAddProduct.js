@@ -1,8 +1,9 @@
-import { authStore } from "@/store/authStore";
 import api from "@/utils/api";
 import { addProductFormValidation } from "@/utils/formValidation";
-import axios from "axios";
 import { reactive, ref, watch } from "vue";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 
 export const useAddProduct = ()=>{
     const product = reactive({
@@ -84,13 +85,31 @@ export const useAddProduct = ()=>{
         console.log(formData)
 
         try {
-            const response = await api.post('http://localhost:5000/api/products/',
+            const response = await api.post('/products/',
                 formData
             )
 
-            // alert('product added successfully')
-            console.log(response)
-            resetForm()
+            // reset form
+            // resetForm()
+
+            // toast notification
+            toast.success("Product added successfully!", {
+                position: "top-right",
+                timeout: 5000,
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false
+            });
+
+            // navigate to /admin/inventory
+            window.location.reload(); 
         } catch (error) {
             console.log('Cannot add product. An error occurred: ', error.message);
         } finally{

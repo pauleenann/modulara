@@ -3,6 +3,9 @@
     import { sofaCategories } from '@/constants/constants';
     import { measurementLabels } from '@/constants/constants';
     import { useAddProduct } from '@/composables/useAddProduct';
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
 
     const props = defineProps({
         open: Boolean,
@@ -293,7 +296,7 @@
                                         type="file"
                                         id="image"
                                         class="hidden"
-                                        @change="handleImageUpload"
+                                        @change="handleImageUpload($event)"
                                     >
                                 
                             </div>

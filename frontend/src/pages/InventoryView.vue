@@ -3,11 +3,26 @@
     import AdminSidebar from '@/components/Admin/AdminSidebar.vue';
     import AdminStatsBox from '@/components/Admin/AdminStatsBox.vue';
     import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
-    import { ref } from 'vue';
+    import api from '@/utils/api';
+    import { onMounted, reactive, ref } from 'vue';
 
-    const isAddBtnClicked = ref(false)
+    const isAddBtnClicked = ref(false);
+    let products = ref({})
 
+    onMounted(()=>{
+        getProducts();
+    });
 
+    // get products
+    const getProducts = async ()=>{
+        try {
+            const response = await api.get("/products/");
+            products.value = response.data.products;
+            console.log(products)
+        } catch (error) {
+            console.log('An error occurred: ', error);
+        }
+    }
 
 </script>
 
@@ -57,31 +72,42 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr 
+                            v-for="(product, index) in products"
+                            :key="index">
                                 <!-- product id -->
-                                <td class="pt-3 text-start font-semibold text-[var(--color-gray)]">#123456</td>
+                                <td class="pt-3 text-start font-semibold text-[var(--color-gray)]">#{{product._id}}</td>
 
                                 <!-- product name with pic -->
                                 <td class="pt-3 text-start font-semibold text-[var(--color-gray)] flex items-center gap-3">
-                                    <div class="bg-gray-100 h-10 w-10">
-                                        <img src="" alt="" class="">
+                                    <div class="bg-gray-100 h-10 w-10 flex-center p-1">
+                                        <img :src="product.images[0]" alt="" class="">
                                     </div>
-                                    <p>Vora Loveseat</p>
+                                    <p>{{product.name}}</p>
                                 </td>
 
                                 <!-- product category -->
                                 <td class="pt-3 text-start font-semibold text-[var(--color-light-gray)]">
-                                    <span class="bg-gray-100 py-1 px-4 rounded-4xl">3-Seater</span>
+                                    <span class="bg-gray-100 py-1 px-4 rounded-4xl">{{ product.category }}</span>
                                 </td>
 
                                 <!-- product price -->
                                 <td class="pt-3 text-start font-semibold text-[var(--color-gray)]">
-                                    PHP 30,000
+                                    PHP {{ (product.price).toLocaleString() }}
                                 </td>
                                 
                                 <!-- stock -->
                                 <td class="pt-3 text-start font-semibold text-[#009D59]">
-                                    <span class="bg-[#7BF1A8]/30 py-1 px-4 rounded-4xl">In Stock: 124 left</span>
+                                    <span 
+                                    class="bg-[#7BF1A8]/30 py-1 px-4 rounded-4xl"
+                                    v-if="product.totalQuantity>0">
+                                        In Stock: {{product.totalQuantity}} left
+                                    </span>
+                                    <span 
+                                    class="bg-red-500/30 py-1 px-4 rounded-4xl"
+                                    v-else>
+                                        Out of Stock
+                                    </span>
                                     
                                 </td>
 
