@@ -27,6 +27,7 @@ api.interceptors.request.use(
     (error)=> Promise.reject(error)
 )
 
+// to refresh access token if its expired (expires in 15 minutes)
 api.interceptors.response.use(
     (response) => {
       return response;

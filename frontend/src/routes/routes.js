@@ -83,11 +83,11 @@ router.beforeEach(async (to, from) => {
 
   const role = auth.role;
 
-  if (to.meta.requiresAdmin && role !== 'admin' && auth.isAuthenticated) {
+  if (to.meta.requiresAdmin && role !== 'admin') {
     return { name: 'Home' };
   }
 
-  if (to.meta.requiresCustomer && role !== 'customer' && auth.isAuthenticated) {
+  if (to.meta.requiresCustomer && role !== 'customer') {
     return { name: 'Home' };
   }
 

@@ -19,7 +19,10 @@ export const authenticate = async (req, res, next) =>{
         console.log('Authenticate access token: ', token)
 
         // verify token
-        const decoded = verifyAccessToken(token)
+        const decoded = verifyAccessToken(token);
+
+        // include decoded in req
+        req.decoded = decoded;
 
         // proceed to next
         next()

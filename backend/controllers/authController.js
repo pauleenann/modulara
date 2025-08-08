@@ -37,8 +37,8 @@ export const signInWithGoogle = async (req,res)=>{
         }
 
         // generate access token and refresh token
-        const accessToken = generateAccessToken({userId: user._id});
-        const refreshToken = generateRefreshToken({userId: user._id});
+        const accessToken = generateAccessToken({userId: user._id, role: user.role});
+        const refreshToken = generateRefreshToken({userId: user._id, role: user.role});
         const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days
 
         // get device info
@@ -116,8 +116,8 @@ export const signup = async (req, res)=>{
         }
 
         // generate access token and refresh token
-        const accessToken = generateAccessToken({userId: user._id});
-        const refreshToken = generateRefreshToken({userId: user._id});
+        const accessToken = generateAccessToken({userId: user._id, role: user.role});
+        const refreshToken = generateRefreshToken({userId: user._id, role: user.role});
         const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days
 
         // get device info
@@ -184,8 +184,8 @@ export const login = async(req,res)=>{
         }
 
         // generate access token and refresh token
-        const accessToken = generateAccessToken({userId: user._id});
-        const refreshToken = generateRefreshToken({userId: user._id});
+        const accessToken = generateAccessToken({userId: user._id, role: user.role});
+        const refreshToken = generateRefreshToken({userId: user._id, role: user.role});
         const expirationTime = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days
 
         // get device info
@@ -282,7 +282,7 @@ export const refreshAccessToken = async (req, res) => {
       }
   
       // Generate new access token
-      const newAccessToken = generateAccessToken({ userId: user._id });
+      const newAccessToken = generateAccessToken({ userId: user._id, role: user.role });
   
       return res.status(200).json({ 
         accessToken: newAccessToken,
