@@ -1,3 +1,4 @@
+import router from "@/routes/routes";
 import api from "@/utils/api";
 import { addProductFormValidation } from "@/utils/formValidation";
 import { reactive, ref, watch } from "vue";
@@ -10,12 +11,12 @@ export const useAddProduct = ()=>{
         name: '',
         description: '',
         category: '',
-        price: 0,
-        totalQuantity: 0,
+        price: null,
+        totalQuantity: null,
         variants: [
             {
                 color: '',
-                quantity: 0
+                quantity: null
             }
         ],
         features: [],
@@ -54,7 +55,7 @@ export const useAddProduct = ()=>{
     }
 
     // add product
-    const addProduct = async () => {
+    const addProduct = async (close) => {
         // set loading to true
         loading.value = true;
 
@@ -109,7 +110,7 @@ export const useAddProduct = ()=>{
             });
 
             // navigate to /admin/inventory
-            window.location.reload(); 
+            close();
         } catch (error) {
             console.log('Cannot add product. An error occurred: ', error.message);
         } finally{

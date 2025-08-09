@@ -319,7 +319,7 @@
                         <button 
                             type="submit" 
                             class="rounded-md bg-[var(--color-gray)] px-3 py-2 text-sm font-semibold text-white shadow-xs transition delay-100 duration-200 ease-in-out hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black cursor-pointer"
-                            @click="addProduct"
+                            @click="addProduct(close)"
                         >
                             Save
                         </button>

@@ -3,12 +3,21 @@
     import AdminSidebar from '@/components/Admin/AdminSidebar.vue';
     import AdminStatsBox from '@/components/Admin/AdminStatsBox.vue';
     import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
+    import { usePagination } from '@/composables/usePagination';
     import api from '@/utils/api';
-    import { onMounted, reactive, ref } from 'vue';
+    import { onMounted, ref } from 'vue';
 
     const isAddBtnClicked = ref(false);
-    let products = ref({})
+    let products = ref([]);
+    const {
+        totalPage,
+        currentPage,
+        filtered,
+        next, 
+        prev
+    } = usePagination(products, 8)
 
+    // get products right away when page renders
     onMounted(()=>{
         getProducts();
     });
@@ -17,7 +26,13 @@
     const getProducts = async ()=>{
         try {
             const response = await api.get("/products/");
+            if(response.data.products.length==0){
+                console.log('No products available')
+                return 
+            }
+
             products.value = response.data.products;
+
             console.log(products)
         } catch (error) {
             console.log('An error occurred: ', error);
@@ -32,12 +47,12 @@
         <AdminSidebar/>
 
         <!-- view -->
-        <div class="bg-[#f8f8f8] w-full h-full rounded-xl overflow-hidden flex flex-col gap-5">
+        <div class="bg-[#f8f8f8] w-full h-full rounded-xl overflow-y-scroll flex flex-col gap-5">
             <!-- navbar -->
             <AdminNavbar title="Inventory" />
 
             <!-- stats of stocks and add product button -->
-            <div class="flex justify-between items-end px-5 ">
+            <div class="flex justify-between items-end px-5">
                 <div class="flex gap-4">
                     <!-- high stocks -->
                     <AdminStatsBox title="High Stocks" total="100" icon="fa-solid fa-arrow-trend-up" hexColor="#7BF1A8"/>
@@ -57,23 +72,23 @@
             </div>
 
             <!-- product list (table) -->
-            <div class="px-5 w-full h-full">
+            <div class="px-5 w-full h-full mb-5">
                 <div class="w-full h-full bg-white rounded-2xl shadow-sm px-10 py-7">
                     <!-- table -->
                     <table class="w-full">
                         <thead>
                             <tr class=" border-b border-gray-100 font-dm-sans">
-                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)]">Product ID</td>
-                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)]">Product name</td>
-                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)]">Category</td>
-                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)]">Price</td>
-                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)]">Stock</td>
+                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)] w-70">Product ID</td>
+                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)] w-90">Product name</td>
+                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)] w-50">Category</td>
+                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)] w-50">Price</td>
+                                <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)] w-50">Stock</td>
                                 <td class="pb-3 text-start font-semibold text-[var(--color-light-gray)]"></td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr 
-                            v-for="(product, index) in products"
+                            v-for="(product, index) in filtered"
                             :key="index">
                                 <!-- product id -->
                                 <td class="pt-3 text-start font-semibold text-[var(--color-gray)]">#{{product._id}}</td>
@@ -120,13 +135,38 @@
                             </tr>
                         </tbody>
                     </table>
+
+                    <!-- pagination -->
+                    <div class="text-sm mt-8 font-semibold text-gray-500 flex items-center justify-between">
+                        <!-- pages -->
+                        <div>
+                            Page {{ currentPage }} of {{ totalPage }}
+                        </div>
+
+                        <!-- button -->
+                        <div class="flex items-center gap-3">
+                            <button 
+                            class="cursor-pointer hover:text-gray-800"
+                            @click="prev">
+                                Prev
+                            </button>
+                            <button 
+                            class="cursor-pointer hover:text-gray-800"
+                            @click="next">
+                                Next
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <AddProduct
         :open="isAddBtnClicked"
-        :close="()=>isAddBtnClicked=false"/>
+        :close="()=>{
+            isAddBtnClicked=false;
+            getProducts();
+        }"/>
     
     </div>
 </template>
