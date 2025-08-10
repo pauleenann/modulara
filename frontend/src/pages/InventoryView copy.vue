@@ -2,16 +2,13 @@
     import AdminNavbar from '@/components/Admin/AdminNavbar.vue';
     import AdminSidebar from '@/components/Admin/AdminSidebar.vue';
     import AdminStatsBox from '@/components/Admin/AdminStatsBox.vue';
-import InventoryRow from '@/components/Admin/InventoryRow.vue';
     import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
     import { usePagination } from '@/composables/usePagination';
     import { productChoices } from '@/constants/constants';
     import api from '@/utils/api';
     import { onMounted, ref } from 'vue';
 
-    let isAddBtnClicked = ref(false);
-    let isOpenId = ref(null);
-    let isOpen = ref(false)
+    const isAddBtnClicked = ref(false);
     let products = ref([]);
     const {
         totalPage,
@@ -42,12 +39,6 @@ import InventoryRow from '@/components/Admin/InventoryRow.vue';
             console.log('An error occurred: ', error);
         }
     }
-
-    const handleToggle = (id)=>{
-        isOpen.value = !isOpen.value;
-        isOpenId.value = id
-    }
-
 
 </script>
 
@@ -97,13 +88,64 @@ import InventoryRow from '@/components/Admin/InventoryRow.vue';
                             </tr>
                         </thead>
                         <tbody>
-                           <InventoryRow
-                           v-for="product in filtered"
-                           :key="product._id"
-                           :product="product"
-                           @toggle="handleToggle"
-                           :isOpen="isOpenId==product._id && isOpen"
-                           />
+                            <tr 
+                            class="relative"
+                            v-for="product in filtered"
+                            :key="product._id">
+                                <!-- product id -->
+                                <td class="pt-3 text-start font-semibold text-[var(--color-gray)]">#{{product._id}}</td>
+
+                                <!-- product name with pic -->
+                                <td class="pt-3 text-start font-semibold text-[var(--color-gray)] flex items-center gap-3">
+                                    <div class="bg-gray-100 h-10 w-10 flex-center p-1">
+                                        <img :src="product.images[0]" alt="" class="">
+                                    </div>
+                                    <p>{{product.name}}</p>
+                                </td>
+
+                                <!-- product category -->
+                                <td class="pt-3 text-start font-semibold text-[var(--color-light-gray)]">
+                                    <span class="bg-gray-100 py-1 px-4 rounded-4xl">{{ product.category }}</span>
+                                </td>
+
+                                <!-- product price -->
+                                <td class="pt-3 text-start font-semibold text-[var(--color-gray)]">
+                                    PHP {{ (product.price).toLocaleString() }}
+                                </td>
+                                
+                                <!-- stock -->
+                                <td class="pt-3 text-start font-semibold text-[#009D59]">
+                                    <span 
+                                    class="bg-[#7BF1A8]/30 py-1 px-4 rounded-4xl"
+                                    v-if="product.totalQuantity>0">
+                                        In Stock: {{product.totalQuantity}} left
+                                    </span>
+                                    <span 
+                                    class="bg-red-500/30 py-1 px-4 rounded-4xl"
+                                    v-else>
+                                        Out of Stock
+                                    </span>
+                                    
+                                </td>
+
+                                <!-- more button -->
+                                <td class="pt-3 text-[var(--color-gray)]">
+                                    <button class="cursor-pointer">
+                                        <i class="fa-solid fa-ellipsis"></i>
+                                    </button>
+                                </td> 
+
+                                <!--  -->
+                                <div class="absolute right-0 top-10 z-100  bg-white shadow p-3">
+                                    <ul 
+                                    v-for="(choice, index) in productChoices"
+                                    :key="index">
+                                        <li>{{ choice.name }}</li>
+                                    </ul>
+                                </div>
+                            </tr>
+                            
+                           
                         </tbody>
                     </table>
 

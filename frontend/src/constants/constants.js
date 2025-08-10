@@ -256,3 +256,15 @@ export const passwordLevels = [
     { status: 'Strong', description: 'Good password. Try adding a special character.' },
     { status: 'Very Strong', description: 'Excellent! Hard to crack.' }
 ];
+
+export const productChoices = [
+    {
+        name: 'Edit'
+    },
+    {
+        name: 'Remove'
+    },
+    {
+        name: 'View'
+    },
+]
