@@ -1,5 +1,5 @@
 <script setup>
-    import { watch } from 'vue';
+    import { onMounted, watch } from 'vue';
     import { sofaCategories } from '@/constants/constants';
     import { measurementLabels } from '@/constants/constants';
     import { useAddProduct } from '@/composables/useAddProduct';
@@ -9,7 +9,8 @@
 
     const props = defineProps({
         open: Boolean,
-        close: Function
+        close: Function,
+        productId: String
     })
 
     const {
@@ -17,21 +18,31 @@
         featureInput, 
         errors, 
         removeVariant, 
-        removePhoto, 
+        removeExistingPhoto, 
+        removeNewPhoto,
         addProduct, 
+        editProduct,
         handleImageUpload, 
+        getProduct,
         resetForm,
         loading
     } = useAddProduct();
 
     watch(product, () => {
-        console.log('Product changed:', product)
+        console.log('Product images:', product.newImages)
+        console.log('Product existing:', product.existingImages)
     }, { deep: true })
 
+    watch(() => props.productId, (newId) => {
+        // if id exist means its in edit mode
+        if (newId) {
+            getProduct(newId);
+        }
+    });
 </script>
 
 <template>
-    <div v-if="open" class="bg-gray-500/30 absolute inset-0 flex-center">
+    <div v-if="open" class="bg-gray-500/30 absolute inset-0 flex-center z-10">
         <!-- modal -->
         <div class="bg-white w-180 h-150 rounded-2xl px-5 py-7 overflow-hidden relative">
             <!-- loading overlay -->
@@ -47,7 +58,7 @@
 
             <!-- header -->
             <header class="flex justify-between items-center">
-                <h2 class="font-kulim-park font-bold text-2xl text-[var(--color-gray)]">Add Modulara Product</h2>
+                <h2 class="font-kulim-park font-bold text-2xl text-[var(--color-gray)]">{{props.productId?'Edit':'Add'}} Modulara Product</h2>
 
                 <!-- close button -->
                 <button       
@@ -78,7 +89,8 @@
                                     id="name" 
                                     class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" 
                                     placeholder="e.g. Modular Sofa"
-                                    v-model="product.name" />
+                                    v-model="product.name" 
+                                    />
                             </div>
                         </div>
                         <p class="error-message">{{ errors.name }}</p>
@@ -269,21 +281,37 @@
                     <div class="col-span-full">
                         <label for="image" class="block text-sm/6 font-medium text-gray-900">Product image</label>
                         <div class="mt-2 flex items-center gap-3">
+                            <!-- existing images -->
                             <div 
-                                v-for="(preview, index) in product.imagePreview"
+                                v-for="(image, index) in product.existingImages"
                                 :key="index"
                                 class="w-25 h-25 rounded-lg relative">
                                 <!-- remove button -->
-                                <button 
-                                    class="absolute h-6 w-6 transition delay-100 duration-200 ease-in-out bg-red-400 hover:bg-red-500 rounded-full text-white -right-1 -top-1 cursor-pointer"
-                                    @click="removePhoto(index)"
-                                >
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
+                                <i 
+                                class="absolute text-red-500 text-xl transition delay-100 duration-200 ease-in-out -right-1 -top-1 cursor-pointer fa-solid fa-circle-xmark"
+                                @click="removeExistingPhoto(index)"
+                                ></i>
 
                                 <!-- preview -->
-                                <img :src="preview" alt="" class="object-cover w-full h-full rounded-lg">
+                                <img :src="image.preview" alt="" class="object-cover w-full h-full rounded-lg border border-gray-300">
                             </div>
+
+                            <!-- new images -->
+                            <div 
+                                v-for="(image, index) in product.newImages"
+                                :key="index"
+                                class="w-25 h-25 rounded-lg relative">
+                                <!-- remove button -->
+                                <i 
+                                class="absolute text-red-500 text-xl transition delay-100 duration-200 ease-in-out -right-1 -top-1 cursor-pointer fa-solid fa-circle-xmark"
+                                @click="removeNewPhoto(index)"
+                                ></i>
+
+                                <!-- preview -->
+                                <img :src="image.preview" alt="" class="object-cover w-full h-full rounded-lg border border-gray-300">
+                            </div>
+
+                            <!-- add image -->
                             <div class="flex justify-center items-center rounded-lg border border-dashed border-gray-900/25 h-25 w-25">
                                 
                                     <label
@@ -319,9 +347,11 @@
                         <button 
                             type="submit" 
                             class="rounded-md bg-[var(--color-gray)] px-3 py-2 text-sm font-semibold text-white shadow-xs transition delay-100 duration-200 ease-in-out hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black cursor-pointer"
-                            @click="addProduct(close)"
+                            @click="
+                            props.productId
+                            ?editProduct(props.close, props.productId):addProduct(props.close)"
                         >
-                            Save
+                            {{props.productId?'Edit':'Save'}}
                         </button>
                     </div>
                 </div>

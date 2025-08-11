@@ -1,12 +1,11 @@
 <script setup>
-    import { productChoices } from '@/constants/constants';
-    import { ref } from 'vue';
 
     const props = defineProps({
         product: Object,
-        isOpen: Boolean
+        isOpen: Boolean,
     });
-    const emit = defineEmits(['toggle']);
+    const emit = defineEmits(['toggle', 'edit']);
+
 </script>
 
 <template>
@@ -58,14 +57,21 @@
 
         <!-- modal -->
         <div 
-        class="absolute right-5 bg-white shadow w-30 z-100 rounded top-10"
+        class="absolute right-5 bg-white shadow w-30 z-1 rounded top-10"
         v-if="props.isOpen">
-            <ul 
-            v-for="(choice, index) in productChoices"
-            :key="index">
+            <ul >
+                <li 
+                @click="emit('edit', props.product._id)"
+                class="py-1 px-3 hover:bg-gray-100 cursor-pointer text-sm">
+                    Edit
+                </li>
                 <li 
                 class="py-1 px-3 hover:bg-gray-100 cursor-pointer text-sm">
-                    {{ choice.name }}
+                    Remove
+                </li>
+                <li 
+                class="py-1 px-3 hover:bg-gray-100 cursor-pointer text-sm">
+                    View
                 </li>
             </ul>
         </div>

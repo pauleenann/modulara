@@ -1,6 +1,6 @@
 import zxcvbn from "zxcvbn";
 
-export const addProductFormValidation = (product)=>{
+export const addProductFormValidation = (product, mode='add')=>{
     let errors = {};
     let isNotValid = false;
 
@@ -48,10 +48,18 @@ export const addProductFormValidation = (product)=>{
         ? 'Fields are required' 
         : ''
 
-    errors.images = 
-        product.images.length<=0 
+    if(mode!='edit'){
+        errors.images = 
+        product.newImages.length<=0 
         ? 'Images are required' 
         : ''
+    }else{
+        errors.images = 
+        product.newImages.length<=0 && product.existingImages.length<=0
+        ? 'Images are required' 
+        : ''
+    }
+    
     
     console.log(errors)
     console.log(totalVariantQuantity)

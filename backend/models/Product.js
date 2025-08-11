@@ -7,7 +7,7 @@ const ProductSchema = new Schema({
     },
     category:{
         type: String,
-        enum: ['3-Seater Sofa', 'Sectional', 'Loveseat', 'Single Seater'],
+        enum: ['3-Seater Sofa', 'Sectional Sofa', 'Loveseat', 'Single Seater'],
         required: true
     },
     description:{

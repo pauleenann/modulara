@@ -2,17 +2,20 @@
     import AdminNavbar from '@/components/Admin/AdminNavbar.vue';
     import AdminSidebar from '@/components/Admin/AdminSidebar.vue';
     import AdminStatsBox from '@/components/Admin/AdminStatsBox.vue';
-import InventoryRow from '@/components/Admin/InventoryRow.vue';
+    import InventoryRow from '@/components/Admin/InventoryRow.vue';
     import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
+    import { useAddProduct } from '@/composables/useAddProduct';
     import { usePagination } from '@/composables/usePagination';
-    import { productChoices } from '@/constants/constants';
-    import api from '@/utils/api';
-    import { onMounted, ref } from 'vue';
+    import { productsStore } from '@/store/productsStore';
+    import { computed, onMounted, ref } from 'vue';
 
     let isAddBtnClicked = ref(false);
-    let isOpenId = ref(null);
+    let isEditBtnClicked = ref(false);
+    let editId = ref(null);
+    let openId = ref(null);
     let isOpen = ref(false)
-    let products = ref([]);
+    const store = productsStore();
+    const products = computed(() => store.products);
     const {
         totalPage,
         currentPage,
@@ -23,32 +26,20 @@ import InventoryRow from '@/components/Admin/InventoryRow.vue';
 
     // get products right away when page renders
     onMounted(()=>{
-        getProducts();
+       store.getProducts();
     });
-
-    // get products
-    const getProducts = async ()=>{
-        try {
-            const response = await api.get("/products/");
-            if(response.data.products.length==0){
-                console.log('No products available')
-                return 
-            }
-
-            products.value = response.data.products;
-
-            console.log(products)
-        } catch (error) {
-            console.log('An error occurred: ', error);
-        }
-    }
 
     const handleToggle = (id)=>{
         isOpen.value = !isOpen.value;
-        isOpenId.value = id
+        openId.value = id
     }
 
-
+    const handleEdit = (id)=>{
+        console.log(id)
+        isOpen.value = !isOpen.value; //close modal
+        isEditBtnClicked.value = !isEditBtnClicked.value
+        editId.value = id;
+    }
 </script>
 
 <template>
@@ -102,7 +93,8 @@ import InventoryRow from '@/components/Admin/InventoryRow.vue';
                            :key="product._id"
                            :product="product"
                            @toggle="handleToggle"
-                           :isOpen="isOpenId==product._id && isOpen"
+                           @edit="handleEdit"
+                           :isOpen="openId==product._id && isOpen"
                            />
                         </tbody>
                     </table>
@@ -132,12 +124,16 @@ import InventoryRow from '@/components/Admin/InventoryRow.vue';
             </div>
         </div>
 
+        <!-- add product -->
         <AddProduct
-        :open="isAddBtnClicked"
-        :close="()=>{
-            isAddBtnClicked=false;
-            getProducts();
-        }"/>
-    
+            :open="isAddBtnClicked || isEditBtnClicked"
+            :close="() => {
+                store.getProducts()
+                isAddBtnClicked = false;
+                isEditBtnClicked = false;
+                
+            }"
+            :productId="isEditBtnClicked ? editId : null"
+        />
     </div>
 </template>
