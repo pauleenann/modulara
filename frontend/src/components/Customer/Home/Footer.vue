@@ -5,7 +5,7 @@
 </script>
 
 <template>
-    <footer class="bg-white h-75 font-dm-sans">
+    <footer class="bg-white h-75 font-dm-sans overflow-y-hidden">
         <div class="w-5/6  m-auto grid lg:grid-cols-[400px_1fr_1fr_1fr_1fr] gap-8 lg:gap-0">
             <!-- logo and tagline -->
             <div class="footer-gap">

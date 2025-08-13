@@ -66,7 +66,7 @@
 </script>
 
 <template>
-    <section class="w-full h-auto flex flex-col gap-8">
+    <section class="w-full h-auto flex flex-col gap-8 overflow-y-hidden">
         <!-- about content -->
         <div class="w-5/6 m-auto flex flex-col items-start gap-2">
             <CategoryPill id="abt-pill" category="About Modulara" />
