@@ -5,14 +5,13 @@
     import Footer from '@/components/Customer/Home/Footer.vue';
     import { RouterLink } from 'vue-router';
     import { productsStore } from '@/store/productsStore';
-    import { onMounted } from 'vue';
+    import { onMounted, ref } from 'vue';
 
     const store = productsStore();
     
     onMounted(()=>{
         store.getProducts();
     })
-
 </script>
 
 <template>
@@ -23,6 +22,8 @@
             <div class="w-5/6 m-auto flex flex-col items-center mb-20">
                 <!-- filter -->
                 <ProductFilter/>
+
+                <!-- loading -->
 
                 <!-- result text and sort button -->
                 <div class="mt-13 flex justify-between items-end font-dm-sans w-full">
@@ -38,7 +39,20 @@
                 </div>
 
                 <!-- products -->
-                <div class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10 mt-10">
+                <div 
+                v-if="store.loading"
+                class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10 mt-10">
+                    <RouterLink 
+                    v-for="index in 6"
+                    :key="index">
+                        <Product 
+                        class="product"
+                        :product="null"/>
+                    </RouterLink>
+                </div>
+                <div 
+                v-else
+                class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10 mt-10">
                     <RouterLink 
                     v-for="product in store.products"
                     :to="`/shop/product/${product._id}`"
@@ -48,9 +62,12 @@
                         :product="product"/>
                     </RouterLink>
                 </div>
+                
 
                 <!-- show more -->
-                <button class="my-25 text-[var(--color-gray)] cursor-pointer">
+                <button 
+                v-if="!store.loading"
+                class="my-25 text-[var(--color-gray)] cursor-pointer">
                     Show more
                 </button>
             </div>  

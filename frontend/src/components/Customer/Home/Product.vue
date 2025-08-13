@@ -1,34 +1,66 @@
 <script setup>
     const props = defineProps({
-        product: Object
-    })
+    product: Object
+    });
+
+    const productImage = props.product?.images?.[0] || '';
+    const productName = props.product?.name || '';
+    const productPrice = props.product?.price || 0;
+    const productCategory = props.product?.category || '';
 </script>
 
 <template>
-    <div class="flex flex-col">
-        <div class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex-center rounded-2xl p-6">
-            <img :src="props.product.images[0]" alt="" class=" object-contain">
-        </div>
-
-        <!-- name and price -->
-        <div class="flex justify-between mt-4 font-medium font-dm-sans text-xl">
-            <p>{{ props.product.name }}</p>
-            <p>₱{{ props.product.price.toLocaleString() }}</p>
-        </div>
-
-        <!-- category -->
-        <p class="text-xl">{{ props.product.category }}</p>
-
-        <!-- add to basket and favorite -->
-        <div class="mt-3 flex items-center gap-3">
-            <!-- basket -->
-            <button class="bg-[var(--color-gray)] w-10 h-10 rounded-4xl text-white">
-                <i class="fa-solid fa-basket-shopping"></i>
-            </button>
-            <!-- favorite -->
-            <button class="">
-                <i class="fa-regular fa-heart text-4xl text-[var(--color-gray)]" ></i>
-            </button>
-        </div>
+  <div class="flex flex-col">
+    <!-- Image -->
+    <div class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex-center rounded-2xl p-6">
+      <div v-if="props.product">
+        <img :src="productImage" :alt="productName" class="object-contain" />
+      </div>
+      <div v-else>
+        <div class="h-full w-full bg-gray-200 rounded animate-pulse"></div>
+      </div>
     </div>
+
+    <!-- Name & Price -->
+    <div v-if="props.product">
+      <div class="flex justify-between mt-4 font-medium font-dm-sans text-xl">
+        <p>{{ productName }}</p>
+        <p>₱{{ productPrice.toLocaleString() }}</p>
+      </div>
+    </div>
+    <div v-else>
+      <div class="flex justify-between mt-4 font-medium font-dm-sans text-xl">
+        <p class="h-10 w-60 bg-gray-200 rounded animate-pulse"></p>
+        <p class="h-10 w-20 bg-gray-200 rounded animate-pulse"></p>
+      </div>
+    </div>
+
+    <!-- Category -->
+    <div v-if="props.product">
+      <p class="text-xl">{{ productCategory }}</p>
+    </div>
+    <div v-else>
+      <div class="mt-2 h-10 w-full bg-gray-300 rounded animate-pulse"></div>
+    </div>
+
+    <!-- Add to Basket & Favorite -->
+    <div class="">
+      <div 
+      class="mt-3 flex items-center gap-3"
+      v-if="props.product">
+        <button class="bg-[var(--color-gray)] w-10 h-10 rounded-full text-white">
+          <i class="fa-solid fa-basket-shopping"></i>
+        </button>
+        <button>
+          <i class="fa-regular fa-heart text-4xl text-[var(--color-gray)]"></i>
+        </button>
+      </div>
+      <div 
+      class="mt-3 flex items-center gap-2"
+      v-else>
+        <div class="bg-gray-400 w-10 h-10 rounded-full animate-pulse"></div>
+        <div class="bg-gray-400 w-10 h-10 rounded-full animate-pulse"></div>
+      </div>
+    </div>
+  </div>
 </template>

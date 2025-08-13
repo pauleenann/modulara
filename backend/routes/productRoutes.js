@@ -9,8 +9,8 @@ const router = express.Router();
 // upload array tells multer to store every image with 'images' as name in a specific storage
 router.get(
     '/:id',
-    authenticate,
-    authorize('admin', 'customer'),
+    // authenticate,
+    // authorize('admin', 'customer'),
     getProduct
 );
 router.put(
@@ -28,8 +28,8 @@ router.delete(
 );
 router.get(
     '/',
-    authenticate,
-    authorize('admin', 'customer'),
+    // authenticate,
+    // authorize('admin', 'customer'),
     getProducts
 );
 router.post(
