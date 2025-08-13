@@ -1,5 +1,5 @@
 import express from 'express';
-import { addProduct, editProduct, getProduct, getProducts } from '../controllers/productController.js';
+import { addProduct, editProduct, getProduct, getProducts, removeProduct } from '../controllers/productController.js';
 import upload from '../middleware/cloudinaryUploader.js';
 import { authenticate } from '../middleware/auth.js';
 import { authorize } from '../middleware/authorize.js';
@@ -19,6 +19,12 @@ router.put(
     authorize('admin', 'customer'),
     upload.array('images'), 
     editProduct
+);
+router.delete(
+    '/:id',
+    authenticate,
+    authorize('admin', 'customer'),
+    removeProduct
 );
 router.get(
     '/',

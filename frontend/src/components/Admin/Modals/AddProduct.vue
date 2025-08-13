@@ -1,8 +1,8 @@
 <script setup>
-    import { onMounted, watch } from 'vue';
+    import { computed, onMounted, watch } from 'vue';
     import { sofaCategories } from '@/constants/constants';
     import { measurementLabels } from '@/constants/constants';
-    import { useAddProduct } from '@/composables/useAddProduct';
+    import { useProduct } from '@/composables/useProduct';
     import { useRouter } from 'vue-router';
 
     const router = useRouter();
@@ -10,9 +10,9 @@
     const props = defineProps({
         open: Boolean,
         close: Function,
-        productId: String
+        productId: String,
+        mode: String
     })
-
     const {
         product, 
         featureInput, 
@@ -26,19 +26,26 @@
         getProduct,
         resetForm,
         loading
-    } = useAddProduct();
+    } = useProduct();
+    const isDisabled = computed(()=>props.mode == 'view')
 
     watch(product, () => {
-        console.log('Product images:', product.newImages)
-        console.log('Product existing:', product.existingImages)
+        console.log('Product', product)
     }, { deep: true })
 
-    watch(() => props.productId, (newId) => {
-        // if id exist means its in edit mode
-        if (newId) {
-            getProduct(newId);
+    // trigger this when modal
+    watch(() => props.open, () => {
+        if(!props.productId){
+            return
+        }
+
+        if (props.mode!='add') {
+            getProduct(props.productId);
+        }else{
+            resetForm()
         }
     });
+
 </script>
 
 <template>
@@ -58,7 +65,7 @@
 
             <!-- header -->
             <header class="flex justify-between items-center">
-                <h2 class="font-kulim-park font-bold text-2xl text-[var(--color-gray)]">{{props.productId?'Edit':'Add'}} Modulara Product</h2>
+                <h2 class="font-kulim-park font-bold text-2xl text-[var(--color-gray)] capitalize">{{props.mode}} Modulara Product</h2>
 
                 <!-- close button -->
                 <button       
@@ -90,6 +97,7 @@
                                     class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" 
                                     placeholder="e.g. Modular Sofa"
                                     v-model="product.name" 
+                                    :disabled="isDisabled"
                                     />
                             </div>
                         </div>
@@ -107,7 +115,8 @@
                                 :class="['block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-[var(--color-gray)] sm:text-sm/6',
                                 errors.description?'outline-red-500':'']" 
                                 placeholder="e.g. A modern, space-saving 3-seater sofa with durable upholstery and customizable modules."
-                                v-model="product.description"/>
+                                v-model="product.description"
+                                :disabled="isDisabled"/>
                         </div>
                         <p class="error-message">{{ errors.description }}</p>
                         <p class="mt-3 text-sm/6 text-gray-600">Write a few sentences about this product.</p>
@@ -125,7 +134,9 @@
                             :class="['col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-[var(--color-gray)] sm:text-sm/6',
                                 errors.category?'outline-red-500':''
                             ]"
-                            v-model="product.category">
+                            v-model="product.category"
+                            :disabled="isDisabled">
+                            <option value="" selected disabled>Select category</option>
                             <option 
                                 v-for="(sofa,index) in sofaCategories" 
                                 :key="index"
@@ -154,7 +165,8 @@
                                 id="price" 
                                 autocomplete="price" class="focus:outline-0" 
                                 placeholder="e.g. 30000"
-                                v-model="product.price"/>
+                                v-model="product.price"
+                                :disabled="isDisabled"/>
                         </div>
                         <p class="error-message">{{ errors.price }}</p>
                     </div>
@@ -173,7 +185,8 @@
                                     errors.totalQuantity?'outline-red-500':''
                                 ]"  
                                 placeholder="e.g. 100"
-                                v-model="product.totalQuantity"/>
+                                v-model="product.totalQuantity"
+                                :disabled="isDisabled"/>
                         </div>
                         <p class="error-message">{{ errors.totalQuantity }}</p>
                     </div>
@@ -186,8 +199,20 @@
                             :key="index"  
                             :class="[
                             'mt-2 grid gap-3',
-                            index!=0?'grid-cols-[45%_45%_1fr]':'grid-cols-2'
+                            index!=0?'grid-cols-[30%_30%_30%_1fr]':'grid-cols-3'
                         ]">
+                            <input 
+                                type="text" 
+                                name="variantColorName" 
+                                id="variantColorName"
+                                autocomplete="variantColorName" 
+                                :class="[
+                                    'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-[var(--color-gray)] sm:text-sm/6',
+                                    errors.variants?'outline-red-500':''
+                                ]"  
+                                placeholder="e.g. Charcoal Gray" 
+                                v-model="variant.name"
+                                :disabled="isDisabled"/>
                             <input 
                                 type="text" 
                                 name="variantColor" 
@@ -197,8 +222,9 @@
                                     'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-[var(--color-gray)] sm:text-sm/6',
                                     errors.variants?'outline-red-500':''
                                 ]"  
-                                placeholder="e.g. Red" 
-                                v-model="variant.color"/>
+                                placeholder="e.g. #444444" 
+                                v-model="variant.color"
+                                :disabled="isDisabled"/>
                             <input 
                                 type="variantQuantity" 
                                 min="0" 
@@ -210,11 +236,13 @@
                                     errors.variants?'outline-red-500':''
                                 ]"  
                                 placeholder="e.g. 10" 
-                                v-model="variant.quantity"/>
+                                v-model="variant.quantity"
+                                :disabled="isDisabled"/>
                             <button
                                 v-if="index!=0" 
                                 class="border border-gray-300 rounded-lg transition delay-100 duration-300 ease-in-out hover:bg-gray-200 cursor-pointer" title="Add variant"
                                @click="removeVariant(index)"
+                               :disabled="isDisabled"
                             >
                                 <i class="fa-solid fa-trash"></i>
                             </button>
@@ -226,7 +254,7 @@
                                 color: '',
                                 quantity: 0
                             })"
-                        >
+                            :disabled="isDisabled">
                             <i class="fa-solid fa-plus"></i>
                             Add variant
                         </button>
@@ -246,7 +274,8 @@
                                     errors.features?'outline-red-500':''
                                 ]" 
                                 placeholder="e.g. Modular, Waterproof, Lightweight"
-                                v-model="featureInput"/>
+                                v-model="featureInput"
+                                :disabled="isDisabled"/>
                         </div>
                         <p class="mt-3 text-sm/6 text-gray-600">Kindly separate each feature with a comma (,) like so</p>
                         <p class="error-message">{{ errors.features }}</p>
@@ -272,6 +301,7 @@
                                 ]"  
                                 placeholder="e.g. 210 cm (82.6 in)"
                                 v-model="product.measurements[label.value]"
+                                :disabled="isDisabled"
                             />
                         </div>
                         <p class="error-message">{{ errors.measurements }}</p>
@@ -290,6 +320,7 @@
                                 <i 
                                 class="absolute text-red-500 text-xl transition delay-100 duration-200 ease-in-out -right-1 -top-1 cursor-pointer fa-solid fa-circle-xmark"
                                 @click="removeExistingPhoto(index)"
+                                v-if="!isDisabled"
                                 ></i>
 
                                 <!-- preview -->
@@ -305,6 +336,7 @@
                                 <i 
                                 class="absolute text-red-500 text-xl transition delay-100 duration-200 ease-in-out -right-1 -top-1 cursor-pointer fa-solid fa-circle-xmark"
                                 @click="removeNewPhoto(index)"
+                                v-if="!isDisabled"
                                 ></i>
 
                                 <!-- preview -->
@@ -312,7 +344,9 @@
                             </div>
 
                             <!-- add image -->
-                            <div class="flex justify-center items-center rounded-lg border border-dashed border-gray-900/25 h-25 w-25">
+                            <div 
+                            class="flex justify-center items-center rounded-lg border border-dashed border-gray-900/25 h-25 w-25"
+                            v-if="!isDisabled">
                                 
                                     <label
                                         class="cursor-pointer" 
@@ -325,6 +359,7 @@
                                         id="image"
                                         class="hidden"
                                         @change="handleImageUpload($event)"
+                                        :disabled="isDisabled"
                                     >
                                 
                             </div>
@@ -333,7 +368,9 @@
                     </div>
 
                     <!-- button -->
-                    <div class="mt-6 flex items-center justify-end gap-x-6">
+                    <div 
+                    class="mt-6 flex items-center justify-end gap-x-6"
+                    v-if="!isDisabled">
                         <button 
                             type="button" 
                             class="text-sm/6 font-semibold text-gray-900 cursor-pointer"
@@ -348,10 +385,10 @@
                             type="submit" 
                             class="rounded-md bg-[var(--color-gray)] px-3 py-2 text-sm font-semibold text-white shadow-xs transition delay-100 duration-200 ease-in-out hover:bg-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black cursor-pointer"
                             @click="
-                            props.productId
+                            props.mode=='edit'
                             ?editProduct(props.close, props.productId):addProduct(props.close)"
                         >
-                            {{props.productId?'Edit':'Save'}}
+                            {{props.mode=='edit'?'Edit':'Save'}}
                         </button>
                     </div>
                 </div>

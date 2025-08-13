@@ -46,6 +46,8 @@ export const addProduct = async (req, res) => {
 
 export const editProduct = async (req, res) => {
   try {
+    console.log('editing product')
+    
     const id = req.params.id;
     
     if(!id){
@@ -67,7 +69,7 @@ export const editProduct = async (req, res) => {
       existing
     } = req.body;
 
-    console.log(req.body)
+    console.log("body: ", req.body)
 
     // parse JSON fields safely
     const parsedVariants = JSON.parse(variants || '[]');
@@ -76,7 +78,8 @@ export const editProduct = async (req, res) => {
 
     const imageUrls = req.files?.map(file => file.path) || [];
 
-    console.log(imageUrls)
+    console.log('req files: ',req.files)
+    console.log('imageUrls: ',imageUrls)
     // combine existing and imageUrls
     if(Array.isArray(existing)){
       existing.forEach(img => {
@@ -110,10 +113,33 @@ export const editProduct = async (req, res) => {
     return res.status(201).json({ message: 'Product edited' });
 
   } catch (error) {
-    console.error('Edit Product Error:', error);
+    console.log('Edit Product Error:', error);
     return res.status(500).json({ error: error });
   }
 };
+
+export const removeProduct = async (req, res) =>{
+  try {
+    console.log('removing product')
+    
+    const id = req.params.id;
+    
+    if(!id){
+      return res.status(500).json({
+        message: 'Missing Id'
+      })
+    }
+
+    // delete product
+    await Product.findByIdAndDelete(id);
+
+    return res.status(201).json({ message: 'Product removed' });
+
+  } catch (error) {
+    console.log('Remove Product Error:', error);
+    return res.status(500).json({ error: error });
+  }
+}
 
 export const getProducts = async (req, res)=>{
   try {

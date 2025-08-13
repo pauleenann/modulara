@@ -32,10 +32,11 @@ export const addProductFormValidation = (product, mode='add')=>{
 
     const totalVariantQuantity = product.variants.reduce((acc, variant) => acc + Number(variant.quantity), 0);
     const hasEmptyColor = product.variants.some(variant => !variant.color || variant.color.trim() === '');
+    const hasEmptyColorName = product.variants.some(variant => !variant.name || variant.name.trim() === '');
 
     errors.variants = 
-        product.totalQuantity!=totalVariantQuantity || totalVariantQuantity==0|| hasEmptyColor 
-        ?'Variant color is required and total variant quantity must be the same as the product total quantity'
+        product.totalQuantity!=totalVariantQuantity || totalVariantQuantity==0|| hasEmptyColor || hasEmptyColorName 
+        ?'Variant color and name is required. Total variant quantity must be the same as the product total quantity'
         : ''
 
     errors.features = 

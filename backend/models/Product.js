@@ -34,6 +34,7 @@ const ProductSchema = new Schema({
         variants: [
             {
                 color: String,
+                name: String,
                 quantity: Number
             }
         ],

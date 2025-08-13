@@ -4,16 +4,18 @@
     import AdminStatsBox from '@/components/Admin/AdminStatsBox.vue';
     import InventoryRow from '@/components/Admin/InventoryRow.vue';
     import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
-    import { useAddProduct } from '@/composables/useAddProduct';
+    import ProductConfirmationModal from '@/components/Admin/Modals/ProductConfirmationModal.vue';
     import { usePagination } from '@/composables/usePagination';
+import { useProduct } from '@/composables/useProduct';
     import { productsStore } from '@/store/productsStore';
     import { computed, onMounted, ref } from 'vue';
 
-    let isAddBtnClicked = ref(false);
-    let isEditBtnClicked = ref(false);
-    let editId = ref(null);
-    let openId = ref(null);
-    let isOpen = ref(false)
+    var isModalOpen = ref(false);
+    var isRemoveModalOpen = ref(false);
+    var productToRemove = ref('');
+    var modalMode = ref('Add');
+    var productId = ref(null);
+    var isOpen = ref(false); // for edit, view, remove modal
     const store = productsStore();
     const products = computed(() => store.products);
     const {
@@ -23,6 +25,7 @@
         next, 
         prev
     } = usePagination(products, 8)
+    const {removeProduct} = useProduct();
 
     // get products right away when page renders
     onMounted(()=>{
@@ -31,14 +34,19 @@
 
     const handleToggle = (id)=>{
         isOpen.value = !isOpen.value;
-        openId.value = id
+        productId.value = id; // id of toggled btn
     }
 
-    const handleEdit = (id)=>{
-        console.log(id)
-        isOpen.value = !isOpen.value; //close modal
-        isEditBtnClicked.value = !isEditBtnClicked.value
-        editId.value = id;
+    const handleClick = (mode)=>{
+        isOpen.value = !isOpen.value; //close modal of edit, view, remove
+        isModalOpen.value = !isModalOpen.value
+        modalMode.value = mode
+    }
+
+    const handleRemove = (name)=>{
+        isOpen.value = !isOpen.value;
+        isRemoveModalOpen.value = !isRemoveModalOpen.value;
+        productToRemove.value = name;
     }
 </script>
 
@@ -65,7 +73,7 @@
                 <!-- add product button -->
                 <button 
                     class="flex-center text-white bg-[var(--color-gray)] gap-3 font-dm-sans py-3 px-5 rounded cursor-pointer transition duration-300 delay-100 ease-in-out hover:bg-gray-950"
-                    @click="isAddBtnClicked=true"
+                    @click="handleClick('add')"
                 >
                     <i class="fa-solid fa-circle-plus"></i>
                     Add Product
@@ -93,8 +101,10 @@
                            :key="product._id"
                            :product="product"
                            @toggle="handleToggle"
-                           @edit="handleEdit"
-                           :isOpen="openId==product._id && isOpen"
+                           @edit="handleClick('edit')"
+                           @view="handleClick('view')"
+                           @remove="handleRemove"
+                           :isOpen="productId==product._id && isOpen"
                            />
                         </tbody>
                     </table>
@@ -124,16 +134,29 @@
             </div>
         </div>
 
-        <!-- add product -->
+        <!-- add, edit, view product -->
         <AddProduct
-            :open="isAddBtnClicked || isEditBtnClicked"
+            :open="isModalOpen"
             :close="() => {
                 store.getProducts()
-                isAddBtnClicked = false;
-                isEditBtnClicked = false;
-                
+                isModalOpen = false;
             }"
-            :productId="isEditBtnClicked ? editId : null"
+            :productId="productId"
+            :mode="modalMode"
+        />
+
+        <!-- remove product confirmation -->
+        <ProductConfirmationModal
+            :open="isRemoveModalOpen"
+            :close="()=>{
+                store.getProducts();
+                isRemoveModalOpen=false
+            }"
+            message="Are you sure you want to remove"
+            :name="productToRemove"
+            :action="(close)=>removeProduct(close,productId)"
+            submitButtonName="Remove"
+            
         />
     </div>
 </template>

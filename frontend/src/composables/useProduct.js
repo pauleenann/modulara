@@ -6,7 +6,7 @@ import { useToast } from "vue-toastification";
 
 const toast = useToast();
 
-export const useAddProduct = ()=>{
+export const useProduct = ()=>{
     const product = reactive({
         name: '',
         description: '',
@@ -16,6 +16,7 @@ export const useAddProduct = ()=>{
         variants: [
             {
                 color: '',
+                name: '',
                 quantity: null
             }
         ],
@@ -41,6 +42,41 @@ export const useAddProduct = ()=>{
     let featureInput = ref('');
     let loading = ref(false)
     let errors = reactive({});
+
+    // reset form
+    const resetForm = ()=>{
+        Object.assign(product,
+            {
+                name: '',
+                description: '',
+                category: '',
+                price: null,
+                totalQuantity: null,
+                variants: [
+                    {
+                        color: '',
+                        name:'',
+                        quantity: null
+                    }
+                ],
+                features: [],
+                measurements:{
+                    overallWidth: '',
+                    depth: '',
+                    height: '',
+                    seatHeight: '',
+                    seatDepth: '',
+                    armHeight: '',
+                    legHeight: ''
+                },
+                existingImages: [],
+                newImages:[],
+            }
+        )
+
+        featureInput.value = '';
+        Object.keys(errors).forEach(key=> delete errors[key])
+    }
 
     // remove variant
     const removeVariant = (index)=>{
@@ -95,7 +131,7 @@ export const useAddProduct = ()=>{
             )
 
             // reset form
-            // resetForm()
+            resetForm()
 
             // toast notification
             toast.success("Product added successfully!", {
@@ -117,6 +153,20 @@ export const useAddProduct = ()=>{
             close();
         } catch (error) {
             console.log('Cannot add product. An error occurred: ', error.message);
+            toast.warning("Cannot add product! Please try again later.", {
+                position: "top-right",
+                timeout: 5000,
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false
+            });
         } finally{
             loading.value = false;
         }
@@ -205,6 +255,20 @@ export const useAddProduct = ()=>{
             close();
         } catch (error) {
             console.log('Cannot edit product. An error occurred: ', error);
+            toast.warning("Cannot edit product! Please try again later.", {
+                position: "top-right",
+                timeout: 5000,
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false
+            });
         } finally{
             loading.value = false;
         }
@@ -222,22 +286,10 @@ export const useAddProduct = ()=>{
         });
     }
 
-    // const getProducts = async (products = ref([]))=>{
-    //     try {
-    //         const response = await api.get("/products/");
-    //         if(response.data.products.length==0){
-    //             console.log('No products available')
-    //             return 
-    //         }
-
-    //         products.value = response.data.products;
-    //     } catch (error) {
-    //         console.log('An error occurred: ', error);
-    //     }
-    // }
-
     const getProduct = async (id) => {
         try {
+            loading.value = true;
+
             const response = await api.get(`/products/${id}`)
             const data = response.data.product
             
@@ -261,41 +313,52 @@ export const useAddProduct = ()=>{
             featureInput.value = data.attributes.features.join(', ')
         } catch (error) {
             console.log('An error occurred: ', error)
+        }finally {
+            loading.value = false;
         }
     }
 
-    // reset form
-    const resetForm = ()=>{
-        Object.assign(product,
-            {
-                name: '',
-                description: '',
-                category: '',
-                price: null,
-                totalQuantity: null,
-                variants: [
-                    {
-                        color: '',
-                        quantity: null
-                    }
-                ],
-                features: [],
-                measurements:{
-                    overallWidth: '',
-                    depth: '',
-                    height: '',
-                    seatHeight: '',
-                    seatDepth: '',
-                    armHeight: '',
-                    legHeight: ''
-                },
-                existingImages: [],
-                newImages:[],
-            }
-        )
+    const removeProduct = async (close,id)=>{
+        try {
+            loading.value = true;
 
-        featureInput.value = '';
-        Object.keys(errors).forEach(key=> delete errors[key])
+            const response = await api.delete(`/products/${id}`)
+
+            toast.success("Product removed successfully!", {
+                position: "top-right",
+                timeout: 5000,
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false
+            });
+
+            close()
+        } catch (error) {
+            console.log('An error occurred: ', error)
+            toast.warning("Cannot remove product! Please try again later.", {
+                position: "top-right",
+                timeout: 5000,
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false
+            });
+        }finally{
+            loading.value = false;
+        }
     }
 
     // handle features (turns string to array)
@@ -316,6 +379,7 @@ export const useAddProduct = ()=>{
         handleImageUpload,
         getProduct,
         resetForm,
-        loading
+        loading,
+        removeProduct
     }
 }

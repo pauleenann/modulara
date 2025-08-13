@@ -4,7 +4,7 @@
         product: Object,
         isOpen: Boolean,
     });
-    const emit = defineEmits(['toggle', 'edit']);
+    const emit = defineEmits(['toggle', 'edit', 'view', 'remove']);
 
 </script>
 
@@ -61,17 +61,19 @@
         v-if="props.isOpen">
             <ul >
                 <li 
-                @click="emit('edit', props.product._id)"
+                @click="emit('edit')"
                 class="py-1 px-3 hover:bg-gray-100 cursor-pointer text-sm">
                     Edit
                 </li>
                 <li 
-                class="py-1 px-3 hover:bg-gray-100 cursor-pointer text-sm">
-                    Remove
-                </li>
-                <li 
+                @click="emit('view')"
                 class="py-1 px-3 hover:bg-gray-100 cursor-pointer text-sm">
                     View
+                </li>
+                <li 
+                @click="emit('remove', props.product.name)"
+                class="py-1 px-3 hover:bg-gray-100 cursor-pointer text-sm">
+                    Remove
                 </li>
             </ul>
         </div>
