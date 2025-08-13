@@ -42,25 +42,20 @@
                 <div 
                 v-if="store.loading"
                 class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10 mt-10">
-                    <RouterLink 
+                    <Product 
+                    class="product"
                     v-for="index in 6"
-                    :key="index">
-                        <Product 
-                        class="product"
-                        :product="null"/>
-                    </RouterLink>
+                    :key="index"
+                    :product="null"/>
                 </div>
                 <div 
                 v-else
                 class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10 mt-10">
-                    <RouterLink 
+                    <Product 
+                    class="product" 
                     v-for="product in store.products"
-                    :to="`/shop/product/${product._id}`"
-                    :key="product._id">
-                        <Product 
-                        class="product"
-                        :product="product"/>
-                    </RouterLink>
+                    :key="product._id"
+                    :product="product"/>
                 </div>
                 
 

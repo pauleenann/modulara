@@ -1,4 +1,6 @@
 <script setup>
+import { RouterLink } from 'vue-router';
+
     const props = defineProps({
     product: Object
     });
@@ -12,22 +14,29 @@
 <template>
   <div class="flex flex-col">
     <!-- Image -->
-    <div class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex-center rounded-2xl p-6">
-      <div v-if="props.product">
+    <RouterLink 
+    v-if="props.product"
+    :to="`/shop/product/${props.product._id}`"
+    class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex-center rounded-2xl p-6">
+      <div>
         <img :src="productImage" :alt="productName" class="object-contain" />
       </div>
-      <div v-else>
-        <div class="h-full w-full bg-gray-200 rounded animate-pulse"></div>
-      </div>
+      
+    </RouterLink>
+    <div 
+    v-else
+    class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex-center rounded-2xl p-6">
     </div>
 
     <!-- Name & Price -->
-    <div v-if="props.product">
+    <RouterLink 
+    :to="`/shop/product/${props.product._id}`"
+    v-if="props.product">
       <div class="flex justify-between mt-4 font-medium font-dm-sans text-xl">
         <p>{{ productName }}</p>
         <p>₱{{ productPrice.toLocaleString() }}</p>
       </div>
-    </div>
+    </RouterLink>
     <div v-else>
       <div class="flex justify-between mt-4 font-medium font-dm-sans text-xl">
         <p class="h-10 w-60 bg-gray-200 rounded animate-pulse"></p>
