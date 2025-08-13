@@ -5,8 +5,8 @@
     import InventoryRow from '@/components/Admin/InventoryRow.vue';
     import AddProduct from '@/components/Admin/Modals/AddProduct.vue';
     import ProductConfirmationModal from '@/components/Admin/Modals/ProductConfirmationModal.vue';
+    import { useProductApi } from '@/composables/products/useProductApi';
     import { usePagination } from '@/composables/usePagination';
-import { useProduct } from '@/composables/useProduct';
     import { productsStore } from '@/store/productsStore';
     import { computed, onMounted, ref } from 'vue';
 
@@ -25,7 +25,7 @@ import { useProduct } from '@/composables/useProduct';
         next, 
         prev
     } = usePagination(products, 8)
-    const {removeProduct} = useProduct();
+    const { removeProduct } = useProductApi();
 
     // get products right away when page renders
     onMounted(()=>{
