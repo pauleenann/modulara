@@ -18,6 +18,8 @@
             
         },
     }
+
+    console.log(props.product)
     
 </script>
 
@@ -27,11 +29,11 @@
             <div>
                 <Carousel v-bind="config">
                     <Slide 
-                    v-for="(image, index) in product.images" 
+                    v-for="(image, index) in props.product.existingImages" 
                     :key="index"
                     class="bg-[#F5F5F5] rounded-xl">
                         <img 
-                        :src="image" 
+                        :src="image.preview" 
                         alt=""
                         class="w-150">
                     </Slide>
@@ -62,18 +64,18 @@
 
                 <!-- product info -->
                 <div class="mt-10 lg:mt-15">
-                    <p class="text-lg lg:text-xl text-[#A29F9F]">{{ product.category }}</p>
-                    <h3 class="text-2xl lg:text-3xl text-[var(--color-gray)] font-medium">{{ product.name }}</h3>
-                    <p class="text-lg lg:text-xl text-[var(--color-gray)]">{{ product.description }}</p>
+                    <p class="text-lg lg:text-xl text-[#A29F9F]">{{ props.product.category }}</p>
+                    <h3 class="text-2xl lg:text-3xl text-[var(--color-gray)] font-medium">{{ props.product.name }}</h3>
+                    <p class="text-lg lg:text-xl text-[var(--color-gray)]">{{ props.product.description }}</p>
 
                     <!-- ratings -->
                     <div class="flex items-center gap-1 text-[#444444] mt-2">
-                        <span class="text-lg font-semibold">{{ product.ratings }}</span>
-                        <i class="fa-solid fa-star"></i>
+                        <!-- <span class="text-lg font-semibold">{{ product.ratings }}</span>
+                        <i class="fa-solid fa-star"></i> -->
                     </div>
 
                     <!-- price -->
-                    <p class="font-medium text-[var(--color-gray)] text-2xl lg:text-3xl mt-6">₱{{ product.price.toLocaleString() }}</p>
+                    <p class="font-medium text-[var(--color-gray)] text-2xl lg:text-3xl mt-6">₱{{ props.product.price&&props.product.price.toLocaleString() }}</p>
 
                     <!-- colors and quantity -->
                     <div class="grid grid-cols-[100px_1fr] items-center mt-10 gap-y-7">
@@ -81,10 +83,11 @@
                         <p>Colors</p>
                         <div class="flex gap-2">
                             <span 
-                            v-for="(variant, index) in product.attributes.variants" 
+                            v-for="(variant, index) in props.product.variants" 
                             :key="index"
                             class="h-10 w-10 bg-red-400 rounded-full"
                             :style="{ backgroundColor: variant.color }"
+                            :title="variant.name"
                             ></span>
                         </div>
 

@@ -8,6 +8,23 @@
     import ProductFeatures from '@/components/Customer/Products/ProductFeatures.vue';
     import ProductMeasurement from '@/components/Customer/Products/ProductMeasurement.vue';
     import OtherProducts from '@/components/Customer/Products/OtherProducts.vue';
+    import { useRoute } from 'vue-router';
+    import { useProductForm } from '@/composables/products/useProductForm';
+    import { useProductApi } from '@/composables/products/useProductApi';
+    import { onMounted } from 'vue';
+
+    const route = useRoute();
+    const id = route.params.id;
+    const form = useProductForm();
+    const api = useProductApi(form);
+
+    const {product} = form;
+    const {getProduct} = api;
+
+    onMounted(async ()=>{
+        await getProduct(id);
+        console.log(product)
+    })
 
 </script>
 
@@ -21,19 +38,19 @@
                 <ProductFilter/>
 
                 <!-- product -->
-                <ProductInfo :product="sampleProduct"/>
+                <ProductInfo :product="product"/>
 
                 <!-- customer reviews -->
                 <CustomerReviews/>
 
                 <!-- features -->
-                <ProductFeatures :features="sampleProduct.attributes.features"/>
+                <ProductFeatures :features="product.features"/>
 
                 <!-- measurement -->
-                <ProductMeasurement :measurements="sampleProduct.attributes.measurements"/>
+                <ProductMeasurement :measurements="product.measurements"/>
 
                 <!-- other products -->
-                <OtherProducts/>
+                <!-- <OtherProducts/> -->
             </div>  
 
             

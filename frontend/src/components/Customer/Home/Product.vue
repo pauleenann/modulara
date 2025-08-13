@@ -1,21 +1,23 @@
 <script setup>
-    import sample from '../../../assets/images/sample-sofa.png'
+    const props = defineProps({
+        product: Object
+    })
 </script>
 
 <template>
     <div class="flex flex-col">
-        <div class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex items-center justify-center rounded-2xl">
-            <img :src="sample" alt="" class=" object-contain">
+        <div class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex-center rounded-2xl p-6">
+            <img :src="props.product.images[0]" alt="" class=" object-contain">
         </div>
 
         <!-- name and price -->
         <div class="flex justify-between mt-4 font-medium font-dm-sans text-xl">
-            <p>Sofa name</p>
-            <p>₱28,900</p>
+            <p>{{ props.product.name }}</p>
+            <p>₱{{ props.product.price.toLocaleString() }}</p>
         </div>
 
         <!-- category -->
-        <p class="text-xl">3-Seater Modular</p>
+        <p class="text-xl">{{ props.product.category }}</p>
 
         <!-- add to basket and favorite -->
         <div class="mt-3 flex items-center gap-3">

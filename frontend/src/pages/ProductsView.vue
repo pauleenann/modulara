@@ -4,6 +4,14 @@
     import Product from '@/components/Customer/Home/Product.vue';
     import Footer from '@/components/Customer/Home/Footer.vue';
     import { RouterLink } from 'vue-router';
+    import { productsStore } from '@/store/productsStore';
+    import { onMounted } from 'vue';
+
+    const store = productsStore();
+    
+    onMounted(()=>{
+        store.getProducts();
+    })
 
 </script>
 
@@ -31,8 +39,13 @@
 
                 <!-- products -->
                 <div class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10 mt-10">
-                    <RouterLink to="/shop/product" v-for="index in 6" :key="index">
-                        <Product  class="product"/>
+                    <RouterLink 
+                    v-for="product in store.products"
+                    :to="`/shop/product/${product._id}`"
+                    :key="product._id">
+                        <Product 
+                        class="product"
+                        :product="product"/>
                     </RouterLink>
                 </div>
 
