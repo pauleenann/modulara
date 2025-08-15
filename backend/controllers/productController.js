@@ -151,7 +151,8 @@ export const getProducts = async (req, res)=>{
         category: 1, 
         price: 1, 
         totalQuantity: 1,
-        images: 1
+        images: 1,
+        attributes: 1
       }
     )
 

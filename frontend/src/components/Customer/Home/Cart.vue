@@ -1,10 +1,40 @@
 <script setup>
-import CartItem from './CartItem.vue';
+    import { basketStore } from '@/store/basketStore';
+    import CartItem from './CartItem.vue';
+    import { onMounted, reactive } from 'vue';
+import api from '@/utils/api';
 
     const props = defineProps({
         open:Boolean,
         close: Function
     })
+    const store = basketStore();
+    var carItemInfo = reactive([]);
+
+    onMounted(async ()=>{
+        if(store.basket.length==0){
+            return
+        }
+
+        const ids = store.basket.map(item=>item.productId)
+        const response = await api.get('/cart/details', {
+            params: { ids }
+        })
+        console.log(response)
+        carItemInfo=response.data.cartDetails;
+    })
+
+
+    const handleProductDetail = (item)=>{
+        if(!item){
+            return
+        }
+
+        const productInfo = carItemInfo.find(detail=>detail._id == item.productId)
+
+        return productInfo
+    }
+
 </script>
 
 <template>
@@ -23,18 +53,23 @@ import CartItem from './CartItem.vue';
         </div>
         
         <!-- your cart -->
-        <div class="mt-5 flex flex-col gap-4">
+        <div 
+        v-if="store.basket.length!=0&&carItemInfo.length!=0"
+        class="mt-5 flex flex-col gap-4">
             <h1 class="font-dm-sans text-2xl font-semibold">Your Cart</h1>
-
             <!-- items -->
             <CartItem 
-                v-for="index in 5"
-                :key="index"
+                v-for="item in store.basket"
+                :key="item.productId"
+                :item="item"
+                :productDetail="handleProductDetail(item)"
             />
         </div>
 
         <!-- order summary -->
-        <div class="font-dm-sans text-[var(--color-gray)] mt-8 flex flex-col gap-2">
+        <div 
+        v-if="store.basket.length!=0&&carItemInfo.length!=0"
+        class="font-dm-sans text-[var(--color-gray)] mt-8 flex flex-col gap-2">
             <h2 class="text-lg font-bold">Order Summary</h2>
             <div class="grid grid-cols-2 flex flex-col gap-2">
                 <!-- product -->
