@@ -4,8 +4,14 @@ import { defineStore } from 'pinia';
 
 export const cartStore = defineStore('cart', {
     state: () => ({
-        cart: JSON.parse(localStorage.getItem('cart') || '[]')
+        cart: JSON.parse(localStorage.getItem('cart') || '[]'),
     }),
+
+    getters: {
+      cartTotal: (state) => {
+        return state.cart.reduce((total, item) => total + item.quantity, 0);
+      }
+    },    
 
     actions: {
         async addToCart(productData, productName='Product') {
@@ -24,6 +30,9 @@ export const cartStore = defineStore('cart', {
             } else {
               this.cart.push({ ...productData });
             }
+
+            //add total
+            this.totalItems++
           
             if (!isAuthenticated) {
               localStorage.setItem('cart', JSON.stringify(this.cart));

@@ -79,7 +79,7 @@
       class="mt-3 flex items-center gap-3"
       v-if="props.product">
         <button 
-        @click="store.addToBasket({
+        @click="store.addToCart({
           productId: productData.product._id,
           variant: productData.variant,
           quantity: productData.quantity
