@@ -2,18 +2,18 @@ import { toastNotification } from "@/utils/products/toastNotification";
 import { authStore } from "./authStore";
 import { defineStore } from 'pinia';
 
-export const basketStore = defineStore('basket', {
+export const cartStore = defineStore('cart', {
     state: () => ({
-        basket: JSON.parse(localStorage.getItem('basket') || '[]')
+        cart: JSON.parse(localStorage.getItem('cart') || '[]')
     }),
 
     actions: {
-        async addToBasket(productData, productName='Product') {
+        async addToCart(productData, productName='Product') {
             const store = authStore();
             const isAuthenticated = store.isAuthenticated;
           
             // this.basket.find(...) returns a reference to the actual object in this.basket, so changing existing changes the original data in the array immediately.
-            const existing = this.basket.find(
+            const existing = this.cart.find(
               item => item.productId === productData.productId && item.variant === productData.variant
             );
 
@@ -22,12 +22,12 @@ export const basketStore = defineStore('basket', {
             if (existing) {
               existing.quantity += productData.quantity;
             } else {
-              this.basket.push({ ...productData });
+              this.cart.push({ ...productData });
             }
           
             if (!isAuthenticated) {
-              localStorage.setItem('basket', JSON.stringify(this.basket));
-              toastNotification(`${productName} added to basket`, 'success')
+              localStorage.setItem('cart', JSON.stringify(this.cart));
+              toastNotification(`${productName} added to cart`, 'success')
             } else {
               // API call to save to backend
             }

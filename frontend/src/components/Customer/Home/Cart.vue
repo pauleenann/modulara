@@ -1,27 +1,25 @@
 <script setup>
-    import { basketStore } from '@/store/basketStore';
     import CartItem from './CartItem.vue';
     import { onMounted, reactive } from 'vue';
-import api from '@/utils/api';
+    import api from '@/utils/api';
+    import { getCartDetails } from '@/services/cart';
+    import { cartStore } from '@/store/cartStore';
 
     const props = defineProps({
         open:Boolean,
         close: Function
     })
-    const store = basketStore();
-    var carItemInfo = reactive([]);
+    const store = cartStore();
+    var cartItemInfo = reactive([]);
 
     onMounted(async ()=>{
-        if(store.basket.length==0){
+        if(store.cart.length==0){
             return
         }
-
-        const ids = store.basket.map(item=>item.productId)
-        const response = await api.get('/cart/details', {
-            params: { ids }
-        })
-        console.log(response)
-        carItemInfo=response.data.cartDetails;
+        const ids = store.cart.map(item=>item.productId)
+        const response = await getCartDetails(ids);
+        
+        cartItemInfo=response.data.cartDetails;
     })
 
 
@@ -30,7 +28,7 @@ import api from '@/utils/api';
             return
         }
 
-        const productInfo = carItemInfo.find(detail=>detail._id == item.productId)
+        const productInfo = cartItemInfo.find(detail=>detail._id == item.productId)
 
         return productInfo
     }
@@ -54,12 +52,12 @@ import api from '@/utils/api';
         
         <!-- your cart -->
         <div 
-        v-if="store.basket.length!=0&&carItemInfo.length!=0"
+        v-if="store.cart.length!=0&&cartItemInfo.length!=0"
         class="mt-5 flex flex-col gap-4">
             <h1 class="font-dm-sans text-2xl font-semibold">Your Cart</h1>
             <!-- items -->
             <CartItem 
-                v-for="item in store.basket"
+                v-for="item in store.cart"
                 :key="item.productId"
                 :item="item"
                 :productDetail="handleProductDetail(item)"
@@ -68,7 +66,7 @@ import api from '@/utils/api';
 
         <!-- order summary -->
         <div 
-        v-if="store.basket.length!=0&&carItemInfo.length!=0"
+        v-if="store.cart.length!=0&&cartItemInfo.length!=0"
         class="font-dm-sans text-[var(--color-gray)] mt-8 flex flex-col gap-2">
             <h2 class="text-lg font-bold">Order Summary</h2>
             <div class="grid grid-cols-2 flex flex-col gap-2">

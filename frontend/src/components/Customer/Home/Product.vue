@@ -1,9 +1,9 @@
 <script setup>
-  import { basketStore } from '@/store/basketStore';
+  import { cartStore } from '@/store/cartStore';
   import { reactive, watch } from 'vue';
   import { RouterLink } from 'vue-router';
 
-  const store = basketStore();
+  const store = cartStore();
   const props = defineProps({
     product: Object
   });
