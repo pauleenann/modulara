@@ -35,6 +35,10 @@
                 <div class="flex items-center gap-3">
                     <button 
                     class="h-6 w-6 flex-center border border-gray-200 rounded-full"
+                    @click="store.removeFromCart({
+                        productId: item.productId,
+                        variant: item.variant
+                    })"
                     >
                         <i class="fa-solid fa-minus text-xs"></i>
                     </button>

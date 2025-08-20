@@ -15,6 +15,7 @@ export const cartStore = defineStore('cart', {
 
     actions: {
         async addToCart(productData, productName='Product', toast = false) {
+            // get authentication status
             const store = authStore();
             const isAuthenticated = store.isAuthenticated;
           
@@ -42,7 +43,29 @@ export const cartStore = defineStore('cart', {
             }
         },
 
-        
+        async removeFromCart(productData){
+          console.log('this is remove from cart');
+          // get authentication status
+          const store = authStore();
+          const isAuthenticated = store.isAuthenticated;
 
+          const existing = this.cart.find(item=> productData.productId == item.productId && productData.variant == item.variant)
+
+          if(existing){
+            if(existing.quantity>1){
+              existing.quantity--;
+            }else{
+              this.cart = this.cart.filter(item=>item.productId!=existing.productId)
+            }
+            this.totalItems--; //decrement totalItems  
+          }
+
+          // update db or localstorage
+          if(!isAuthenticated){
+            localStorage.setItem('cart', JSON.stringify(this.cart));
+          }else{
+
+          }
+        }
     },
 });

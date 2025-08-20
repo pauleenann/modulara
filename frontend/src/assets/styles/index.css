@@ -50,7 +50,6 @@
     @apply text-red-500 text-sm mt-1;
   }
 
- 
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }

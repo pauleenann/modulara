@@ -76,7 +76,8 @@
             
             <!-- display if cart is not empty -->
             <div
-            v-if="cartItemInfo.length>0">
+            v-if="store.cartTotal>0"
+            class="">
                 <!-- your cart -->
                 <div 
                 class="mt-5 flex flex-col gap-4">
