@@ -2,65 +2,76 @@
 
 @import "tailwindcss";
 
-@theme{
-    --color-gray: rgba(43, 43, 43, 0.88);
-    --color-light-gray: #A29F9F;
-    --font-dm-sans: "DM Sans", sans-serif;
-    --font-kulim-park: "Kulim Park", sans-serif;
-    --font-didact: "Didact Gothic", sans-serif;
+@theme {
+  --color-gray: rgba(43, 43, 43, 0.88);
+  --color-light-gray: #A29F9F;
+  --font-dm-sans: "DM Sans", sans-serif;
+  --font-kulim-park: "Kulim Park", sans-serif;
+  --font-didact: "Didact Gothic", sans-serif;
 }
 
-html,
-body {
-    width: 100%;
-    background-color: white;
-    color: #2B2B2B;
-    scroll-behavior: smooth;
-    overflow-x: hidden;
+@layer base{
+    html,
+    body {
+      width: 100%;
+      background-color: white;
+      color: #2B2B2B;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
 }
 
-
-@utility flex-center {
+@layer utilities {
+  .flex-center {
     @apply flex justify-center items-center;
-}
+  }
 
-@utility col-center {
+  .col-center {
     @apply flex flex-col justify-center items-center;
-}
+  }
 
-@utility col-center-left {
+  .col-center-left {
     @apply flex flex-col justify-center items-start;
+  }
+
+  .footer-gap {
+    @apply flex flex-col gap-3;
+  }
+
+  .footer-header {
+    @apply font-semibold text-[var(--color-gray)] text-xl;
+  }
+
+  .footer-list {
+    @apply flex flex-col gap-2 mt-5 font-semibold text-[var(--color-light-gray)];
+  }
+
+  .error-message {
+    @apply text-red-500 text-sm mt-1;
+  }
+
+ 
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
-@utility footer-gap{
-    @apply flex flex-col gap-3
-}
+@layer components {
+  main {
+    @apply h-auto w-screen;
+  }
 
-@utility footer-header{
-    @apply font-semibold text-[var(--color-gray)] text-xl
-}
+  #login,
+  #signup {
+    @apply h-screen w-full h-full grid md:grid-cols-[1fr_700px] font-dm-sans;
+  }
 
-@utility footer-list{
-    @apply flex flex-col gap-2 mt-5 font-semibold text-[var(--color-light-gray)]
-}
-
-@utility error-message{
-    @apply text-red-500 text-sm mt-1
-}
-
-@layer components{
-    main{
-        @apply h-auto w-screen
-    }
-
-    #login,
-    #signup{
-        @apply h-screen w-full h-full grid  md:grid-cols-[1fr_700px] font-dm-sans;
-    }
-
-    #dashboard,
-    #inventory{
-        @apply bg-[var(--color-gray)] w-full h-screen p-3 grid grid-cols-[1fr_85%] gap-5
-    }
-
+  #dashboard,
+  #inventory {
+    @apply bg-[var(--color-gray)] w-full h-screen p-3 grid grid-cols-[1fr_85%] gap-5;
+  }
 }

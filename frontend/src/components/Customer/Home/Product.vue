@@ -83,7 +83,7 @@
           productId: productData.product._id,
           variant: productData.variant,
           quantity: productData.quantity
-        }, productData.product.name)"
+        }, productData.product.name, true)"
         class="bg-[var(--color-gray)] w-10 h-10 rounded-full text-white">
           <i class="fa-solid fa-basket-shopping"></i>
         </button>

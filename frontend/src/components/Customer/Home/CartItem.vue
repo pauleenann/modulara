@@ -1,8 +1,11 @@
 <script setup>
+    import { cartStore } from '@/store/cartStore';
+
     const props = defineProps({
         item: Object,
         productDetail: Object
     })
+    const store = cartStore();
 </script>
 
 <template>
@@ -30,11 +33,19 @@
                 </div>
                 
                 <div class="flex items-center gap-3">
-                    <button class="h-6 w-6 flex-center border border-gray-200 rounded-full">
+                    <button 
+                    class="h-6 w-6 flex-center border border-gray-200 rounded-full"
+                    >
                         <i class="fa-solid fa-minus text-xs"></i>
                     </button>
                     <span class="font-semibold">{{ props.item&&props.item.quantity }}</span>
-                    <button class="h-6 w-6 flex-center border border-gray-200 rounded-full">
+                    <button 
+                    class="h-6 w-6 flex-center border border-gray-200 rounded-full"
+                    @click="store.addToCart({
+                        productId: item.productId,
+                        variant: item.variant,
+                        quantity: 1
+                    })">
                         <i class="fa-solid fa-plus text-xs"></i>
                     </button>
                 </div>

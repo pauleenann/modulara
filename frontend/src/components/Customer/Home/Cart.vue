@@ -11,9 +11,15 @@
     const store = cartStore();
     const cartItemInfo = reactive([]);
     const loading = ref(false);
-    const totalPrice = ref(0);
+    const totalPrice = computed(() => {
+        return store.cart.reduce((sum, item) => {
+            const detail = cartItemInfo.find(info => item.productId === info._id);
+            return sum + (detail ? detail.price * item.quantity : 0);
+        }, 0); 
+    });
     const deliveryFee = ref(50);
     const subtotal = computed(()=>totalPrice.value+deliveryFee.value)
+
 
     const fetchCartDetails = async () => {
         if (!store.cart.length) return
@@ -24,12 +30,6 @@
 
             // remove existing items in cart and replace with fetched data
             cartItemInfo.splice(0, cartItemInfo.length, ...data.cartDetails)
-
-            // handle pricing
-            store.cart.forEach(item=>{
-                let itemDetail = data.cartDetails.find((detail)=>detail._id == item.productId);
-                totalPrice.value += itemDetail.price * item.quantity;
-            })
         } catch (err) {
             console.error(err)
         } finally {
@@ -59,7 +59,7 @@
         'h-full w-full bg-gray-100/50 fixed z-10',
         props.open ? 'translate-x-0' : 'translate-x-full'
     ]"
-    @click="props.close">
+    >
         <div 
         :class="[
             'absolute right-0 z-75 bg-white w-full lg:w-130 h-screen overflow-y-scroll p-8 transition-transform duration-300 ease-in-out shadow-2xl',
@@ -76,7 +76,7 @@
             
             <!-- display if cart is not empty -->
             <div
-            v-if="store.cart.length>0">
+            v-if="cartItemInfo.length>0">
                 <!-- your cart -->
                 <div 
                 class="mt-5 flex flex-col gap-4">

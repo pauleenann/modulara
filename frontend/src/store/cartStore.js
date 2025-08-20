@@ -14,7 +14,7 @@ export const cartStore = defineStore('cart', {
     },    
 
     actions: {
-        async addToCart(productData, productName='Product') {
+        async addToCart(productData, productName='Product', toast = false) {
             const store = authStore();
             const isAuthenticated = store.isAuthenticated;
           
@@ -36,15 +36,13 @@ export const cartStore = defineStore('cart', {
           
             if (!isAuthenticated) {
               localStorage.setItem('cart', JSON.stringify(this.cart));
-              toastNotification(`${productName} added to cart`, 'success')
+              toast&&toastNotification(`${productName} added to cart`, 'success')
             } else {
               // API call to save to backend
             }
         },
 
-        async incrementQuantity(){
-          
-        }
+        
 
     },
 });
