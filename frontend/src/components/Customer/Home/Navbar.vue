@@ -7,12 +7,14 @@
     import { useRoute } from 'vue-router';
     import MobileMenu from './MobileMenu.vue';
     import { handleIconClick } from '@/utils/iconMenuHandler';
+    import { cartStore } from '@/store/cartStore';
 
     const route = useRoute();
     const router = useRouter();
     const isClicked = ref(false);
     const isBasketModalOpen = ref(false);
     const currentUrl = route.name;
+    const store = cartStore();
 </script>
 
 <template>
@@ -47,9 +49,15 @@
                         :key="index"
                     >
                         <button 
-                            class="cursor-pointer"
+                            class="cursor-pointer relative"
                             @click="handleIconClick(menu.path, menu.name, () => isBasketModalOpen = true, router)"
                         >
+                            <div 
+                            v-if="menu.name=='Cart'"
+                            class="absolute bg-red-500 text-white font-medium text-[10px] h-4 w-4 flex-center p-0 rounded-full -right-2 -top-2"
+                            >
+                                {{ store.cartTotal }}
+                            </div>
                             <i :class="['text-xl',menu.icon]"></i>
                         </button>
                     </li>

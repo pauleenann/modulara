@@ -1,5 +1,6 @@
 import { login, refreshAccessToken, signInWithGoogle, signout, signUpWithEmailPass } from '@/services/auth';
 import { defineStore } from 'pinia';
+import { cartStore } from './cartStore';
 
 export const authStore = defineStore('auth', {
     state: () => ({
@@ -14,6 +15,7 @@ export const authStore = defineStore('auth', {
         // sign in with google
         async signinGoogle(router) {
             try {
+                const store = cartStore();
                 const response = await signInWithGoogle(this.setError);
 
                 if (response) {
@@ -21,11 +23,13 @@ export const authStore = defineStore('auth', {
                     this.role = response.data.user.role;
                     this.accessToken = response.data.accessToken;
 
-                    this.isAuthenticated = true
+                    this.isAuthenticated = true;
 
+                    
                     if(this.role==='admin'){
                         router.push('/admin/dashboard')
                     }else{
+                        await store.saveCart(this.user.id)
                         router.push('/')
                     }
                 }

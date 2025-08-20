@@ -1,6 +1,7 @@
 import { toastNotification } from "@/utils/products/toastNotification";
 import { authStore } from "./authStore";
 import { defineStore } from 'pinia';
+import { saveCart } from "@/services/cart";
 
 export const cartStore = defineStore('cart', {
     state: () => ({
@@ -78,6 +79,18 @@ export const cartStore = defineStore('cart', {
           if(!isAuthenticated){
             localStorage.setItem('cart', JSON.stringify(this.cart));
           }
+        },
+
+        async saveCart(userId){
+          if(this.cart.length==0) return; //return if cart is empty 
+            try {
+              const response = await saveCart(userId, this.cart);
+              
+              // delete from localstorage
+              localStorage.removeItem('cart');
+            } catch (error) {
+              console.log('Cannot save cart. An error occurred: ', error)
+            }
         }
     },
 });

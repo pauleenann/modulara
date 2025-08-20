@@ -5,3 +5,10 @@ export const getCartDetails = async (ids)=>{
         params: { ids }
     })
 }
+
+export const saveCart = async (userId, cart)=>{
+    return await api.post('/cart',{
+        userId,
+        cart
+    })
+}
