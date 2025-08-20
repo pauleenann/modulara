@@ -1,6 +1,6 @@
 <script setup>
     import CartItem from './CartItem.vue'
-    import { onMounted, reactive, ref, watch } from 'vue'
+    import { computed, onMounted, reactive, ref, watch } from 'vue'
     import { getCartDetails } from '@/services/cart'
     import { cartStore } from '@/store/cartStore'
 
@@ -8,17 +8,28 @@
         open: Boolean,
         close: Function
     })
-    const store = cartStore()
-    const cartItemInfo = reactive([])
-    const loading = ref(false)
+    const store = cartStore();
+    const cartItemInfo = reactive([]);
+    const loading = ref(false);
+    const totalPrice = ref(0);
+    const deliveryFee = ref(50);
+    const subtotal = computed(()=>totalPrice.value+deliveryFee.value)
 
     const fetchCartDetails = async () => {
         if (!store.cart.length) return
         loading.value = true
         try {
-            const ids = store.cart.map(item => item.productId)
-            const { data } = await getCartDetails(ids)
+            const ids = store.cart.map(item => item.productId);
+            const { data } = await getCartDetails(ids);
+
+            // remove existing items in cart and replace with fetched data
             cartItemInfo.splice(0, cartItemInfo.length, ...data.cartDetails)
+
+            // handle pricing
+            store.cart.forEach(item=>{
+                let itemDetail = data.cartDetails.find((detail)=>detail._id == item.productId);
+                totalPrice.value += itemDetail.price * item.quantity;
+            })
         } catch (err) {
             console.error(err)
         } finally {
@@ -26,14 +37,13 @@
         }
     }
 
-    // Run on mount
+    // run fetchCartDetails on mount
     onMounted(fetchCartDetails)
 
-    // Run whenever cart changes
+    // run whenever cart changes
     watch(
-        () => store.cart,
+        () => store.cartTotal,
         () => fetchCartDetails(),
-        { deep: true }
     )
 
     const handleProductDetail = (item) => {
@@ -64,44 +74,53 @@
                 </button>
             </div>
             
-            <!-- your cart -->
-            <div 
-            v-if="!loading"
-            class="mt-5 flex flex-col gap-4">
-                <h1 class="font-dm-sans text-2xl font-semibold">Your Cart</h1>
-                <!-- items -->
-                <CartItem 
-                    v-for="item in store.cart"
-                    :key="item.productId"
-                    :item="item"
-                    :productDetail="handleProductDetail(item)"
-                />
-            </div>
+            <!-- display if cart is not empty -->
+            <div
+            v-if="store.cart.length>0">
+                <!-- your cart -->
+                <div 
+                class="mt-5 flex flex-col gap-4">
+                    <h1 class="font-dm-sans text-2xl font-semibold">Your Cart</h1>
+                    <!-- items -->
+                    <CartItem 
+                        v-for="item in store.cart"
+                        :key="item.productId"
+                        :item="item"
+                        :productDetail="handleProductDetail(item)"
+                    />
+                </div>
 
-            <!-- order summary -->
-            <div 
-            v-if="!loading"
-            class="font-dm-sans text-[var(--color-gray)] mt-8 flex flex-col gap-2">
-                <h2 class="text-lg font-bold">Order Summary</h2>
-                <div class="grid grid-cols-2 flex flex-col gap-2">
-                    <!-- product -->
-                    <p>Products (2)</p>
-                    <p class="text-end">₱28,900</p>
-                    <!-- delivery price -->
-                    <p>Delivery price</p>
-                    <p class="text-end">₱50</p>
-                </div>
-                <hr>
-                <div class="grid grid-cols-2 flex flex-col gap-2 font-semibold">
-                    <!-- subtotal -->
-                    <p class="text-xl">Subtotal</p>
-                    <p class="text-end text-2xl">₱28,900</p>
-                </div>
-                <!-- proceed to checkout btn -->
-                <button class="text-white bg-[var(--color-gray)] hover:bg-[#1f1f1f] p-4 font-semibold rounded-3xl mt-3 mb-10 cursor-pointer transform duration-300 ease-in-out text-sm">
-                    Proceed to checkout
-                </button>
+                <!-- order summary -->
+                <div 
+                class="font-dm-sans text-[var(--color-gray)] mt-8 flex flex-col gap-2">
+                    <h2 class="text-lg font-bold">Order Summary</h2>
+                    <div class="grid grid-cols-2 flex flex-col gap-2">
+                        <!-- product -->
+                        <p>Products ({{ store.cartTotal || 0 }})</p>
+                        <p class="text-end">₱{{ totalPrice.toLocaleString() }}</p>
+                        <!-- delivery price -->
+                        <p>Delivery price</p>
+                        <p class="text-end">₱{{ deliveryFee }}</p>
+                    </div>
+                    <hr>
+                    <div class="grid grid-cols-2 flex flex-col gap-2 font-semibold">
+                        <!-- subtotal -->
+                        <p class="text-xl">Subtotal</p>
+                        <p class="text-end text-2xl">₱{{ subtotal.toLocaleString() }}</p>
+                    </div>
+                    <!-- proceed to checkout btn -->
+                    <button class="text-white bg-[var(--color-gray)] hover:bg-[#1f1f1f] p-4 font-semibold rounded-3xl mt-3 mb-10 cursor-pointer transform duration-300 ease-in-out text-sm">
+                        Proceed to checkout
+                    </button>
+                </div>  
             </div>
+            <div 
+            v-else
+            class="w-full h-full flex items-center justify-center">
+                <p class="font-medium">Your cart is empty  </p>
+            </div>
+            
+
         </div>      
     </div>
     

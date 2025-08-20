@@ -42,8 +42,8 @@ export const cartStore = defineStore('cart', {
             }
         },
 
-        async getAddItemInfo(){
-
+        async incrementQuantity(){
+          
         }
 
     },
