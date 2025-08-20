@@ -12,7 +12,9 @@
     <div
     class="relative w-full min-h-25 border border-gray-200 rounded flex justify-between p-4">
         <!-- remove -->
-        <i class="fa-solid fa-circle-xmark text-xl absolute -right-2 -top-2 text-[var(--color-gray)] hover:text-[#1f1f1f] cursor-pointer transform duration-300 ease-in-out"></i>
+        <i 
+        @click="store.removeProduct(item.productId)"
+        class="fa-solid fa-circle-xmark text-xl absolute -right-2 -top-2 text-[var(--color-gray)] hover:text-[#1f1f1f] cursor-pointer transform duration-300 ease-in-out"></i>
     
         <div class="flex item-center gap-3">
             <!-- image -->
