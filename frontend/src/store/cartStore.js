@@ -1,11 +1,11 @@
 import { toastNotification } from "@/utils/products/toastNotification";
 import { authStore } from "./authStore";
 import { defineStore } from 'pinia';
-import { saveCart } from "@/services/cart";
+import { getCart, saveCart } from "@/services/cart";
 
 export const cartStore = defineStore('cart', {
     state: () => ({
-        cart: JSON.parse(localStorage.getItem('cart') || '[]'),
+        cart: [],
     }),
 
     getters: {
@@ -15,6 +15,25 @@ export const cartStore = defineStore('cart', {
     },    
 
     actions: {
+        async getCart(){
+          // get authentication status
+          const store = authStore();
+          const isAuthenticated = store.isAuthenticated;
+          const user = store.user;
+          
+          if(!isAuthenticated){
+            this.cart = JSON.parse(localStorage.getItem('cart')) || []
+          }else{
+            try {
+              const response = await getCart(user.id);
+              console.log(response)
+              this.cart = response.data.cart.items;
+            } catch (error) {
+              console.log('Cannot get cart. An error occurred: ', error)
+            }
+          }
+        }, 
+
         async addToCart(productData, productName='Product', toast = false) {
             // get authentication status
             const store = authStore();

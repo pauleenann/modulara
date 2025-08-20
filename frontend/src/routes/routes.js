@@ -9,6 +9,7 @@ import ProductView from '@/pages/ProductView.vue'
 import FavoritesView from '@/pages/FavoritesView.vue'
 import SignupView from '@/pages/SignupView.vue'
 import ProfileView from '@/pages/ProfileView.vue'
+import { cartStore } from '@/store/cartStore'
 
 const routes = [
   { 
@@ -71,6 +72,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   const auth = authStore();
+  const store = cartStore();
+ 
   auth.error = ''; //reset error
 
   console.log('isAuthenticated: ', auth.isAuthenticated)
@@ -80,6 +83,9 @@ router.beforeEach(async (to, from) => {
     console.log('Not authenticated — trying to refresh token...');
     await auth.refreshAccessToken();
   }
+
+  await store.getCart(); //initialize cart
+  console.log('cart: ', store.cart)
 
   const role = auth.role;
 

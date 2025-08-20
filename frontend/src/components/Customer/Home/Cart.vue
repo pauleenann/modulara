@@ -22,10 +22,12 @@
 
 
     const fetchCartDetails = async () => {
+        console.log('cart from cart: ',store.cart)
         if (!store.cart.length) return
         loading.value = true
         try {
             const ids = store.cart.map(item => item.productId);
+            console.log(ids)
             const { data } = await getCartDetails(ids);
 
             // remove existing items in cart and replace with fetched data
@@ -42,7 +44,7 @@
 
     // run whenever cart changes
     watch(
-        () => store.cartTotal,
+        () => store.cart,
         () => fetchCartDetails(),
     )
 

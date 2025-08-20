@@ -5,6 +5,7 @@ export const getCartDetails = async (req, res)=>{
     try {
         console.log('this is cart details');
         const ids = req.query['ids[]'];
+        console.log(ids)
         const cartDetails = await Product.find({
             _id:{
                 $in: ids
@@ -27,6 +28,7 @@ export const saveCartDetails = async (req, res)=>{
 
         console.log(userId, cart)
         // insert data
+        
         const cartDetails = await Cart.create({
             userId: userId,
             items: cart
@@ -38,6 +40,23 @@ export const saveCartDetails = async (req, res)=>{
         });
     } catch (error) {
         console.error('Failed saving cart', error);
+        return res.status(500).json({ error: error });
+    }
+}
+
+export const getUserCart = async (req, res)=>{
+    try {
+        const {id} = req.params;
+        console.log('id: ',id)
+
+        const cart = await Cart.findOne({userId: id})
+        
+        return res.status(200).json({
+            cart,
+            message: "Cart successfully fetched."
+        })
+    } catch (error) {
+        console.error('Failed getting cart', error);
         return res.status(500).json({ error: error });
     }
 }

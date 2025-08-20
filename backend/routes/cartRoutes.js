@@ -1,5 +1,5 @@
 import express from 'express';
-import { getCartDetails, saveCartDetails } from '../controllers/cartController.js';
+import { getCartDetails, getUserCart, saveCartDetails } from '../controllers/cartController.js';
 import { authenticate } from '../middleware/auth.js';
 import { authorize } from '../middleware/authorize.js';
 
@@ -14,6 +14,12 @@ router.post(
     authenticate,
     authorize('customer'),
     saveCartDetails
+)
+router.get(
+    '/:id',
+    authenticate,
+    authorize('customer'),
+    getUserCart
 )
 
 export default router;

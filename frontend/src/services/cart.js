@@ -12,3 +12,8 @@ export const saveCart = async (userId, cart)=>{
         cart
     })
 }
+
+export const getCart = async (userId)=>{
+    // console.log(userId)
+    return await api.get(`/cart/${userId}`);
+}
