@@ -44,7 +44,7 @@
 
     // run whenever cart changes
     watch(
-        () => store.cart,
+        () => store.cartTotal,
         () => fetchCartDetails(),
     )
 

@@ -1,7 +1,7 @@
 import { toastNotification } from "@/utils/products/toastNotification";
 import { authStore } from "./authStore";
 import { defineStore } from 'pinia';
-import { getCart, saveCart } from "@/services/cart";
+import { getCart, saveCart, saveItemToDB } from "@/services/cart";
 
 export const cartStore = defineStore('cart', {
     state: () => ({
@@ -38,29 +38,41 @@ export const cartStore = defineStore('cart', {
             // get authentication status
             const store = authStore();
             const isAuthenticated = store.isAuthenticated;
-          
+
             // this.basket.find(...) returns a reference to the actual object in this.basket, so changing existing changes the original data in the array immediately.
             const existing = this.cart.find(
               item => item.productId === productData.productId && item.variant === productData.variant
-            );
+              );
 
-            console.log(existing)
+              if (existing) {
+                existing.quantity += productData.quantity;
+              } else {
+                this.cart.push({ ...productData });
+              }
           
-            if (existing) {
-              existing.quantity += productData.quantity;
+            if (!isAuthenticated) {
+              // save to local storage
+              localStorage.setItem('cart', JSON.stringify(this.cart));
+
+              // display toast
+              toast&&toastNotification(`${productName} added to cart`, 'success')
             } else {
-              this.cart.push({ ...productData });
+              try {
+                const {id} = store.user;
+                const response = await saveItemToDB(id, productData);
+                
+                // display toast
+                toast&&toastNotification(`${productName} added to cart`, 'success')
+              } catch (error) {
+                console.log('Cannot add cart to DB. An error occurred: ', error )
+
+                // display toast
+                toast&&toastNotification(`${productName} failed to add to cart`, 'warning')
+              }
             }
 
             //add total
             this.totalItems++
-          
-            if (!isAuthenticated) {
-              localStorage.setItem('cart', JSON.stringify(this.cart));
-              toast&&toastNotification(`${productName} added to cart`, 'success')
-            } else {
-              // API call to save to backend
-            }
         },
 
         async removeFromCart(productData){

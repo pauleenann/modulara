@@ -60,3 +60,44 @@ export const getUserCart = async (req, res)=>{
         return res.status(500).json({ error: error });
     }
 }
+
+export const addItemToCart = async (req, res)=>{
+    try {
+        console.log(req.body)
+        const {id, productData} = req.body;
+
+        // check first if user exists
+        const userExists = await Cart.findOne({
+            userId: id
+        })
+
+        // if user does not exist, create cart
+        if(!userExists){
+            await Cart.create({
+                userId: id,
+                items: productData
+            })
+        }else{
+            // check first if user already added the item, if already added, increase quantity
+            const itemExists = await Cart.findOneAndUpdate(
+                {userId: id, "items.variant": productData.variant},
+                {$inc: { "items.$.quantity": productData.quantity}} // The $ is a positional operator — it refers to the first array element that matched the condition.
+            )
+
+            // if item is not added yet, add the item to the cart
+            if(!itemExists){
+                await Cart.findOneAndUpdate(
+                    { userId: id },
+                    { $push: { items : productData } },
+                )
+            }
+        }
+        
+        return res.status(200).json({
+            message: 'Item added to cart successfully'
+        })
+    } catch (error) {
+        console.error('Failed adding item to cart', error);
+        return res.status(500).json({ error: error });
+    }
+}
