@@ -28,3 +28,11 @@ export const saveItemToDB = async (id, productData)=>{
         productData
     })
 }
+
+// decrease quantity
+export const removeFromCart = async (id, productData)=>{
+    return await api.put(`/cart/remove`,{
+        id, 
+        productData
+    })
+}

@@ -26,18 +26,51 @@ export const saveCartDetails = async (req, res)=>{
     try {
         const {userId, cart} = req.body;
 
-        console.log(userId, cart)
-        // insert data
-        
-        const cartDetails = await Cart.create({
-            userId: userId,
-            items: cart
+        //check first if user has a cart
+        const userExists = await Cart.findOne({
+            userId: userId
         })
 
-        return res.status(201).json({ 
-            cartDetails,
-            message: 'Cart added' 
-        });
+        if(!userExists){
+            await Cart.create({
+                userId: userId,
+                items: cart
+            })
+        }else{
+            //iterate productData
+            cart.forEach(async (product) => {
+                let itemExists = await Cart.findOneAndUpdate(
+                    {
+                        "items.productId": product.productId,
+                        "items.variant": product.variant
+                    },
+                    {
+                        $inc: { 
+                            "items.$.quantity": product.quantity
+                        }
+                    } 
+                )
+                
+                // if item is not added yet, add the item to the cart
+                if(!itemExists){
+                    await Cart.findOneAndUpdate(
+                        { 
+                            userId: userId 
+                        },
+                        { 
+                            $push: { 
+                                items : product 
+                            } 
+                        },
+                    )
+                }
+            });
+        }
+        
+        return res.status(200).json({
+            message: 'Items saved to cart successfully'
+        })
+        
     } catch (error) {
         console.error('Failed saving cart', error);
         return res.status(500).json({ error: error });
@@ -63,13 +96,14 @@ export const getUserCart = async (req, res)=>{
 
 export const addItemToCart = async (req, res)=>{
     try {
-        console.log(req.body)
+        console.log('add',req.body)
         const {id, productData} = req.body;
 
         // check first if user exists
         const userExists = await Cart.findOne({
             userId: id
         })
+        console.log(userExists)
 
         // if user does not exist, create cart
         if(!userExists){
@@ -80,15 +114,29 @@ export const addItemToCart = async (req, res)=>{
         }else{
             // check first if user already added the item, if already added, increase quantity
             const itemExists = await Cart.findOneAndUpdate(
-                {userId: id, "items.variant": productData.variant},
-                {$inc: { "items.$.quantity": productData.quantity}} // The $ is a positional operator — it refers to the first array element that matched the condition.
+                {
+                    "items.productId": productData.productId,
+                    "items.variant": productData.variant
+                },
+                {
+                    $inc: { 
+                        "items.$.quantity": productData.quantity
+                    }
+                } // The $ is a positional operator — it refers to the first array element that matched the condition.
             )
+            
 
             // if item is not added yet, add the item to the cart
             if(!itemExists){
                 await Cart.findOneAndUpdate(
-                    { userId: id },
-                    { $push: { items : productData } },
+                    { 
+                        userId: id 
+                    },
+                    { 
+                        $push: { 
+                            items : productData 
+                        } 
+                    },
                 )
             }
         }
@@ -98,6 +146,62 @@ export const addItemToCart = async (req, res)=>{
         })
     } catch (error) {
         console.error('Failed adding item to cart', error);
+        return res.status(500).json({ error: error });
+    }
+}
+
+// for decreasing quantity
+export const removeItemFromCart = async (req, res)=>{
+    try {
+        console.log('body',req.body)
+        const {id, productData} = req.body;
+
+        // check first if user exists
+        const userExists = await Cart.findOne({
+            userId: id
+        })
+
+        if(userExists){
+            // decrease
+            await Cart.findOneAndUpdate(
+                {
+                    "items.productId": productData.productId, 
+                    "items.variant": productData.variant, 
+                    "items.quantity":{
+                        $gt:1
+                    }
+                },
+                {
+                    $inc: { 
+                        "items.$.quantity": -1
+                    }
+                } 
+            )
+
+            // remove
+            await Cart.findOneAndUpdate(
+                {
+                  "items.productId": productData.productId,
+                  "items.variant": productData.variant,
+                  "items.quantity": 1
+                },
+                {
+                  $pull: {
+                    items: {
+                      productId: productData.productId,
+                      variant: productData.variant,
+                      quantity: 1
+                    }
+                  }
+                }
+            );
+        }
+
+        return res.status(200).json({
+            message: 'Item removed to cart successfully'
+        })
+    } catch (error) {
+        console.error('Failed removing item to cart', error);
         return res.status(500).json({ error: error });
     }
 }

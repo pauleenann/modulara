@@ -1,7 +1,7 @@
 import { toastNotification } from "@/utils/products/toastNotification";
 import { authStore } from "./authStore";
 import { defineStore } from 'pinia';
-import { getCart, saveCart, saveItemToDB } from "@/services/cart";
+import { getCart, removeFromCart, saveCart, saveItemToDB } from "@/services/cart";
 
 export const cartStore = defineStore('cart', {
     state: () => ({
@@ -75,10 +75,12 @@ export const cartStore = defineStore('cart', {
             this.totalItems++
         },
 
+        // for decreasing
         async removeFromCart(productData){
           // get authentication status
           const store = authStore();
           const isAuthenticated = store.isAuthenticated;
+          const {id} = store.user;
 
           const existing = this.cart.find(item=> productData.productId == item.productId && productData.variant == item.variant)
 
@@ -95,7 +97,11 @@ export const cartStore = defineStore('cart', {
           if(!isAuthenticated){
             localStorage.setItem('cart', JSON.stringify(this.cart));
           }else{
-
+            try {
+              const response = await removeFromCart(id, productData)
+            } catch (error) {
+              console.log("Cannot decrease quantity")
+            }
           }
         },
 
