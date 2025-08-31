@@ -205,3 +205,39 @@ export const removeItemFromCart = async (req, res)=>{
         return res.status(500).json({ error: error });
     }
 }
+
+//remove item completely
+export const removeItem = async (req, res)=>{
+    try {
+        console.log('body',req.body)
+        const {id, productId} = req.body;
+
+        // check first if user exists
+        const userExists = await Cart.findOne({
+            userId: id
+        })
+
+        if(userExists){
+            // remove
+            await Cart.findOneAndUpdate(
+                {
+                  "items.productId": productId,
+                },
+                {
+                  $pull: {
+                    items: {
+                      productId: productId,
+                    }
+                  }
+                }
+            );
+        }
+
+        return res.status(200).json({
+            message: 'Item removed to cart successfully'
+        })
+    } catch (error) {
+        console.error('Failed removing item to cart', error);
+        return res.status(500).json({ error: error });
+    }
+}

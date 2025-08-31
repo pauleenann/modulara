@@ -9,7 +9,7 @@ export const getCartDetails = async (ids)=>{
 
 // save cart from localstorage to db
 export const saveCart = async (userId, cart)=>{
-    return await api.post('/cart/save',{
+    return await api.post('/cart',{
         userId,
         cart
     })
@@ -23,7 +23,7 @@ export const getCart = async (userId)=>{
 
 // save/push added item to db when user is authenticated
 export const saveItemToDB = async (id, productData)=>{
-    return await api.post(`/cart/add`,{
+    return await api.put(`/cart/items`,{
         id,
         productData
     })
@@ -31,8 +31,18 @@ export const saveItemToDB = async (id, productData)=>{
 
 // decrease quantity
 export const removeFromCart = async (id, productData)=>{
-    return await api.put(`/cart/remove`,{
+    return await api.put(`/cart/items/decrease`,{
         id, 
         productData
+    })
+}
+
+// delete item from cart
+export const removeItem = async (id, productId)=>{
+    return await api.delete(`/cart/items`,{
+        data:{
+            id, 
+            productId
+        }
     })
 }

@@ -1,7 +1,7 @@
 import { toastNotification } from "@/utils/products/toastNotification";
 import { authStore } from "./authStore";
 import { defineStore } from 'pinia';
-import { getCart, removeFromCart, saveCart, saveItemToDB } from "@/services/cart";
+import { getCart, removeFromCart, removeItem, saveCart, saveItemToDB } from "@/services/cart";
 
 export const cartStore = defineStore('cart', {
     state: () => ({
@@ -105,16 +105,23 @@ export const cartStore = defineStore('cart', {
           }
         },
 
-        async removeProduct(id){
+        async removeProduct(productId){
           // get authentication status
           const store = authStore();
           const isAuthenticated = store.isAuthenticated;
+          const {id} = store.user;
 
-          this.cart = this.cart.filter(item=>item.productId!=id)
+          this.cart = this.cart.filter(item=>item.productId!=productId)
 
           // update db or localstorage
           if(!isAuthenticated){
             localStorage.setItem('cart', JSON.stringify(this.cart));
+          }else{
+            try {
+                await removeItem(id, productId)
+            } catch (error) {
+              console.log('Cannot remove product from cart. An error occurred: ', error)
+            }
           }
         },
 

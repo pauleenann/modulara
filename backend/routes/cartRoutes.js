@@ -1,5 +1,5 @@
 import express from 'express';
-import { addItemToCart, getCartDetails, getUserCart, removeItemFromCart, saveCartDetails } from '../controllers/cartController.js';
+import { addItemToCart, getCartDetails, getUserCart, removeItem, removeItemFromCart, saveCartDetails } from '../controllers/cartController.js';
 import { authenticate } from '../middleware/auth.js';
 import { authorize } from '../middleware/authorize.js';
 
@@ -16,21 +16,28 @@ router.get(
     getUserCart
 );
 router.post(
-    '/save',
+    '/',
     authenticate,
     authorize('customer'),
     saveCartDetails
 );
 router.post(
-    '/add',
+    '/items',
     authenticate,
     authorize('customer'),
     addItemToCart
 );
 router.put(
-    '/remove',
+    '/items/decrease',
     authenticate,
     authorize('customer'),
     removeItemFromCart
-)
+);
+router.delete(
+    '/items',
+    authenticate,
+    authorize('customer'),
+    removeItem
+);
+
 export default router;
