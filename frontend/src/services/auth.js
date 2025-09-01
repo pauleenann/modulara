@@ -6,6 +6,9 @@ import { authStore } from "@/store/authStore";
 // import { userStore } from "@/store/userStore";
 
 const provider = new GoogleAuthProvider();
+
+// endpoint
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
   
 // sign in with google
 export const signInWithGoogle = async (setError) => {
@@ -15,7 +18,7 @@ export const signInWithGoogle = async (setError) => {
     const token = await user.getIdToken();
 
     const response = await axios.post(
-      'http://localhost:5000/api/auth/signin-google',
+      `${API_BASE_URL}/auth/signin-google`,
       {},
       {
         headers: {
@@ -42,7 +45,7 @@ export const signUpWithEmailPass = async (data, setError)=>{
     console.log(token)
 
     const response = await axios.post(
-      'http://localhost:5000/api/auth/signup',
+      `${API_BASE_URL}/auth/signup`,
       {
         firstName: data.firstName,
         lastName: data.lastName
@@ -71,7 +74,7 @@ export const login = async (data, setError)=>{
     const token = await user.getIdToken();
 
     const response = await axios.post(
-      'http://localhost:5000/api/auth/login',
+      `${API_BASE_URL}/auth/login`,
       {},
       {
         headers: {
