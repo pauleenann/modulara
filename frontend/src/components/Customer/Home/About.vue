@@ -75,7 +75,7 @@
         </div>
 
         <!-- about image -->
-        <div id="abt-img" class="w-full h-100 lg:h-[700px] bg-red-100 bg-[url('images/about.png')] bg-cover bg-bottom">
+        <div id="abt-img" class="w-full h-100 lg:h-[700px] bg-red-100 bg-[url('/images/about.png')] bg-cover bg-bottom">
 
         </div>
     </section>

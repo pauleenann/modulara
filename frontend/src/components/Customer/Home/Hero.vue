@@ -61,7 +61,7 @@
 </script>
 
 <template>
-    <section class="h-screen lg:h-[1200px] w-screen bg-[url('/images/home-bg.png')] bg-cover bg-[40%] lg:bg-center relative">
+    <section class="h-screen lg:h-[1200px] screen bg-[url('/images/home-bg.png')] bg-cover bg-[40%] lg:bg-enter relative">
         <!-- overlay -->
         <div class="absolute h-100 left-0 right-0 bottom-0 bg-gradient-to-t from-white/70 to-transparent"></div>
 
