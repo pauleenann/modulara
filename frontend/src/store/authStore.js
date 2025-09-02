@@ -16,7 +16,7 @@ export const authStore = defineStore('auth', {
         // sign in with google
         async signinGoogle(router) {
             try {
-                this .loading = true
+                this.loading = true
 
                 const store = cartStore();
                 const response = await signInWithGoogle(this.setError);
