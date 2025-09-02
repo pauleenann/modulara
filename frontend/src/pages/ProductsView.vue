@@ -28,7 +28,7 @@
                 <!-- result text and sort button -->
                 <div class="mt-13 flex justify-between items-end font-dm-sans w-full">
                     <div>
-                        <h1 class="text-2xl lg:text-4xl">New Arrivals</h1>
+                        <h1 class="text-2xl lg:text-4xl capitalize">{{ store.searchQuery }}</h1>
                         <p>Showing 1 of 100 results</p>
                     </div>
 
@@ -57,11 +57,18 @@
                     :key="product._id"
                     :product="product"/>
                 </div>
-                
+
+                <div 
+                v-if="!store.loading && store.products.length==0"
+                class="h-70 flex flex-col justify-center items-center">
+                    <i class="fa-solid fa-face-sad-tear text-4xl mb-2"></i>
+                    <p class="font-medium ">No products available.</p>
+                    <p class="text-gray-500 font-medium">Please try a different search.</p>
+                </div>
 
                 <!-- show more -->
                 <button 
-                v-if="!store.loading"
+                v-if="store.products.length>0"
                 class="my-25 text-[var(--color-gray)] cursor-pointer">
                     Show more
                 </button>
