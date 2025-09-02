@@ -50,7 +50,7 @@
         <!-- bg -->
         <div 
             to="/"  
-            class="hidden md:block bg-[url('images/login-bg.png')] w-full h-full relative bg-center"
+            class="hidden md:block bg-[url('/images/login-bg.png')] w-full h-full relative bg-center"
         >
             <!-- logo -->
             <RouterLink to="/">
