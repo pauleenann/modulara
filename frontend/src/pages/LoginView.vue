@@ -62,7 +62,7 @@
                     :disabled="loading"
                 >
                     <img :src="google" alt="" class="w-[20px] md:w-auto">
-                    <span class="text-sm md:text-lg font-semibold text-[var(--color-gray)] cursor-pointer">Sign in with Google</span>
+                    <span class="text-sm md:text-lg font-semibold text-[var(--color-gray)]">Sign in with Google</span>
                 </button>
 
                 <!-- continue with email -->
@@ -127,10 +127,13 @@
                 </button>
 
                 <!-- create an account -->
-                <p class="text-xs md:text-sm text-center mt-3 md:mt-5 text-[#A29F9F] cursor-pointer">
+                <p class="text-xs md:text-sm text-center mt-3 md:mt-5 text-[#A29F9F]">
                     Don't have an account? 
                     <RouterLink 
-                    class="text-[var(--color-gray)] font-semibold"
+                    :class='[
+                        "text-[var(--color-gray)] font-semibold",
+                        loading ? "cursor-not-allowed" : "cursor-pointer"
+                    ]'
                     :to="loading ? '' : '/signup'">
                         Create an account
                     </RouterLink>

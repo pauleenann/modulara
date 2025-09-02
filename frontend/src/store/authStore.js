@@ -43,6 +43,8 @@ export const authStore = defineStore('auth', {
 
         async signUp(router, user){
             try {
+                this.loading = true;
+
                 const response = await signUpWithEmailPass(user, this.setError);
 
                 if (response) {
@@ -50,7 +52,8 @@ export const authStore = defineStore('auth', {
                     this.role = response.data.user.role;
                     this.accessToken = response.data.accessToken;
 
-                    this.isAuthenticated = true
+                    this.isAuthenticated = true;
+                    this.loading = false;
 
                     if(this.role==='admin'){
                         router.push('/admin/dashboard')
@@ -65,7 +68,8 @@ export const authStore = defineStore('auth', {
 
         async login(router, user){
             try {
-                console.log('login')
+                this.loading = true;
+                
                 const response = await login(user, this.setError);
 
                 if (response) {
@@ -73,7 +77,8 @@ export const authStore = defineStore('auth', {
                     this.role = response.data.user.role;
                     this.accessToken = response.data.accessToken;
 
-                    this.isAuthenticated = true
+                    this.isAuthenticated = true;
+                    this.loading = false;
 
                     if(this.role==='admin'){
                         router.push('/admin/dashboard')

@@ -27,7 +27,8 @@
         status: false,
         description:''
     });
-    const isDisabled = computed(() => !emailStatus.status || passwordMeter.strength < 2 || !user.firstName || !user.lastName);
+    const isDisabled = computed(() => !emailStatus.status || passwordMeter.strength < 2 || !user.firstName || !user.lastName );
+    const loading = computed(()=> auth.loading);
 
     // runs everytime password changes
     watch(()=>user.password, (password)=>{
@@ -79,11 +80,17 @@
 
                 <!-- sign in with google -->
                 <button 
-                    class="flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[52px] hover:bg-[#D9D9D9] transition delay-100 duration-300 ease-in-out cursor-pointer"
+                :class="[
+                        'flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[52px]  transition delay-100 duration-300 ease-in-out'
+                        , loading 
+                        ? 'cursor-not-allowed bg-[#D9D9D9]' 
+                        : 'cursor-pointer hover:bg-[#D9D9D9]'
+                    ]"
                     @click="auth.signinGoogle(router)"
+                    :disabled="loading"
                 >
                     <img :src="google" alt="" class="w-[20px] md:w-auto">
-                    <span class="text-sm md:text-lg font-semibold text-[var(--color-gray)] cursor-pointer">Continue with Google</span>
+                    <span class="text-sm md:text-lg font-semibold text-[var(--color-gray)]">Continue with Google</span>
                 </button>
 
                 <!-- continue with email -->
@@ -103,7 +110,8 @@
                         type="text" 
                         class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
                         placeholder="First name"
-                        v-model="user.firstName">
+                        v-model="user.firstName"
+                        :disabled="loading">
                     </div>
                     <!-- lastname -->
                     <div class="border border-[#D9D9D9] rounded-lg md:h-[52px] mt-4 grid grid-cols-[50px_1fr] p-2">
@@ -114,12 +122,11 @@
                         type="text" 
                         class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
                         placeholder="Last name"
-                        v-model="user.lastName">
+                        v-model="user.lastName"
+                        :disabled="loading">
                     </div>
                 </div>
                 
-
-
                 <!-- email -->
                 <div class="border border-[#D9D9D9] rounded-lg md:h-[52px] mt-4 grid grid-cols-[50px_1fr] p-2">
                     <div class="w-full h-full flex-center">
@@ -131,7 +138,8 @@
                     type="text" 
                     class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
                     placeholder="Email"
-                    v-model="user.email">
+                    v-model="user.email"
+                    :disabled="loading">
                 </div>
 
                 <!-- password -->
@@ -146,7 +154,8 @@
                     type="password" 
                     class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
                     placeholder="Password"
-                    v-model="user.password">
+                    v-model="user.password"
+                    :disabled="loading">
                 </div>
 
                 <!-- password meter -->
@@ -181,11 +190,11 @@
                 <button
                 :class="[
                     'w-full text-center md:h-[52px] p-2 mt-5 rounded-lg text-white transition delay-100 duration-300 ease-in-out',
-                    isDisabled
+                    isDisabled || loading
                     ? 'bg-gray-500 cursor-not-allowed'
                     : 'bg-[var(--color-gray)] hover:bg-[#202020] cursor-pointer'
                 ]"
-                :disabled="isDisabled"
+                :disabled="isDisabled || loading"
                 @click="() => auth.signUp(router, user)"
                 >
                     Sign up
@@ -197,7 +206,7 @@
                     Already have an account? 
                     <RouterLink 
                     class="text-[var(--color-gray)] font-semibold"
-                    to="/login">
+                    :to="loading ? '' : '/login'">
                         Log in
                     </RouterLink>
                 </p>
