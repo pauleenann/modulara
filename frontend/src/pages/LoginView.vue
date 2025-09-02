@@ -59,7 +59,7 @@
                         : 'cursor-pointer hover:bg-[#D9D9D9]'
                     ]"
                     @click="auth.signinGoogle(router)"
-                    disabled="loading"
+                    :disabled="loading"
                 >
                     <img :src="google" alt="" class="w-[20px] md:w-auto">
                     <span class="text-sm md:text-lg font-semibold text-[var(--color-gray)] cursor-pointer">Sign in with Google</span>
@@ -84,7 +84,7 @@
                     class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
                     placeholder="Email"
                     v-model="user.email"
-                    disabled="loading">
+                    :disabled="loading">
                 </div>
 
                 <!-- password -->
@@ -100,14 +100,14 @@
                     class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
                     placeholder="Password"
                     v-model="user.password"
-                    disabled="loading">
+                    :disabled="loading">
                 </div>
 
                 <!-- forgot password -->
                 <div class="mt-3 text-end">
                     <button 
                     class="text-xs md:text-sm font-semibold text-[var(--color-gray)] cursor-pointer"
-                    disabled="loading">
+                    :disabled="loading">
                         Forgot password?
                     </button>
                 </div>
