@@ -5,7 +5,6 @@
     import password from '../assets/images/password.png'
     import { authStore } from '@/store/authStore'
     import { RouterLink, useRouter } from 'vue-router'
-    import { test } from '@/services/auth'
     import { computed, reactive } from 'vue'
     
     const router = useRouter();
@@ -15,6 +14,7 @@
         password: ''
     })
     const isDisabled = computed(()=> !user.email || !user.password)
+    const loading = computed(()=> auth.loading)
 
 </script>
 
@@ -33,7 +33,7 @@
 
         <!-- login form -->
         <div
-            class="flex-center p-5 md:p-30 relative bg-[url('images/login-bg.png')] md:bg-none bg-cover bg-center"
+            class="flex-center p-5 md:p-30 relative bg-[url('/images/login-bg.png')] md:bg-none bg-cover bg-center"
         >
             <!-- form -->
             <div class="z-50 bg-white/60 backdrop-blur-3xl p-8 md:p-0 rounded-3xl ">
@@ -52,8 +52,14 @@
 
                 <!-- sign in with google -->
                 <button 
-                    class="flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[52px] hover:bg-[#D9D9D9] transition delay-100 duration-300 ease-in-out cursor-pointer"
+                    :class="[
+                        'flex-center gap-3 border w-full border-[#D9D9D9] p-2 md:p-3 mt-3 rounded-lg md:h-[52px]  transition delay-100 duration-300 ease-in-out'
+                        , loading 
+                        ? 'cursor-not-allowed bg-[#D9D9D9]' 
+                        : 'cursor-pointer hover:bg-[#D9D9D9]'
+                    ]"
                     @click="auth.signinGoogle(router)"
+                    disabled="loading"
                 >
                     <img :src="google" alt="" class="w-[20px] md:w-auto">
                     <span class="text-sm md:text-lg font-semibold text-[var(--color-gray)] cursor-pointer">Sign in with Google</span>
@@ -77,7 +83,8 @@
                     type="text" 
                     class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
                     placeholder="Email"
-                    v-model="user.email">
+                    v-model="user.email"
+                    disabled="loading">
                 </div>
 
                 <!-- password -->
@@ -92,26 +99,29 @@
                     type="password" 
                     class="text-sm md:text-lg w-full h-full border-none focus:outline-none pr-4" 
                     placeholder="Password"
-                    v-model="user.password">
+                    v-model="user.password"
+                    disabled="loading">
                 </div>
 
                 <!-- forgot password -->
                 <div class="mt-3 text-end">
-                    <button class="text-xs md:text-sm font-semibold text-[var(--color-gray)] cursor-pointer">Forgot password?</button>
+                    <button 
+                    class="text-xs md:text-sm font-semibold text-[var(--color-gray)] cursor-pointer"
+                    disabled="loading">
+                        Forgot password?
+                    </button>
                 </div>
-
-                
 
                 <!-- login -->
                 <button 
                 :class="[
-                    'w-full text-center md:h-[52px] p-2 bg-[var(--color-gray)] mt-5 md:mt-7 rounded-lg text-white hover:bg-[#202020] transition delay-100 duration-300 ease-in-out cursor-pointer',
-                    isDisabled
+                    'w-full text-center md:h-[52px] p-2 bg-[var(--color-gray)] mt-5 md:mt-7 rounded-lg text-white  transition delay-100 duration-300 ease-in-out',
+                    isDisabled || loading
                     ? 'bg-gray-500 cursor-not-allowed'
                     : 'bg-[var(--color-gray)] hover:bg-[#202020] cursor-pointer'
                 ]"
                 @click="auth.login(router, user)"
-                :disabled="isDisabled"
+                :disabled="isDisabled || loading"
                 >
                     Login
                 </button>
@@ -121,7 +131,7 @@
                     Don't have an account? 
                     <RouterLink 
                     class="text-[var(--color-gray)] font-semibold"
-                    to="/signup">
+                    :to="loading ? '' : '/signup'">
                         Create an account
                     </RouterLink>
                 </p>

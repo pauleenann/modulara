@@ -8,13 +8,16 @@ export const authStore = defineStore('auth', {
         role: null,
         accessToken: null,
         error: '',
-        isAuthenticated: false //flag
+        isAuthenticated: false, //flag
+        loading: false
     }),
 
     actions: {
         // sign in with google
         async signinGoogle(router) {
             try {
+                this .loading = true
+
                 const store = cartStore();
                 const response = await signInWithGoogle(this.setError);
 
@@ -24,7 +27,7 @@ export const authStore = defineStore('auth', {
                     this.accessToken = response.data.accessToken;
 
                     this.isAuthenticated = true;
-
+                    this.loading = false
                     
                     if(this.role==='admin'){
                         router.push('/admin/dashboard')

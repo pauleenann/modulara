@@ -60,7 +60,7 @@
 
         <!-- login form -->
         <div
-            class="flex-center p-5 md:p-30 relative bg-[url('images/login-bg.png')] md:bg-none bg-cover bg-center"
+            class="flex-center p-5 md:p-30 relative bg-[url('/images/login-bg.png')] md:bg-none bg-cover bg-center"
         >
             <!-- form -->
             <div class="z-50 bg-white/60 backdrop-blur-3xl p-8 md:p-0 rounded-3xl ">
