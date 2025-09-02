@@ -75,13 +75,14 @@
             <h1 id="hero-title" class=" text-white text-5xl lg:text-[105px] text-center font-thin mb-5 lg:text-sm/26 font-didact">Redefine Comfort,<br/>One Module at a Time.</h1>
 
             <!-- button -->
-            <button 
+            <RouterLink 
+            to="/shop"
             id="hero-btn" 
             class="border border-white text-white p-4 rounded-xl mb-8 hover:-translate-y-1 cursor-pointer font-dm-sans"
             @click="test"
             >
                 Shop the Collection
-            </button>
+            </RouterLink>
         </div>
 
         <!-- features -->
