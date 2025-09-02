@@ -21,13 +21,15 @@
 <template>
     <div id="login">
         <!-- bg -->
-        <RouterLink  
-            to="/"
+        <div  
             class="hidden md:block bg-[url('images/login-bg.png')] w-full h-full relative bg-center"
         >
             <!-- logo -->
-            <img :src="logo" alt="" class="absolute top-15 left-15">
-        </RouterLink>
+            <RouterLink to="/">
+               <img :src="logo" alt="" class="absolute top-15 left-15"> 
+            </RouterLink>
+            
+    </div>
 
         <!-- login form -->
         <div
