@@ -1,14 +1,20 @@
 import api from "@/utils/api";
 
-export const getProducts = async (query)=>{
+export const getProducts = async (query, page)=>{
     try {
+        console.log('page',page)
         const {data} = await api.get("/products",{
             params: {
-                search: query || ''
+                search: query || '',
+                page,
+                limit: 2
             }
         });
         console.log(data);
-        return data.products
+        return {
+            products: data.products,
+            nextCursor: data.nextCursor
+        }
     } catch (error) {
         console.log(error)
     }

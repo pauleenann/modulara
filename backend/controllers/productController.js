@@ -144,15 +144,19 @@ export const removeProduct = async (req, res) =>{
 export const getProducts = async (req, res)=>{
   try {
     const searchQuery = req.query.search || '';
-    console.log('Search Query:', searchQuery);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 2;
+
+    const filter = { 
+      $or: [
+        { name: { $regex: searchQuery, $options: 'i' } },
+        { category: { $regex: searchQuery, $options: 'i' } }
+      ]
+    }
+
     
     const products = await Product.find(
-      { 
-        $or: [
-          { name: { $regex: searchQuery, $options: 'i' } },
-          { category: { $regex: searchQuery, $options: 'i' } }
-        ]
-      },
+      filter,
       {
         _id: 1, 
         name: 1, 
@@ -162,12 +166,20 @@ export const getProducts = async (req, res)=>{
         images: 1,
         attributes: 1
       }
-    )
+    ).skip((page-1)*limit)
+    .limit(limit)
+
+    // count total documents that meets the filter
+    const totalCount = await Product.countDocuments(filter);
+
+    //determine if there is still next page
+    const hasMore = page * limit < totalCount
 
     console.log(products)
 
     return res.status(200).json({
-      products
+      products,
+      nextCursor: hasMore ? page+1 : undefined
     })
   } catch (error) {
     console.log(error)
