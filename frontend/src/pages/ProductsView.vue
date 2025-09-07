@@ -17,15 +17,26 @@
         fetchNextPage,
         hasNextPage,
         isFetching,
+        refetch
      }=useInfiniteQuery({
         queryKey: computed(()=>["products",searchQuery.value]),
         queryFn: ({pageParam})=>getProducts(searchQuery.value, pageParam), //pageParam is always enclosed in an object
         getNextPageParam: (lastPage) => lastPage.nextCursor, //value of this will be passed in pageParam; lastPage is the current value returned by getProducts. nextCursor is user defined
     })
 
-    watch(data, (val) => {
-        console.log("Products data:", val.pages)
-    })
+    // to know how this works, go to flatmap.txt inside explanations folder
+    const allProducts = computed(() => data.value?.pages.flatMap(page => page.products) || [])
+
+    // Watch for route query changes (Enter pressed in ProductNavbar)
+    watch(
+        () => route.query.search,
+        (newVal, oldVal) => {
+            console.log(newVal)
+            if (newVal !== oldVal) {
+                refetch()
+            }
+        }
+    )
 </script>
 
 <template>
@@ -62,22 +73,12 @@
                 <!-- products -->
                 <div
                 class="mt-15"
-                v-else-if="data.pages.length>0">
+                v-else-if="allProducts.length>0">
                     <div
                     class="w-full grid grid-cols-3 gap-10">
-                        <!-- 
-                        data.pages looks like this: 
-                        1. data.value.pages = [
-                            { products: [{_id:1}, {_id:2}], nextCursor: 2 },
-                            { products: [{_id:3}, {_id:4}], nextCursor: 3 }
-                        ] 
-                        2. flatmap is like data.value.pages.map(page => page.products).flat(); flatmap does map + flat in one step
-                        - map gives you an array of arrays: [ [{_id:1}, {_id:2}], [{_id:3}, {_id:4}] ]
-                        - flat() merges it into a single array: [{_id:1}, {_id:2}, {_id:3}, {_id:4}]
-                        -->
                         <Product 
                         class="product" 
-                        v-for="product in data.pages.flatMap(page => page.products)"
+                        v-for="product in allProducts"
                         :key="product._id"
                         :product="product"/>
                     </div>
@@ -90,16 +91,13 @@
                         class="mt-30 mb-10 bg-white cursor-pointer hover:bg-black hover:text-white transition duration-200 ease-in-out py-2 px-4 border rounded-full">
                             Load more
                         </button>
-                    </div>
-                    
-
-                    
+                    </div>                    
                 </div>
 
                 <!-- no data -->
                 <div
                 class="mt-20 w-full h-100 flex items-center justify-center font-medium"
-                v-else-if="data.length==0">
+                v-else-if="allProducts.length==0">
                     Product not available
                 </div>
 

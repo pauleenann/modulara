@@ -7,7 +7,7 @@ export const getProducts = async (query, page)=>{
             params: {
                 search: query || '',
                 page,
-                limit: 2
+                limit: 3
             }
         });
         console.log(data);

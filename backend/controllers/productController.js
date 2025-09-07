@@ -145,7 +145,7 @@ export const getProducts = async (req, res)=>{
   try {
     const searchQuery = req.query.search || '';
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 2;
+    const limit = parseInt(req.query.limit) || 3;
 
     const filter = { 
       $or: [
