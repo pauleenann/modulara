@@ -7,7 +7,7 @@
     import ProductConfirmationModal from '@/components/Admin/Modals/ProductConfirmationModal.vue';
     import { useProductApi } from '@/composables/products/useProductApi';
     import { usePagination } from '@/composables/usePagination';
-    import { productsStore } from '@/store/productsStore';
+    // import { productsStore } from '@/store/productsStore';
     import { computed, onMounted, ref } from 'vue';
 
     var isModalOpen = ref(false);

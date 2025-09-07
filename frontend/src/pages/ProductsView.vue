@@ -3,14 +3,21 @@
     import ProductFilter from '@/components/Customer/Products/ProductFilter.vue';
     import Product from '@/components/Customer/Home/Product.vue';
     import Footer from '@/components/Customer/Home/Footer.vue';
-    import { RouterLink } from 'vue-router';
-    import { productsStore } from '@/store/productsStore';
-    import { onMounted, ref } from 'vue';
-
-    const store = productsStore();
+    import { useRoute } from 'vue-router';
+    import { computed, watch } from 'vue';
+    import { useQuery } from '@tanstack/vue-query';
+    import { getProducts } from '@/services/products';
     
-    onMounted(()=>{
-        store.getProducts();
+    const route = useRoute();
+    const searchQuery = computed(() => route.query.search)
+    
+    const {isPending, isFetching, isError, data, error}=useQuery({
+        queryKey: computed(()=>["products",searchQuery.value]),
+        queryFn: ()=>getProducts(searchQuery.value)
+    })
+ 
+    watch(data, (val) => {
+        console.log("Products data:", val)
     })
 </script>
 
@@ -26,9 +33,9 @@
                 <!-- loading -->
 
                 <!-- result text and sort button -->
-                <div class="mt-13 flex justify-between items-end font-dm-sans w-full">
+                <!-- <div class="mt-13 flex justify-between items-end font-dm-sans w-full">
                     <div>
-                        <h1 class="text-2xl lg:text-4xl capitalize">{{ store.searchQuery }}</h1>
+                        <h1 class="text-2xl lg:text-4xl capitalize"></h1>
                         <p>Showing 1 of 100 results</p>
                     </div>
 
@@ -36,42 +43,32 @@
                     class="border border-[#D9D9D9] text-[var(--color-gray)] rounded py-2 px-3 transition duration-300 ease-in-out hover:bg-[#D9D9D9] cursor-pointer font-dm-sans">
                       <i class="fa-solid fa-filter block md:hidden"></i>
                     </button>
+                </div> -->
+
+                <!-- is fetching -->
+                <div
+                class="mt-20 w-full h-100 flex items-center justify-center font-medium"
+                v-if="isFetching">
+                    Searching for sofas...
                 </div>
 
                 <!-- products -->
-                <div 
-                v-if="store.loading"
-                class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10 mt-10">
-                    <Product 
-                    class="product"
-                    v-for="index in 6"
-                    :key="index"
-                    :product="null"/>
-                </div>
-                <div 
-                v-else
-                class="w-full h-auto grid lg:grid-cols-3 gap-x-7 gap-y-10 mt-10">
+                <div
+                class="w-full grid grid-cols-3 gap-10 mt-15"
+                v-else-if="data.length>0">
                     <Product 
                     class="product" 
-                    v-for="product in store.products"
+                    v-for="product in data"
                     :key="product._id"
                     :product="product"/>
                 </div>
 
-                <div 
-                v-if="!store.loading && store.products.length==0"
-                class="h-70 flex flex-col justify-center items-center">
-                    <i class="fa-solid fa-face-sad-tear text-4xl mb-2"></i>
-                    <p class="font-medium ">No products available.</p>
-                    <p class="text-gray-500 font-medium">Please try a different search.</p>
+                <!-- no data -->
+                <div
+                class="mt-20 w-full h-100 flex items-center justify-center font-medium"
+                v-else>
+                    Product not available
                 </div>
-
-                <!-- show more -->
-                <button 
-                v-if="store.products.length>0"
-                class="my-25 text-[var(--color-gray)] cursor-pointer">
-                    Show more
-                </button>
             </div>  
 
             <!-- footer -->

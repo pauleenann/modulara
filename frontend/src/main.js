@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './routes/routes'
 import { createPinia } from 'pinia'
 import Toast from "vue-toastification";
-// Import the CSS or use your own!
+import { VueQueryPlugin } from '@tanstack/vue-query'
 import "vue-toastification/dist/index.css";
 
 
@@ -14,4 +14,5 @@ createApp(App)
     .use(router)
     .use(pinia)
     .use(Toast)
+    .use(VueQueryPlugin)
     .mount('#app')

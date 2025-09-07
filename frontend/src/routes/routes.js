@@ -54,12 +54,12 @@ const routes = [
     name: 'Dashboard',
     meta: { requiresAdmin: true } 
   },
-  { 
-    path: '/admin/inventory', 
-    component: InventoryView,
-    name: 'Inventory',
-    meta: { requiresAdmin: true } 
-  },
+  // { 
+  //   path: '/admin/inventory', 
+  //   component: InventoryView,
+  //   name: 'Inventory',
+  //   meta: { requiresAdmin: true } 
+  // },
 ]
 
 const router = createRouter({

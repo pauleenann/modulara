@@ -1,32 +1,36 @@
 <script setup> 
     import { navbarMenu } from '@/constants/constants'
     import { iconMenu } from '@/constants/constants';
-    import { ref, watch } from 'vue';
+    import { computed, ref } from 'vue';
     import { RouterLink, useRouter } from 'vue-router';
     import { useRoute } from 'vue-router';
     import MobileMenu from '../Home/MobileMenu.vue';
     import Cart from '../Home/Cart.vue';
     import { handleIconClick } from '@/utils/iconMenuHandler';
     import { cartStore } from '@/store/cartStore';
-    import { productsStore } from '@/store/productsStore';
 
     const storeCart = cartStore();
-    const storeProducts = productsStore();
     const route = useRoute();
-    const currentUrl = route.name;
     const router = useRouter();
+    const currentUrl = route.name;
     const isClicked = ref(false);
     const isBasketModalOpen = ref(false);
     const searchQuery = ref('');
-    let timeOut = null;
 
-    //debounce search input
-    watch(searchQuery, (newQuery) => {
-        clearTimeout(timeOut);
-        timeOut = setTimeout(()=>{
-            storeProducts.getProducts(newQuery);
-        }, 3000)
-    });
+    const handleSearch = ()=>{
+        if(searchQuery.value==''){
+            router.push('/shop')
+        }else{
+            router.push({
+                path: '/shop',
+                query: {
+                    search: searchQuery.value.trim()
+                }
+            }) 
+        }
+        
+    }
+    
 </script>
 
 <template>
@@ -47,7 +51,8 @@
                     type="text" 
                     class="h-full w-full text-lg font-normal font-dm-sans text-[var(--color-gray)] placeholder-[var(--color-gray)] focus:outline-0" 
                     placeholder="Looking for a modular fit?"
-                    v-model="searchQuery">
+                    v-model="searchQuery"
+                    @keyup.enter="handleSearch"/>
                 </div>
                 
             </div>
