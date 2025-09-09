@@ -10,6 +10,7 @@ import FavoritesView from '@/pages/FavoritesView.vue'
 import SignupView from '@/pages/SignupView.vue'
 import ProfileView from '@/pages/ProfileView.vue'
 import { cartStore } from '@/store/cartStore'
+import { favoriteStore } from '@/store/favoriteStore'
 
 const routes = [
   { 
@@ -72,7 +73,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   const auth = authStore();
-  const store = cartStore();
+  const cart = cartStore();
+  const fave = favoriteStore();
  
   auth.error = ''; //reset error
 
@@ -84,8 +86,8 @@ router.beforeEach(async (to, from) => {
     await auth.refreshAccessToken();
   }
 
-  await store.getCart(); //initialize cart
-  console.log('cart: ', store.cart)
+  await cart.getCart(); //initialize cart
+  await fave.getFaves(); //initialize faves
 
   const role = auth.role;
 

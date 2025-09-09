@@ -1,9 +1,11 @@
 <script setup>
   import { cartStore } from '@/store/cartStore';
+  import { favoriteStore } from '@/store/favoriteStore';
   import { reactive, watch } from 'vue';
   import { RouterLink } from 'vue-router';
 
-  const store = cartStore();
+  const storeCart = cartStore();
+  const storeFave = favoriteStore();
   const props = defineProps({
     product: Object
   });
@@ -16,7 +18,7 @@
   const productData = reactive({
     product: null,
     variant: null,
-    quantity: 1
+    quantity: 1,
   });
 
   // sync with prop when it changes
@@ -28,7 +30,6 @@
     },
     { immediate: true } // runs on mount
   );
-
 </script>
 
 
@@ -38,16 +39,12 @@
     <RouterLink 
     v-if="props.product"
     :to="`/shop/product/${props.product._id}`"
-    class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex-center rounded-2xl p-6">
+    class="w-full h-full bg-[#f5f5f5] flex-center rounded-2xl p-15">
       <div>
         <img :src="productImage" :alt="productName" class="object-contain" />
       </div>
       
     </RouterLink>
-    <div 
-    v-else
-    class="w-full h-80 lg:h-120 bg-[#f5f5f5] flex-center rounded-2xl p-6">
-    </div>
 
     <!-- Name & Price -->
     <RouterLink 
@@ -58,19 +55,10 @@
         <p>₱{{ productPrice.toLocaleString() }}</p>
       </div>
     </RouterLink>
-    <div v-else>
-      <div class="flex justify-between mt-4 font-medium font-dm-sans text-xl">
-        <p class="h-10 w-60 bg-gray-200 rounded animate-pulse"></p>
-        <p class="h-10 w-20 bg-gray-200 rounded animate-pulse"></p>
-      </div>
-    </div>
 
     <!-- Category -->
     <div v-if="props.product">
       <p class="text-lg">{{ productCategory }}</p>
-    </div>
-    <div v-else>
-      <div class="mt-2 h-10 w-full bg-gray-300 rounded animate-pulse"></div>
     </div>
 
     <!-- Add to Basket & Favorite -->
@@ -79,23 +67,25 @@
       class="mt-3 flex items-center gap-3"
       v-if="props.product">
         <button 
-        @click="store.addToCart({
+        @click="storeCart.addToCart({
           productId: productData.product._id,
           variant: productData.variant,
           quantity: productData.quantity
         }, productData.product.name, true)"
-        class="bg-[var(--color-gray)] w-10 h-10 rounded-full text-white">
+        class="bg-[var(--color-gray)] w-10 h-10 rounded-full text-white cursor-pointer">
           <i class="fa-solid fa-basket-shopping"></i>
         </button>
-        <button>
-          <i class="fa-regular fa-heart text-4xl text-[var(--color-gray)]"></i>
+        <button
+        class="cursor-pointer"
+        @click="storeFave.addToFaves({
+          productId: productData.product._id,
+          variant: productData.variant
+        }, productData.product.name, true)">
+          <i :class='[
+            storeFave.isFavorite(productData.product._id, productData.variant) ? "fa-solid text-pink-600" : "fa-regular text-[var(--color-gray)]",
+            "fa-heart text-4xl"
+          ]'></i>
         </button>
-      </div>
-      <div 
-      class="mt-3 flex items-center gap-2"
-      v-else>
-        <div class="bg-gray-400 w-10 h-10 rounded-full animate-pulse"></div>
-        <div class="bg-gray-400 w-10 h-10 rounded-full animate-pulse"></div>
       </div>
     </div>
 

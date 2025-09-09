@@ -109,7 +109,6 @@ export const cartStore = defineStore('cart', {
           // get authentication status
           const store = authStore();
           const isAuthenticated = store.isAuthenticated;
-          const {id} = store.user;
 
           this.cart = this.cart.filter(item=>item.productId!=productId)
 
@@ -118,6 +117,7 @@ export const cartStore = defineStore('cart', {
             localStorage.setItem('cart', JSON.stringify(this.cart));
           }else{
             try {
+                const {id} = store.user;
                 await removeItem(id, productId)
             } catch (error) {
               console.log('Cannot remove product from cart. An error occurred: ', error)
