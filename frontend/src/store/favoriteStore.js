@@ -16,30 +16,28 @@ export const favoriteStore = defineStore('favorite',{
             }
         },
 
-        async addToFaves(productData, productName = "Product", toast=false){
+        async addToFaves(id, productName = "Product", toast=false){
             //get authentication status
             const store = authStore();
             const isAuthenticated = store.isAuthenticated;
 
             //push productData to this.favorites
-            this.favorites.push(productData)
+            this.favorites.push(id)
 
-            console.log('This is the favorites store')
-            console.log(productData)
             if(!isAuthenticated){
                 localStorage.setItem('favorites', JSON.stringify(this.favorites))
             }
         },
 
-        async removeToFaves(id, variant){
-            console.log(id,variant)
+        async removeToFaves(id){
+            console.log(id)
             const store = authStore();
             const isAuthenticated = store.isAuthenticated;
 
             console.log(this.favorites)
             // find and remove the product in this.favorites
             this.favorites = this.favorites.filter(f=>
-                !(f.productId === id && f.variant === variant)
+                f != id
             )
 
             if(!isAuthenticated){
@@ -47,13 +45,8 @@ export const favoriteStore = defineStore('favorite',{
             }
         },
 
-        isFavorite(id, variant){
-            //SOME METHOD
-            // It returns true if any item matches.
-            // It returns false if no items match.
-            return this.favorites.some(
-                f => f.productId === id && f.variant === variant
-            )
+        isFavorite(id){
+            return this.favorites.includes(id)
         }
     }
 })

@@ -20,7 +20,21 @@
     variant: null,
     quantity: 1,
   });
-  const isFavorite = computed(()=>storeFave.isFavorite(productData.product?._id, productData.variant)); //checks if product is added to favorites
+  const isFavorite = computed(()=>storeFave.isFavorite(productData.product?._id)); //checks if product is added to favorites
+
+  const toggleFavorite = () => {
+    if (!productData.product) return;
+
+    if (isFavorite.value) {
+      storeFave.removeToFaves(productData.product._id);
+    } else {
+      storeFave.addToFaves(
+        productData.product._id,
+        productData.product.name,
+        true
+      );
+    }
+  };
 
   // sync with prop when it changes
   watch(
@@ -70,7 +84,7 @@
         <button 
         @click="storeCart.addToCart({
           productId: productData.product._id,
-          variant: productData.variant,
+          variant: [productData.variant],
           quantity: productData.quantity
         }, productData.product.name, true)"
         class="bg-[var(--color-gray)] w-10 h-10 rounded-full text-white cursor-pointer">
@@ -78,18 +92,10 @@
         </button>
         <button
         class="cursor-pointer"
-        @click="isFavorite 
-        ? storeFave.removeToFaves(
-          productData.product._id,
-          productData.variant
-        )
-        :storeFave.addToFaves({
-          productId: productData.product._id,
-          variant: productData.variant
-        }, productData.product.name, true)">
+        @click="toggleFavorite">
           <i :class='[
            isFavorite ? "fa-solid text-pink-600" : "fa-regular text-[var(--color-gray)]",
-            "fa-heart text-4xl"
+            "fa-heart text-4xl transition duration-200 ease-in-out"
           ]'></i>
         </button>
       </div>

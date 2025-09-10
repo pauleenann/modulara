@@ -5,6 +5,20 @@
     import Footer from '@/components/Customer/Home/Footer.vue';
     import { RouterLink } from 'vue-router';
     import OtherProducts from '@/components/Customer/Products/OtherProducts.vue';
+    import { favoriteStore } from '@/store/favoriteStore';
+    import { onMounted } from 'vue';
+    import { useQuery } from '@tanstack/vue-query';
+
+    const storeFave = favoriteStore();
+    const favorites = storeFave.favorites;
+
+    // const {
+    //     data,
+    //     isLoading,
+    //     isError
+    // } = useQuery({
+    //     queryKey: ['favorites',]
+    // })
 
 </script>
 

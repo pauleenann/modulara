@@ -13,10 +13,9 @@
     
     const { 
         data,
-        error,
         fetchNextPage,
         hasNextPage,
-        isFetching,
+        isLoading,
         refetch
      }=useInfiniteQuery({
         queryKey: computed(()=>["products",searchQuery.value]),
@@ -66,7 +65,7 @@
                 <!-- is fetching -->
                 <div
                 class="mt-20 w-full h-100 flex items-center justify-center font-medium"
-                v-if="isFetching">
+                v-if="isLoading">
                     Searching for sofas...
                 </div>
 
