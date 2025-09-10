@@ -31,6 +31,22 @@ export const favoriteStore = defineStore('favorite',{
             }
         },
 
+        async removeToFaves(id, variant){
+            console.log(id,variant)
+            const store = authStore();
+            const isAuthenticated = store.isAuthenticated;
+
+            console.log(this.favorites)
+            // find and remove the product in this.favorites
+            this.favorites = this.favorites.filter(f=>
+                !(f.productId === id && f.variant === variant)
+            )
+
+            if(!isAuthenticated){
+                localStorage.setItem('favorites',JSON.stringify(this.favorites))
+            }
+        },
+
         isFavorite(id, variant){
             //SOME METHOD
             // It returns true if any item matches.

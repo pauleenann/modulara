@@ -1,7 +1,7 @@
 <script setup>
   import { cartStore } from '@/store/cartStore';
   import { favoriteStore } from '@/store/favoriteStore';
-  import { reactive, watch } from 'vue';
+  import { computed, reactive, watch } from 'vue';
   import { RouterLink } from 'vue-router';
 
   const storeCart = cartStore();
@@ -20,6 +20,7 @@
     variant: null,
     quantity: 1,
   });
+  const isFavorite = computed(()=>storeFave.isFavorite(productData.product?._id, productData.variant)); //checks if product is added to favorites
 
   // sync with prop when it changes
   watch(
@@ -77,12 +78,17 @@
         </button>
         <button
         class="cursor-pointer"
-        @click="storeFave.addToFaves({
+        @click="isFavorite 
+        ? storeFave.removeToFaves(
+          productData.product._id,
+          productData.variant
+        )
+        :storeFave.addToFaves({
           productId: productData.product._id,
           variant: productData.variant
         }, productData.product.name, true)">
           <i :class='[
-            storeFave.isFavorite(productData.product._id, productData.variant) ? "fa-solid text-pink-600" : "fa-regular text-[var(--color-gray)]",
+           isFavorite ? "fa-solid text-pink-600" : "fa-regular text-[var(--color-gray)]",
             "fa-heart text-4xl"
           ]'></i>
         </button>
