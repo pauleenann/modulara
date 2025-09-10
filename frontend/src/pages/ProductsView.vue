@@ -71,7 +71,7 @@
 
                 <!-- products -->
                 <div
-                class="mt-15"
+                class="my-15"
                 v-else-if="allProducts.length>0">
                     <div
                     class="w-full grid grid-cols-3 gap-10">

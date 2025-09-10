@@ -6,20 +6,22 @@
     import { RouterLink } from 'vue-router';
     import OtherProducts from '@/components/Customer/Products/OtherProducts.vue';
     import { favoriteStore } from '@/store/favoriteStore';
-    import { onMounted } from 'vue';
+    import { onMounted, watch } from 'vue';
     import { useQuery } from '@tanstack/vue-query';
+    import { getFavorites } from '@/services/products';
 
     const storeFave = favoriteStore();
-    const favorites = storeFave.favorites;
+    const favorites = storeFave.favorites; //product ids
+    
 
-    // const {
-    //     data,
-    //     isLoading,
-    //     isError
-    // } = useQuery({
-    //     queryKey: ['favorites',]
-    // })
-
+    const {
+        data,
+        isLoading,
+        isError
+    } = useQuery({
+        queryKey: ['favorites', favorites],
+        queryFn: ()=>getFavorites(favorites)
+    })
 </script>
 
 <template>
@@ -28,8 +30,23 @@
         
         <div class="absolute top-30 lg:top-35 left-0 right-0 m-auto">
             <div class="w-5/6 m-auto flex flex-col items-center mb-20">
-                <div class="w-full min-h-screen">
+                <div 
+                v-if="isLoading"
+                class="w-full h-100 flex items-center justify-center font-medium">
+                    Loading your favorites
+                </div>
 
+                <div
+                class="my-15"
+                v-else-if="data">
+                <div
+                    class="w-full grid grid-cols-3 gap-10">
+                        <Product 
+                        class="product" 
+                        v-for="product in data"
+                        :key="product._id"
+                        :product="product"/>
+                    </div>
                 </div>
 
                 <!-- other products -->

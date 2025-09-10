@@ -218,3 +218,24 @@ export const getProduct = async (req, res)=>{
     })
   }
 }
+
+export const getFavorites = async (req, res)=>{
+  try {
+    const ids = req.query['ids[]']
+    
+    const favoriteDetails = await Product.find({
+      _id:{
+        $in: ids
+      }
+    })
+
+    return res.status(200).json({
+      favoriteDetails
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: error
+    })
+  }
+}
