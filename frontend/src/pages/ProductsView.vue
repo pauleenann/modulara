@@ -44,25 +44,6 @@
         
         <div class="absolute top-30 lg:top-35 left-0 right-0 m-auto">
             <div class="w-5/6 m-auto flex flex-col items-center mb-20">
-                <!-- filter -->
-                <!-- <ProductFilter/> -->
-
-                <!-- loading -->
-
-                <!-- result text and sort button -->
-                <!-- <div class="mt-13 flex justify-between items-end font-dm-sans w-full">
-                    <div>
-                        <h1 class="text-2xl lg:text-4xl capitalize"></h1>
-                        <p>Showing 1 of 100 results</p>
-                    </div>
-
-                    <button 
-                    class="border border-[#D9D9D9] text-[var(--color-gray)] rounded py-2 px-3 transition duration-300 ease-in-out hover:bg-[#D9D9D9] cursor-pointer font-dm-sans">
-                      <i class="fa-solid fa-filter block md:hidden"></i>
-                    </button>
-                </div> -->
-
-                <!-- is fetching -->
                 <div
                 class="mt-20 w-full h-100 flex items-center justify-center font-medium"
                 v-if="isLoading">

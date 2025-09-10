@@ -22,10 +22,11 @@
         queryKey: ['favorites', favorites],
         queryFn: ()=>getFavorites(favorites)
     })
+    
 </script>
 
 <template>
-    <div class="w-screen h-screen ">
+    <div class="w-screen h-screen">
         <ProductNavbar/>
         
         <div class="absolute top-30 lg:top-35 left-0 right-0 m-auto">
@@ -38,7 +39,7 @@
 
                 <div
                 class="my-15"
-                v-else-if="data">
+                v-else-if="data.length>0">
                 <div
                     class="w-full grid grid-cols-3 gap-10">
                         <Product 
@@ -47,6 +48,12 @@
                         :key="product._id"
                         :product="product"/>
                     </div>
+                </div>
+
+                <div
+                class="mt-20 w-full h-100 flex items-center justify-center font-medium"
+                v-else-if="data.length==0">
+                    You have no favorites
                 </div>
 
                 <!-- other products -->
