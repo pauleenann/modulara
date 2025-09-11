@@ -54,7 +54,7 @@
     <RouterLink 
     v-if="props.product"
     :to="`/shop/product/${props.product._id}`"
-    class="w-full h-full bg-[#f5f5f5] flex-center rounded-2xl p-15">
+    class="w-full h-100 bg-[#f5f5f5] flex-center rounded-2xl p-15">
       <div>
         <img :src="productImage" :alt="productName" class="object-contain" />
       </div>

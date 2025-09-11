@@ -22,6 +22,7 @@ export const getProducts = async (query, page)=>{
 
 export const getFavorites = async (ids)=>{
     try {
+        console.log('getting faves')
         const {data} = await api.get('/products/favorites', {
             params: {
                 ids

@@ -7,22 +7,22 @@
     import OtherProducts from '@/components/Customer/Products/OtherProducts.vue';
     import { favoriteStore } from '@/store/favoriteStore';
     import { onMounted, watch } from 'vue';
-    import { useQuery } from '@tanstack/vue-query';
+    import { useMutation, useQuery } from '@tanstack/vue-query';
     import { getFavorites } from '@/services/products';
+    import { storeToRefs } from 'pinia';
 
     const storeFave = favoriteStore();
-    const favorites = storeFave.favorites; //product ids
+    const {favorites} = storeToRefs(storeFave); //product ids
     
-
     const {
         data,
         isLoading,
         isError
     } = useQuery({
         queryKey: ['favorites', favorites],
-        queryFn: ()=>getFavorites(favorites)
+        queryFn: ()=>getFavorites(favorites.value)
     })
-    
+
 </script>
 
 <template>
