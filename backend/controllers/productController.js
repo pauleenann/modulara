@@ -1,4 +1,5 @@
 import Product from "../models/Product.js";
+import Favorite from "../models/Favorite.js"
 
 export const addProduct = async (req, res) => {
   try {
@@ -231,6 +232,32 @@ export const getFavorites = async (req, res)=>{
 
     return res.status(200).json({
       favoriteDetails
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: error
+    })
+  }
+}
+
+export const saveFavorites = async(req, res)=>{
+  try {
+    const {userId, favorites} = req.body;
+    console.log('favorites: ',favorites)
+
+    //check if user exists
+    const userExist = await Favorite.findOne({userId: userId})
+
+    if(!userExist){
+      await Favorite.create({
+        userId: userId,
+        favorites: favorites
+      })
+    }
+    
+    return res.status(200).json({
+      message: 'Items saved to favorites successfully'
     })
   } catch (error) {
     console.log(error);

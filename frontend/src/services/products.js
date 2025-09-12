@@ -19,19 +19,3 @@ export const getProducts = async (query, page)=>{
         console.log(error)
     }
 }
-
-export const getFavorites = async (ids)=>{
-    try {
-        console.log('getting faves')
-        const {data} = await api.get('/products/favorites', {
-            params: {
-                ids
-            }
-        })
-
-        console.log(data)
-        return data.favoriteDetails
-    } catch (error) {
-        console.log(error)
-    }
-}

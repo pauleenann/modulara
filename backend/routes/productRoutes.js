@@ -1,5 +1,5 @@
 import express from 'express';
-import { addProduct, editProduct, getFavorites, getProduct, getProducts, removeProduct } from '../controllers/productController.js';
+import { addProduct, editProduct, getFavorites, getProduct, getProducts, removeProduct, saveFavorites } from '../controllers/productController.js';
 import upload from '../middleware/cloudinaryUploader.js';
 import { authenticate } from '../middleware/auth.js';
 import { authorize } from '../middleware/authorize.js';
@@ -10,6 +10,12 @@ const router = express.Router();
 router.get(
     '/favorites',
     getFavorites
+);
+router.post(
+    '/favorites',
+    authenticate,
+    authorize('customer'),
+    saveFavorites
 )
 router.get(
     '/',

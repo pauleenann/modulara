@@ -8,9 +8,9 @@
     import { favoriteStore } from '@/store/favoriteStore';
     import { onMounted, watch } from 'vue';
     import { useMutation, useQuery } from '@tanstack/vue-query';
-    import { getFavorites } from '@/services/products';
-    import { storeToRefs } from 'pinia';
 
+    import { storeToRefs } from 'pinia';
+    import { getFavorites } from '@/services/favorites';
     const storeFave = favoriteStore();
     const {favorites} = storeToRefs(storeFave); //product ids
     

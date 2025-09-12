@@ -25,6 +25,7 @@ export const getCartDetails = async (req, res)=>{
 export const saveCartDetails = async (req, res)=>{
     try {
         const {userId, cart} = req.body;
+        console.log(cart)
 
         //check first if user has a cart
         const userExists = await Cart.findOne({
@@ -39,6 +40,7 @@ export const saveCartDetails = async (req, res)=>{
         }else{
             //iterate productData
             cart.forEach(async (product) => {
+                console.log(product)
                 let itemExists = await Cart.findOneAndUpdate(
                     {
                         "items.productId": product.productId,

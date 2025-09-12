@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { authStore } from "./authStore";
+import { saveFavorites } from "@/services/favorites";
 
 export const favoriteStore = defineStore('favorite',{
     state: ()=>({
@@ -47,6 +48,17 @@ export const favoriteStore = defineStore('favorite',{
 
         isFavorite(id){
             return this.favorites.includes(id)
+        },
+
+        async saveFaves(userId){
+            //don't save if this.favorites is empty
+            if(this.favorites.length==0) return
+
+            try {
+                const response = await saveFavorites(userId, this.favorites)
+            } catch (error) {
+                console.log('Cannot save favorites to database: ', error)
+            }
         }
     }
 })

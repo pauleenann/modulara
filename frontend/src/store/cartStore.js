@@ -128,6 +128,7 @@ export const cartStore = defineStore('cart', {
         async saveCart(userId){
           if(this.cart.length==0) return; //return if cart is empty 
             try {
+              console.log('saving to cart')
               const response = await saveCart(userId, this.cart);
               
               // delete from localstorage

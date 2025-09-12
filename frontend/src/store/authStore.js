@@ -1,6 +1,7 @@
 import { login, refreshAccessToken, signInWithGoogle, signout, signUpWithEmailPass } from '@/services/auth';
 import { defineStore } from 'pinia';
 import { cartStore } from './cartStore';
+import { favoriteStore } from './favoriteStore';
 
 export const authStore = defineStore('auth', {
     state: () => ({
@@ -18,7 +19,8 @@ export const authStore = defineStore('auth', {
             try {
                 this.loading = true
 
-                const store = cartStore();
+                const cart = cartStore();
+                const favorite = favoriteStore();
                 const response = await signInWithGoogle(this.setError);
 
                 if (response) {
@@ -32,7 +34,8 @@ export const authStore = defineStore('auth', {
                     if(this.role==='admin'){
                         router.push('/admin/dashboard')
                     }else{
-                        await store.saveCart(this.user.id)
+                        await cart.saveCart(this.user.id); //save cart from local storage to  database
+                        await favorite.saveFaves(this.user.id)
                         router.push('/')
                     }
                 }
@@ -45,6 +48,7 @@ export const authStore = defineStore('auth', {
             try {
                 this.loading = true;
 
+                const store = cartStore();
                 const response = await signUpWithEmailPass(user, this.setError);
 
                 if (response) {
@@ -56,8 +60,9 @@ export const authStore = defineStore('auth', {
                     this.loading = false;
 
                     if(this.role==='admin'){
-                        router.push('/admin/dashboard')
+                        router.push('/admin/dashboard');
                     }else{
+                        await store.saveCart(this.user.id);
                         router.push('/')
                     }
                 }
@@ -70,6 +75,7 @@ export const authStore = defineStore('auth', {
             try {
                 this.loading = true;
                 
+                const store = cartStore();
                 const response = await login(user, this.setError);
 
                 if (response) {
@@ -83,6 +89,7 @@ export const authStore = defineStore('auth', {
                     if(this.role==='admin'){
                         router.push('/admin/dashboard')
                     }else{
+                        await store.saveCart(this.user.id);
                         router.push('/')
                     }
                 }

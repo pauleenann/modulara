@@ -84,7 +84,7 @@
         <button 
         @click="storeCart.addToCart({
           productId: productData.product._id,
-          variant: [productData.variant],
+          variant: productData.variant,
           quantity: productData.quantity
         }, productData.product.name, true)"
         class="bg-[var(--color-gray)] w-10 h-10 rounded-full text-white cursor-pointer">
