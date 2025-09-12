@@ -55,7 +55,10 @@ export const favoriteStore = defineStore('favorite',{
             if(this.favorites.length==0) return
 
             try {
-                const response = await saveFavorites(userId, this.favorites)
+                await saveFavorites(userId, this.favorites)
+
+                localStorage.removeItem('favorites')
+
             } catch (error) {
                 console.log('Cannot save favorites to database: ', error)
             }

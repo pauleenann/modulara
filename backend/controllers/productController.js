@@ -1,5 +1,6 @@
 import Product from "../models/Product.js";
 import Favorite from "../models/Favorite.js"
+import { Types } from "mongoose";
 
 export const addProduct = async (req, res) => {
   try {
@@ -241,28 +242,45 @@ export const getFavorites = async (req, res)=>{
   }
 }
 
-export const saveFavorites = async(req, res)=>{
+export const saveFavorites = async (req, res) => {
   try {
-    const {userId, favorites} = req.body;
-    console.log('favorites: ',favorites)
+    const { userId, favorites } = req.body;
 
-    //check if user exists
-    const userExist = await Favorite.findOne({userId: userId})
+    // Check if user already has a favorites document
+    let userExist = await Favorite.findOne({ userId });
 
-    if(!userExist){
+    if (!userExist) {
+      // Create new document if none exists
       await Favorite.create({
-        userId: userId,
+        userId,
         favorites: favorites
-      })
+      });
+    } else {
+      // Convert current favorites in DB to strings for comparison
+      const currentSet = new Set(userExist.favorites.map(f => f.toString()));
+
+      // Keep only new favorites not already in DB
+      const updatedFaves = favorites.filter(f => !currentSet.has(f));
+
+      if (updatedFaves.length > 0) {
+        await Favorite.updateOne(
+          { userId }, // use query by userId, not _id
+          {
+            $push: {
+              favorites: { $each: updatedFaves }
+            }
+          }
+        );
+      }
     }
-    
+
     return res.status(200).json({
-      message: 'Items saved to favorites successfully'
-    })
+      message: "Items saved to favorites successfully"
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({
-      error: error
-    })
+      error: error.message || "Something went wrong"
+    });
   }
-}
+};
