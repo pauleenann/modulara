@@ -1,9 +1,9 @@
 import api from "@/utils/api"
 
-export const getFavorites = async (ids)=>{
+export const getFavoritesDetails = async (ids)=>{
     try {
         console.log('getting faves')
-        const {data} = await api.get('/products/favorites', {
+        const {data} = await api.get('/products/favorites/details', {
             params: {
                 ids
             }
@@ -14,6 +14,14 @@ export const getFavorites = async (ids)=>{
     } catch (error) {
         console.log(error)
     }
+}
+
+export const getFavorites = async(userId)=>{
+    return await api.get('/products/favorites',{
+        params:{
+            userId
+        }
+    });
 }
 
 export const saveFavorites = async(userId, favorites)=>{

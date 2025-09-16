@@ -85,7 +85,8 @@ router.beforeEach(async (to, from) => {
     console.log('Not authenticated — trying to refresh token...');
     await auth.refreshAccessToken();
   }
-
+  
+  console.log('isAuthenticated: ', auth.isAuthenticated)
   await cart.getCart(); //initialize cart
   await fave.getFaves(); //initialize faves
 

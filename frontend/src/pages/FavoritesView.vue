@@ -6,21 +6,21 @@
     import { RouterLink } from 'vue-router';
     import OtherProducts from '@/components/Customer/Products/OtherProducts.vue';
     import { favoriteStore } from '@/store/favoriteStore';
-    import { onMounted, watch } from 'vue';
-    import { useMutation, useQuery } from '@tanstack/vue-query';
-
+    import {  useQuery } from '@tanstack/vue-query';
     import { storeToRefs } from 'pinia';
-    import { getFavorites } from '@/services/favorites';
+    import {  getFavoritesDetails } from '@/services/favorites';
+
     const storeFave = favoriteStore();
-    const {favorites} = storeToRefs(storeFave); //product ids
+    const {favorites} = storeToRefs(storeFave); //make reactive
     
+    //fetch product details
     const {
         data,
         isLoading,
         isError
     } = useQuery({
         queryKey: ['favorites', favorites],
-        queryFn: ()=>getFavorites(favorites.value)
+        queryFn: ()=>getFavoritesDetails(favorites.value), 
     })
 
 </script>

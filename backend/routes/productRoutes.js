@@ -1,5 +1,5 @@
 import express from 'express';
-import { addProduct, editProduct, getFavorites, getProduct, getProducts, removeProduct, saveFavorites } from '../controllers/productController.js';
+import { addProduct, editProduct, getFavorites, getFavoritesDetails, getProduct, getProducts, removeProduct, saveFavorites } from '../controllers/productController.js';
 import upload from '../middleware/cloudinaryUploader.js';
 import { authenticate } from '../middleware/auth.js';
 import { authorize } from '../middleware/authorize.js';
@@ -9,7 +9,13 @@ const router = express.Router();
 // upload array tells multer to store every image with 'images' as name in a specific storage
 router.get(
     '/favorites',
+    authenticate,
+    authorize('customer'),
     getFavorites
+)
+router.get(
+    '/favorites/details',
+    getFavoritesDetails
 );
 router.post(
     '/favorites',

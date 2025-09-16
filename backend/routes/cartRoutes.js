@@ -21,7 +21,7 @@ router.post(
     authorize('customer'),
     saveCartDetails
 );
-router.post(
+router.put(
     '/items',
     authenticate,
     authorize('customer'),

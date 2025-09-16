@@ -60,7 +60,7 @@ export const cartStore = defineStore('cart', {
               try {
                 const {id} = store.user;
                 const response = await saveItemToDB(id, productData);
-                
+                console.log(response)
                 // display toast
                 toast&&toastNotification(`${productName} added to cart`, 'success')
               } catch (error) {

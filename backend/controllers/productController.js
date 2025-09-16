@@ -221,7 +221,7 @@ export const getProduct = async (req, res)=>{
   }
 }
 
-export const getFavorites = async (req, res)=>{
+export const getFavoritesDetails = async (req, res)=>{
   try {
     const ids = req.query['ids[]']
     
@@ -234,6 +234,26 @@ export const getFavorites = async (req, res)=>{
     return res.status(200).json({
       favoriteDetails
     })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: error
+    })
+  }
+}
+
+export const getFavorites = async (req, res)=>{
+  try {
+
+    console.log('getting faves')
+    const {userId} = req.query;
+    const {favorites} = await Favorite.findOne({userId});
+
+    console.log(favorites)
+    return res.status(200).json({
+      favorites
+    })
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({

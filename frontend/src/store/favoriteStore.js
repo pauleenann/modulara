@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { authStore } from "./authStore";
-import { saveFavorites } from "@/services/favorites";
+import { getFavorites, saveFavorites } from "@/services/favorites";
 
 export const favoriteStore = defineStore('favorite',{
     state: ()=>({
@@ -9,11 +9,21 @@ export const favoriteStore = defineStore('favorite',{
 
     actions: {
         async getFaves(){
-            const store = authStore;
+            console.log('getting your faves')
+            const store = authStore();
             const isAuthenticated = store.isAuthenticated;
+            console.log('isAuthenticated: ', store.isAuthenticated)
 
             if(!isAuthenticated){
                 this.favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            }else{
+                try {
+                    let {id} = store.user;
+                    const response = await getFavorites(id)
+                    this.favorites = response.data.favorites;
+                } catch (error) {
+                    console.log(error)
+                }
             }
         },
 
@@ -43,6 +53,8 @@ export const favoriteStore = defineStore('favorite',{
 
             if(!isAuthenticated){
                 localStorage.setItem('favorites',JSON.stringify(this.favorites))
+            }else{
+
             }
         },
 
